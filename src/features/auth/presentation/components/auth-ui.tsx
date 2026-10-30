@@ -2,24 +2,28 @@ import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
+  Image,
   Pressable,
-  StyleSheet,
   Text,
   TextInput,
   View,
   type TextInputProps,
 } from 'react-native';
 
-import { authColors, fonts, spacing } from '@/theme';
+import { authColors } from '@/theme';
 
 export function BrandLogo() {
   return (
-    <View accessibilityLabel="VYRA" style={styles.logo}>
-      <View style={styles.logoMark}>
-        <View style={[styles.logoLine, styles.logoLineLeft]} />
-        <View style={[styles.logoLine, styles.logoLineRight]} />
+    <View accessibilityLabel="VYRA" className="flex-row items-center gap-3">
+      <View className="h-7 w-7">
+        <View className="absolute left-[7px] top-px h-[25px] w-[3px] rotate-[-31deg] rounded-sm bg-auth-primary" />
+        <View className="absolute right-[7px] top-px h-[25px] w-[3px] rotate-[31deg] rounded-sm bg-auth-primary" />
       </View>
-      <Text style={styles.logoText}>VYRA</Text>
+      <Text
+        className="text-[22px] font-extrabold tracking-[5px] text-auth-text"
+        maxFontSizeMultiplier={1.05}>
+        VYRA
+      </Text>
     </View>
   );
 }
@@ -31,10 +35,10 @@ export function AuthBackButton({ onPress }: { onPress: () => void }) {
     <Pressable
       accessibilityLabel={t('common.back')}
       accessibilityRole="button"
+      className="h-9 w-9 justify-center active:opacity-70"
       hitSlop={12}
-      onPress={onPress}
-      style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
-      <View style={styles.backChevron} />
+      onPress={onPress}>
+      <View className="ml-[5px] h-[11px] w-[11px] rotate-45 border-b-2 border-l-2 border-auth-text" />
     </Pressable>
   );
 }
@@ -45,20 +49,44 @@ type AuthTextFieldProps = TextInputProps & {
   password?: boolean;
 };
 
-export function AuthTextField({ error, label, password = false, ...props }: AuthTextFieldProps) {
+export function AuthTextField({
+  error,
+  label,
+  onBlur,
+  onFocus,
+  password = false,
+  ...props
+}: AuthTextFieldProps) {
   const { t } = useTranslation();
+  const [focused, setFocused] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
-    <View style={styles.field}>
-      <Text style={styles.fieldLabel}>{label}</Text>
-      <View style={[styles.inputShell, error && styles.inputShellError]}>
+    <View className="gap-1.5">
+      <Text className="text-xs font-medium text-auth-muted" maxFontSizeMultiplier={1.05}>
+        {label}
+      </Text>
+      <View
+        className={[
+          'h-[48px] flex-row items-center rounded-[22px] border bg-auth-surface px-4',
+          error ? 'border-auth-danger' : focused ? 'border-auth-primary' : 'border-auth-border',
+        ].join(' ')}>
         <TextInput
           {...props}
           accessibilityLabel={label}
+          className="h-full flex-1 p-0 text-[14px] text-auth-text"
+          maxFontSizeMultiplier={1.05}
+          onBlur={(event) => {
+            setFocused(false);
+            onBlur?.(event);
+          }}
+          onFocus={(event) => {
+            setFocused(true);
+            onFocus?.(event);
+          }}
           placeholderTextColor={authColors.placeholder}
           secureTextEntry={password && !passwordVisible}
-          style={styles.input}
+          selectionColor={authColors.primary}
         />
         {password ? (
           <Pressable
@@ -66,14 +94,18 @@ export function AuthTextField({ error, label, password = false, ...props }: Auth
               passwordVisible ? t('common.hidePassword') : t('common.showPassword')
             }
             accessibilityRole="button"
-            hitSlop={12}
+            className="ml-2 p-1 active:opacity-70"
+            hitSlop={10}
             onPress={() => setPasswordVisible((current) => !current)}>
             <EyeIcon crossed={passwordVisible} />
           </Pressable>
         ) : null}
       </View>
       {error ? (
-        <Text accessibilityLiveRegion="polite" style={styles.fieldError}>
+        <Text
+          accessibilityLiveRegion="polite"
+          className="text-[11px] leading-4 text-auth-danger"
+          maxFontSizeMultiplier={1.05}>
           {error}
         </Text>
       ) : null}
@@ -94,13 +126,15 @@ export function PrimaryButton({
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ busy: loading, disabled: loading }}
+      className="h-[50px] items-center justify-center rounded-[22px] bg-auth-primary active:opacity-75 disabled:opacity-70"
       disabled={loading}
-      onPress={onPress}
-      style={({ pressed }) => [styles.primaryButton, (pressed || loading) && styles.pressed]}>
+      onPress={onPress}>
       {loading ? (
         <ActivityIndicator color={authColors.text} />
       ) : (
-        <Text style={styles.primaryButtonText}>{label}</Text>
+        <Text className="text-sm font-bold text-auth-text" maxFontSizeMultiplier={1.05}>
+          {label}
+        </Text>
       )}
     </Pressable>
   );
@@ -108,105 +142,95 @@ export function PrimaryButton({
 
 export function AuthDivider({ label }: { label: string }) {
   return (
-    <View style={styles.dividerRow}>
-      <View style={styles.dividerLine} />
-      <Text style={styles.dividerText}>{label}</Text>
-      <View style={styles.dividerLine} />
+    <View className="flex-row items-center gap-3">
+      <View className="h-px flex-1 bg-auth-border" />
+      <Text className="text-[11px] text-auth-muted" maxFontSizeMultiplier={1.05}>
+        {label}
+      </Text>
+      <View className="h-px flex-1 bg-auth-border" />
     </View>
   );
 }
 
 export function SocialButtons({ onPress }: { onPress: () => void }) {
   return (
-    <View style={styles.socialRow}>
-      <SocialButton icon={<Text style={styles.googleIcon}>G</Text>} label="Google" onPress={onPress} />
-      <SocialButton icon={<AppleIcon />} label="Apple" onPress={onPress} />
+    <View className="flex-row gap-3">
+      <SocialButton
+        iconSource={require('../../../../../assets/images/tabIcons/google.webp')}
+        label="Google"
+        onPress={onPress}
+      />
+      <SocialButton
+        iconSource={require('../../../../../assets/images/tabIcons/apple.webp')}
+        label="Apple"
+        onPress={onPress}
+      />
     </View>
   );
 }
 
-function SocialButton({ icon, label, onPress }: { icon: ReactNode; label: string; onPress: () => void }) {
+function SocialButton({
+  iconSource,
+  label,
+  onPress,
+}: {
+  iconSource: number;
+  label: string;
+  onPress: () => void;
+}) {
   return (
     <Pressable
       accessibilityRole="button"
-      onPress={onPress}
-      style={({ pressed }) => [styles.socialButton, pressed && styles.socialButtonPressed]}>
-      {icon}
-      <Text style={styles.socialButtonText}>{label}</Text>
+      className="h-[50px] flex-1 flex-row items-center justify-center gap-2.5 rounded-[20px] border border-auth-border bg-auth-surface active:bg-auth-pressed"
+      onPress={onPress}>
+      <Image className="h-5 w-5" resizeMode="contain" source={iconSource} />
+      <Text className="text-sm font-bold text-auth-text" maxFontSizeMultiplier={1.05}>
+        {label}
+      </Text>
     </Pressable>
   );
 }
 
-export function Checkbox({ checked, label, onPress }: { checked: boolean; label: ReactNode; onPress: () => void }) {
+export function Checkbox({
+  checked,
+  label,
+  onPress,
+}: {
+  checked: boolean;
+  label: ReactNode;
+  onPress: () => void;
+}) {
   return (
     <Pressable
       accessibilityRole="checkbox"
       accessibilityState={{ checked }}
-      onPress={onPress}
-      style={styles.checkboxRow}>
-      <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-        {checked ? <View style={styles.checkmark} /> : null}
+      className="flex-1 flex-row items-start gap-2.5 active:opacity-75"
+      onPress={onPress}>
+      <View
+        className={[
+          'mt-px h-[18px] w-[18px] items-center justify-center rounded-full border',
+          checked ? 'border-auth-primary bg-auth-primary' : 'border-auth-border',
+        ].join(' ')}>
+        {checked ? (
+          <View className="h-1 w-2 rotate-[-45deg] border-b-2 border-l-2 border-auth-text" />
+        ) : null}
       </View>
-      <Text style={styles.checkboxLabel}>{label}</Text>
+      <Text
+        className="flex-1 text-xs leading-[18px] text-auth-muted"
+        maxFontSizeMultiplier={1.05}>
+        {label}
+      </Text>
     </Pressable>
   );
 }
 
 function EyeIcon({ crossed }: { crossed: boolean }) {
   return (
-    <View style={styles.eye}>
-      <View style={styles.eyePupil} />
-      {crossed ? <View style={styles.eyeSlash} /> : null}
+    <View className="h-3 w-[18px] items-center justify-center rounded-[10px] border-2 border-auth-placeholder">
+      <View className="h-1 w-1 rounded-full bg-auth-placeholder" />
+      {crossed ? (
+        <View className="absolute h-[1.5px] w-[22px] rotate-[-40deg] bg-auth-placeholder" />
+      ) : null}
     </View>
   );
 }
-
-function AppleIcon() {
-  return (
-    <View style={styles.appleIcon}>
-      <View style={styles.appleLeaf} />
-      <View style={styles.appleBody} />
-      <View style={styles.appleBite} />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  logo: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  logoMark: { width: 28, height: 28 },
-  logoLine: { position: 'absolute', top: 1, width: 3, height: 25, backgroundColor: authColors.primary, borderRadius: 2 },
-  logoLineLeft: { left: 7, transform: [{ rotate: '-31deg' }] },
-  logoLineRight: { right: 7, transform: [{ rotate: '31deg' }] },
-  logoText: { color: authColors.text, fontFamily: fonts.sans, fontSize: 24, fontWeight: '800', letterSpacing: 5 },
-  backButton: { width: 36, height: 36, justifyContent: 'center' },
-  backChevron: { width: 11, height: 11, borderLeftWidth: 2, borderBottomWidth: 2, borderColor: authColors.text, transform: [{ rotate: '45deg' }], marginLeft: 5 },
-  pressed: { opacity: 0.72 },
-  field: { gap: 8 },
-  fieldLabel: { color: authColors.muted, fontFamily: fonts.sans, fontSize: 14, fontWeight: '500' },
-  inputShell: { minHeight: 54, borderWidth: 1, borderColor: authColors.border, borderRadius: 24, backgroundColor: authColors.surface, paddingHorizontal: spacing.three, flexDirection: 'row', alignItems: 'center' },
-  inputShellError: { borderColor: authColors.danger },
-  input: { flex: 1, color: authColors.text, fontFamily: fonts.sans, fontSize: 16, paddingVertical: 0 },
-  fieldError: { color: authColors.danger, fontFamily: fonts.sans, fontSize: 12, lineHeight: 17 },
-  eye: { width: 18, height: 12, borderWidth: 2, borderColor: authColors.placeholder, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  eyePupil: { width: 4, height: 4, borderRadius: 2, backgroundColor: authColors.placeholder },
-  eyeSlash: { position: 'absolute', width: 22, height: 1.5, backgroundColor: authColors.placeholder, transform: [{ rotate: '-40deg' }] },
-  primaryButton: { minHeight: 54, borderRadius: 24, backgroundColor: authColors.primary, alignItems: 'center', justifyContent: 'center' },
-  primaryButtonText: { color: authColors.text, fontFamily: fonts.sans, fontSize: 16, fontWeight: '700' },
-  dividerRow: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  dividerLine: { height: 1, backgroundColor: authColors.border, flex: 1 },
-  dividerText: { color: authColors.muted, fontFamily: fonts.sans, fontSize: 12 },
-  socialRow: { flexDirection: 'row', gap: 12 },
-  socialButton: { flex: 1, minHeight: 54, borderWidth: 1, borderColor: authColors.border, borderRadius: 22, backgroundColor: authColors.surface, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10 },
-  socialButtonPressed: { backgroundColor: authColors.surfacePressed },
-  socialButtonText: { color: authColors.text, fontFamily: fonts.sans, fontSize: 15, fontWeight: '700' },
-  googleIcon: { color: authColors.text, fontFamily: fonts.sans, fontSize: 20, fontWeight: '900' },
-  appleIcon: { width: 19, height: 22 },
-  appleLeaf: { position: 'absolute', top: 0, right: 3, width: 5, height: 8, borderRadius: 5, backgroundColor: authColors.text, transform: [{ rotate: '40deg' }] },
-  appleBody: { position: 'absolute', bottom: 0, left: 1, width: 17, height: 16, borderRadius: 8, backgroundColor: authColors.text },
-  appleBite: { position: 'absolute', top: 7, right: -1, width: 6, height: 6, borderRadius: 3, backgroundColor: authColors.surface },
-  checkboxRow: { flex: 1, flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  checkbox: { width: 19, height: 19, borderWidth: 1, borderColor: authColors.border, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
-  checkboxChecked: { backgroundColor: authColors.primary, borderColor: authColors.primary },
-  checkmark: { width: 8, height: 4, borderLeftWidth: 2, borderBottomWidth: 2, borderColor: authColors.text, transform: [{ rotate: '-45deg' }, { translateY: -1 }] },
-  checkboxLabel: { flex: 1, color: authColors.muted, fontFamily: fonts.sans, fontSize: 14, lineHeight: 20 },
-});

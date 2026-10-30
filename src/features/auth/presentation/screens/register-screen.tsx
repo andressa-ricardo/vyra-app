@@ -1,14 +1,5 @@
 import { router } from 'expo-router';
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Alert, KeyboardAvoidingView, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +7,6 @@ import { useRegister } from '@/features/auth/hooks/use-register';
 import { AuthBackButton } from '@/features/auth/presentation/components/auth-ui';
 import { RegisterForm } from '@/features/auth/presentation/components/register-form';
 import type { RegisterFormValues } from '@/features/auth/schemas/register.schema';
-import { authColors, fonts, spacing } from '@/theme';
 
 export function RegisterScreen() {
   const { t } = useTranslation();
@@ -32,26 +22,37 @@ export function RegisterScreen() {
     Alert.alert(t('common.comingSoon'), t('auth.socialUnavailable'));
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={styles.flex}>
-        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <SafeAreaView className="flex-1 bg-auth-bg">
+      {/* Android é edge-to-edge: a janela não redimensiona, então "padding" vale para as duas plataformas. */}
+      <KeyboardAvoidingView behavior="padding" className="flex-1">
+        <ScrollView
+          contentContainerClassName="w-full max-w-[520px] grow self-center gap-5 px-6 pb-6 pt-1"
+          keyboardDismissMode="interactive"
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}>
           <AuthBackButton onPress={() => router.replace('/')} />
 
-          <View style={styles.heading}>
-            <Text style={styles.title}>{t('auth.register.title')}</Text>
-            <Text style={styles.description}>{t('auth.register.shortDescription')}</Text>
+          <View className="gap-2">
+            <Text
+              className="text-[26px] font-extrabold leading-[32px] tracking-[-0.5px] text-auth-text"
+              maxFontSizeMultiplier={1.05}>
+              {t('auth.register.title')}
+            </Text>
+            <Text className="text-sm leading-5 text-auth-muted" maxFontSizeMultiplier={1.05}>
+              {t('auth.register.shortDescription')}
+            </Text>
           </View>
 
           {messageKey ? (
             <View
               accessibilityLiveRegion="polite"
-              style={[
-                styles.message,
-                status === 'success' ? styles.messageSuccess : styles.messageError,
-              ]}>
-              <Text style={styles.messageText}>{t(messageKey)}</Text>
+              className={[
+                'rounded-xl border bg-auth-surface p-3',
+                status === 'success' ? 'border-auth-success' : 'border-auth-danger',
+              ].join(' ')}>
+              <Text className="text-[13px] leading-[18px] text-auth-text" maxFontSizeMultiplier={1.05}>
+                {t(messageKey)}
+              </Text>
             </View>
           ) : null}
 
@@ -61,10 +62,18 @@ export function RegisterScreen() {
             onSubmit={handleSubmit}
           />
 
-          <View style={styles.footerRow}>
-            <Text style={styles.footerText}>{t('auth.register.hasAccount')} </Text>
-            <Pressable accessibilityRole="link" onPress={() => router.replace('/login')}>
-              <Text style={styles.link}>{t('auth.welcome.login')}</Text>
+          <View className="mt-auto flex-row items-center justify-center pt-2">
+            <Text className="text-sm text-auth-muted" maxFontSizeMultiplier={1.05}>
+              {t('auth.register.hasAccount')}{' '}
+            </Text>
+            <Pressable
+              accessibilityRole="link"
+              className="active:opacity-70"
+              hitSlop={8}
+              onPress={() => router.replace('/login')}>
+              <Text className="text-sm font-semibold text-auth-primary" maxFontSizeMultiplier={1.05}>
+                {t('auth.welcome.login')}
+              </Text>
             </Pressable>
           </View>
         </ScrollView>
@@ -72,54 +81,3 @@ export function RegisterScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  flex: { flex: 1 },
-  safeArea: { flex: 1, backgroundColor: authColors.background },
-  content: {
-    width: '100%',
-    maxWidth: 520,
-    alignSelf: 'center',
-    paddingHorizontal: 26,
-    paddingTop: 4,
-    paddingBottom: spacing.four,
-    gap: spacing.four,
-  },
-  heading: { gap: 8, marginBottom: spacing.two },
-  title: {
-    color: authColors.text,
-    fontFamily: fonts.sans,
-    fontSize: 28,
-    lineHeight: 34,
-    fontWeight: '800',
-    letterSpacing: -0.5,
-  },
-  description: {
-    color: authColors.muted,
-    fontFamily: fonts.sans,
-    fontSize: 16,
-    lineHeight: 23,
-  },
-  message: {
-    borderWidth: 1,
-    borderRadius: 12,
-    backgroundColor: authColors.surface,
-    padding: 12,
-  },
-  messageSuccess: { borderColor: authColors.success },
-  messageError: { borderColor: authColors.danger },
-  messageText: {
-    color: authColors.text,
-    fontFamily: fonts.sans,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  footerRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: spacing.one,
-  },
-  footerText: { color: authColors.muted, fontFamily: fonts.sans, fontSize: 14 },
-  link: { color: authColors.primary, fontFamily: fonts.sans, fontSize: 14 },
-});

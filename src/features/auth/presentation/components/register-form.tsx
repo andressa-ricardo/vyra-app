@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import {
   AuthDivider,
@@ -14,7 +14,6 @@ import {
   createRegisterSchema,
   type RegisterFormValues,
 } from '@/features/auth/schemas/register.schema';
-import { authColors, fonts, spacing } from '@/theme';
 
 type RegisterFormProps = {
   isSubmitting: boolean;
@@ -47,7 +46,7 @@ export function RegisterForm({ isSubmitting, onSocialPress, onSubmit }: Register
   });
 
   return (
-    <View style={styles.form}>
+    <View className="gap-3.5">
       <Controller
         control={control}
         name="name"
@@ -133,27 +132,31 @@ export function RegisterForm({ isSubmitting, onSocialPress, onSubmit }: Register
         control={control}
         name="acceptTerms"
         render={({ field: { onChange, value } }) => (
-          <View style={styles.termsBlock}>
+          <View className="gap-1">
             <Checkbox
               checked={value}
               label={
                 <Text>
                   {t('auth.register.termsPrefix')}{' '}
-                  <Text style={styles.link}>{t('auth.register.termsOfUse')}</Text>{' '}
+                  <Text className="text-auth-primary">{t('auth.register.termsOfUse')}</Text>{' '}
                   {t('auth.register.termsAnd')}{' '}
-                  <Text style={styles.link}>{t('auth.register.privacyPolicy')}</Text>.
+                  <Text className="text-auth-primary">{t('auth.register.privacyPolicy')}</Text>.
                 </Text>
               }
               onPress={() => onChange(!value)}
             />
             {errors.acceptTerms?.message ? (
-              <Text style={styles.termsError}>{errors.acceptTerms.message}</Text>
+              <Text
+                className="ml-[29px] text-[11px] text-auth-danger"
+                maxFontSizeMultiplier={1.05}>
+                {errors.acceptTerms.message}
+              </Text>
             ) : null}
           </View>
         )}
       />
 
-      <View style={styles.submitSpacing}>
+      <View className="mt-1.5">
         <PrimaryButton
           label={t('auth.register.submit')}
           loading={isSubmitting}
@@ -166,16 +169,3 @@ export function RegisterForm({ isSubmitting, onSocialPress, onSubmit }: Register
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  form: { gap: 17 },
-  termsBlock: { gap: spacing.one },
-  termsError: {
-    color: authColors.danger,
-    fontFamily: fonts.sans,
-    fontSize: 12,
-    marginLeft: 31,
-  },
-  link: { color: authColors.primary },
-  submitSpacing: { marginTop: spacing.two },
-});

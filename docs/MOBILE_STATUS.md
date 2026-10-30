@@ -12,6 +12,7 @@ Atualizado em 30 de outubro de 2026.
 - npm e `package-lock.json`
 - Continuous Native Generation, sem `ios/` ou `android/` versionados
 - Compatibilidade preservada com Expo Go
+- NativeWind 4 + Tailwind 3 para estilização
 
 ## TASK 01 — concluída
 

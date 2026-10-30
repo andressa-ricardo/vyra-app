@@ -1,6 +1,8 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import '../../global.css';
+
 import { AppProviders } from '@/core/providers/app-providers';
 
 export default function RootLayout() {

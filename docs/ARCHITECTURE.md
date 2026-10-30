@@ -59,6 +59,12 @@ Contém somente código transversal em uso. Os componentes visuais do template f
 
 Centraliza tokens semânticos light/dark. Componentes consomem `primary`, `onPrimary`, `background`, `text`, `error` e `success`, sem cores de marca locais.
 
+### Estilização
+
+As telas usam NativeWind 4 (Tailwind 3) via `className`. A configuração fica em `tailwind.config.js`, `global.css` (importado em `src/app/_layout.tsx`), `babel.config.js` e `metro.config.js`. As cores de autenticação são tokens `auth-*` no Tailwind e espelham `authColors` em `src/theme`; altere os dois juntos. Textos usam `maxFontSizeMultiplier` para evitar que a escala de fonte do Android quebre o layout.
+
+Formulários usam `KeyboardAvoidingView` com `behavior="padding"` em todas as plataformas, porque o Android é edge-to-edge e não redimensiona a janela ao abrir o teclado.
+
 ## Fluxo do cadastro
 
 ```text
