@@ -67,7 +67,7 @@
         "termsRequired": "Aceite os termos para continuar."
       },
       "errors": {
-        "emailAlreadyExists": "Não foi possível criar a conta com este e-mail."
+        "emailAlreadyExists": "Este e-mail já está cadastrado. Entre com sua conta ou use outro e-mail."
       }
     },
     "errors": {

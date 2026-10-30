@@ -67,7 +67,7 @@
         "termsRequired": "Accept the terms to continue."
       },
       "errors": {
-        "emailAlreadyExists": "An account could not be created with this email."
+        "emailAlreadyExists": "This email is already registered. Log in or use a different email."
       }
     },
     "errors": {

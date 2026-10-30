@@ -1,11 +1,9 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSession } from '@/core/session/session-provider';
 import { formatLongDate, getFirstName, getGreetingKey } from '@/features/home/utils/greeting';
-import { authColors } from '@/theme';
 
 export function HomeScreen() {
   const { i18n, t } = useTranslation();
@@ -35,11 +33,21 @@ export function HomeScreen() {
             accessibilityRole="button"
             className="h-11 w-11 items-center justify-center rounded-full bg-auth-surface active:bg-auth-pressed"
             onPress={() => Alert.alert(t('common.comingSoon'), t('home.notificationsUnavailable'))}>
-            <Ionicons color={authColors.text} name="notifications-outline" size={20} />
+            <BellIcon />
             <View className="absolute right-[11px] top-[10px] h-2 w-2 rounded-full border border-auth-surface bg-auth-primary" />
           </Pressable>
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+function BellIcon() {
+  return (
+    <View className="items-center">
+      <View className="h-[13px] w-[14px] rounded-t-[7px] border-[1.75px] border-b-0 border-auth-text" />
+      <View className="h-[1.75px] w-[18px] rounded-full bg-auth-text" />
+      <View className="mt-[1.5px] h-[3px] w-[6px] rounded-b-full bg-auth-text" />
+    </View>
   );
 }

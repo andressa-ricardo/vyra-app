@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { ImageBackground, Pressable, Text, View } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -11,10 +11,13 @@ export function WelcomeScreen() {
   const activeLanguage = i18n.resolvedLanguage === 'en' ? 'en' : 'pt-BR';
 
   return (
-    <ImageBackground
-      className="flex-1 bg-auth-bg"
-      resizeMode="cover"
-      source={require('../../../../../assets/images/welcome-athlete.jpg')}>
+    <View className="flex-1 bg-auth-bg">
+      <Image
+        accessibilityIgnoresInvertColors
+        className="absolute inset-0 h-full w-full"
+        resizeMode="cover"
+        source={require('../../../../../assets/images/welcome-athlete.jpg')}
+      />
       <SafeAreaView className="flex-1 justify-between px-6 pb-2 pt-3">
         <View className="flex-row items-center justify-between">
           <BrandLogo />
@@ -63,6 +66,6 @@ export function WelcomeScreen() {
           </View>
         </View>
       </SafeAreaView>
-    </ImageBackground>
+    </View>
   );
 }

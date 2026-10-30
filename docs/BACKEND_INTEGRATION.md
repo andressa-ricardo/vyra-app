@@ -150,7 +150,7 @@ Mapeamento atual:
 | Situação | Mensagem exibida |
 |---|---|
 | Validação HTTP 400/422 | revisar dados |
-| E-mail já cadastrado HTTP 409 | cadastro não pôde ser concluído com o e-mail |
+| E-mail já cadastrado HTTP 409 | e-mail já cadastrado; entrar ou usar outro |
 | Limite HTTP 429 | aguardar antes de tentar |
 | Sem resposta | verificar rede e URL |
 | Timeout de 10 s | tentar novamente |
