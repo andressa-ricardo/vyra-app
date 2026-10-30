@@ -12,9 +12,11 @@ src/
 ├── core/
 │   ├── api/              # Cliente HTTP, configuração e erros transversais
 │   ├── config/           # Leitura tipada do ambiente público
+│   ├── session/          # Tokens no SecureStore, SessionProvider e /users/me
 │   └── providers/        # Composition root da aplicação
 ├── features/
-│   └── auth/             # Primeiro domínio real: cadastro
+│   ├── auth/             # Cadastro, login por senha, Google e Apple
+│   └── home/             # Tela inicial autenticada
 ├── i18n/                 # Inicialização, idiomas e catálogos
 ├── shared/
 │   └── hooks/            # Hooks transversais em uso
@@ -23,7 +25,7 @@ src/
 
 ### `src/app`
 
-É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a landing, `/register` abre o cadastro integrado e `/login` abre a interface de login ainda sem integração. O layout raiz compõe providers e o `Stack`.
+É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a landing, `/register` e `/login` abrem o cadastro e o login integrados, e `/home` é a tela autenticada. O layout raiz compõe providers e o `Stack`, usando `Stack.Protected` para liberar `/`, `/login` e `/register` somente sem sessão e `/home` somente com sessão. A troca de estado da sessão redireciona sozinha, sem `router.replace` após login ou logout.
 
 ### `src/features`
 
@@ -77,14 +79,29 @@ src/app/register
             → POST /api/v1/auth/register
 ```
 
-A resposta contém tokens, mas eles são descartados nesta task. Persistência exige Expo SecureStore e gerenciamento de sessão próprios, previstos para a próxima etapa.
+O cadastro devolve uma sessão e autentica o usuário imediatamente.
+
+## Sessão
+
+`src/core/session` é transversal porque o cliente HTTP e todas as features dependem dela:
+
+- `token-storage`: access e refresh tokens no Expo SecureStore (Keychain/Keystore). Na web, apenas em memória. Sem "Lembrar de mim", a sessão também fica só em memória.
+- `httpClient`: envia `Authorization: Bearer`, e ao receber 401 faz um único `POST /auth/refresh` compartilhado entre requisições simultâneas (o backend revoga a família inteira se um refresh token for reutilizado), salva os tokens rotacionados e repete a requisição. Rotas públicas de autenticação usam `skipAuth`.
+- `SessionProvider`/`useSession`: restaura a sessão no startup com `GET /users/me`, expõe `signIn` e `signOut` (que chama `POST /auth/logout` e apaga os tokens). Se o backend recusar o refresh, a sessão é encerrada e as rotas protegidas voltam para a landing. Falhas de rede no startup mantêm os tokens para a próxima abertura.
+
+## Login federado
+
+- Google usa `@react-native-google-signin/google-signin`, carregado sob demanda porque o módulo nativo não existe no Expo Go. No Expo Go o botão mostra que é preciso um development build.
+- Apple usa `expo-apple-authentication` e aparece só onde `isAvailableAsync()` retorna verdadeiro (iOS). O app pede o nonce ao backend, envia SHA-256 hex à Apple e devolve o nonce bruto ao backend.
+- HTTP 409 no login federado significa e-mail já cadastrado sem vínculo; o app orienta a entrar com senha. Hoje o `HttpExceptionFilter` do backend descarta o campo `code`, então o app não depende de `FEDERATED_LINK_REQUIRED`.
+- O config plugin do Google só entra no build quando `GOOGLE_IOS_URL_SCHEME` existe (`app.config.js`), pois ele falha sem esse valor.
 
 ## Dependências permitidas
 
 ```text
 app → core / features
 features → core / shared / theme / i18n
-core → theme (quando necessário)
+core → theme / i18n (quando necessário)
 shared → theme
 i18n → expo-localization
 theme → React Native

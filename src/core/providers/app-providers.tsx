@@ -1,6 +1,7 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import type { PropsWithChildren } from 'react';
 
+import { SessionProvider } from '@/core/session/session-provider';
 import { useColorScheme } from '@/shared/hooks/use-color-scheme';
 import { colors } from '@/theme';
 import '@/i18n';
@@ -34,7 +35,7 @@ export function AppProviders({ children }: PropsWithChildren) {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? darkNavigationTheme : lightNavigationTheme}>
-      {children}
+      <SessionProvider>{children}</SessionProvider>
     </ThemeProvider>
   );
 }

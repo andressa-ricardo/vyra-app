@@ -1,25 +1,28 @@
 import { router } from 'expo-router';
-import { Alert, KeyboardAvoidingView, Pressable, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
+import { useFederatedSignIn } from '@/features/auth/hooks/use-federated-sign-in';
 import { useRegister } from '@/features/auth/hooks/use-register';
-import { AuthBackButton } from '@/features/auth/presentation/components/auth-ui';
+import { AuthBackButton, FormMessage } from '@/features/auth/presentation/components/auth-ui';
 import { RegisterForm } from '@/features/auth/presentation/components/register-form';
 import type { RegisterFormValues } from '@/features/auth/schemas/register.schema';
 
 export function RegisterScreen() {
   const { t } = useTranslation();
-  const { status, messageKey, submit } = useRegister();
+  const register = useRegister();
+  const federated = useFederatedSignIn();
+  const messageKey = federated.messageKey ?? register.messageKey;
 
   const handleSubmit = ({
     acceptTerms: _acceptTerms,
     confirmPassword: _confirmPassword,
     ...payload
-  }: RegisterFormValues) => submit(payload);
-
-  const showUnavailable = () =>
-    Alert.alert(t('common.comingSoon'), t('auth.socialUnavailable'));
+  }: RegisterFormValues) => {
+    federated.clearMessage();
+    return register.submit(payload);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-auth-bg">
@@ -43,23 +46,19 @@ export function RegisterScreen() {
             </Text>
           </View>
 
-          {messageKey ? (
-            <View
-              accessibilityLiveRegion="polite"
-              className={[
-                'rounded-xl border bg-auth-surface p-3',
-                status === 'success' ? 'border-auth-success' : 'border-auth-danger',
-              ].join(' ')}>
-              <Text className="text-[13px] leading-[18px] text-auth-text" maxFontSizeMultiplier={1.05}>
-                {t(messageKey)}
-              </Text>
-            </View>
-          ) : null}
+          {messageKey ? <FormMessage message={t(messageKey)} /> : null}
 
           <RegisterForm
-            isSubmitting={status === 'loading'}
-            onSocialPress={showUnavailable}
+            isSubmitting={register.status === 'loading'}
             onSubmit={handleSubmit}
+            social={{
+              appleAvailable: federated.appleAvailable,
+              onPress: (provider) => {
+                register.clearMessage();
+                void federated.start(provider);
+              },
+              pending: federated.pending,
+            }}
           />
 
           <View className="mt-auto flex-row items-center justify-center pt-2">

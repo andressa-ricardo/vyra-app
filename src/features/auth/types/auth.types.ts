@@ -1,22 +1,27 @@
+import type { AuthSession } from '@/core/session/session.types';
+
 export type RegisterRequest = {
   name: string;
   email: string;
   password: string;
 };
 
-export type AuthenticatedUser = {
-  id: string;
-  name: string;
+export type LoginRequest = {
   email: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
-  emailVerifiedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-  roles: string[];
+  password: string;
 };
 
-export type RegisterResponse = {
-  user: AuthenticatedUser;
-  accessToken: string;
-  refreshToken: string;
+export type RegisterResponse = AuthSession;
+export type LoginResponse = AuthSession;
+
+export type FederatedAuthResponse = AuthSession & {
+  isNewUser: boolean;
+  onboarding: { status: string };
 };
+
+export type AppleNonceResponse = {
+  nonce: string;
+  expiresAt: string;
+};
+
+export type FederatedProvider = 'google' | 'apple';

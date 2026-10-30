@@ -11,7 +11,6 @@
     "hidePassword": "Hide password"
   },
   "auth": {
-    "socialUnavailable": "Social authentication will be connected in a future step.",
     "welcome": {
       "title": "Train, run and\neat better.",
       "description": "Everything you need to improve, all in one place.",
@@ -26,7 +25,10 @@
       "submit": "Log in",
       "continueWith": "or continue with",
       "noAccount": "Don't have an account yet?",
-      "unavailable": "Login will be connected to the backend in the next step."
+      "forgotPasswordUnavailable": "Password recovery will be available soon.",
+      "errors": {
+        "invalidCredentials": "Incorrect email or password."
+      }
     },
     "register": {
       "eyebrow": "VYRA",
@@ -49,7 +51,6 @@
       "privacyPolicy": "Privacy Policy",
       "hasAccount": "Already have an account?",
       "submitting": "Creating account…",
-      "success": "Account created successfully. Session setup will be implemented in the next step.",
       "validation": {
         "nameRequired": "Enter your name.",
         "nameMin": "Name must have at least 2 characters.",
@@ -66,15 +67,35 @@
         "termsRequired": "Accept the terms to continue."
       },
       "errors": {
-        "validation": "Review the information and try again.",
-        "emailAlreadyExists": "An account could not be created with this email.",
-        "rateLimited": "Too many attempts. Wait a moment and try again.",
-        "network": "Could not connect to the server. Check the network and API address.",
-        "timeout": "The server took too long to respond. Try again.",
-        "server": "The server encountered a problem. Try again later.",
-        "configuration": "Configure the API address before creating an account.",
-        "unknown": "The registration could not be completed. Try again."
+        "emailAlreadyExists": "An account could not be created with this email."
+      }
+    },
+    "errors": {
+      "validation": "Review the information and try again.",
+      "rateLimited": "Too many attempts. Wait a moment and try again.",
+      "network": "Could not connect to the server. Check the network and API address.",
+      "timeout": "The server took too long to respond. Try again.",
+      "server": "The server encountered a problem. Try again later.",
+      "configuration": "Configure the API address before continuing.",
+      "unknown": "We couldn't complete this right now. Please try again."
+    },
+    "federated": {
+      "errors": {
+        "requiresDevBuild": "Google sign-in only works in the installed app (development build), not in Expo Go.",
+        "unavailable": "This sign-in method is not available right now.",
+        "notSupported": "This sign-in method is not supported on this device.",
+        "provider": "We couldn't confirm your account. Please try again.",
+        "linkRequired": "An account with this email already exists. Log in with your email and password."
       }
     }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning, {{name}}",
+      "afternoon": "Good afternoon, {{name}}",
+      "evening": "Good evening, {{name}}"
+    },
+    "notifications": "Notifications",
+    "notificationsUnavailable": "Notifications will be available soon."
   }
 }

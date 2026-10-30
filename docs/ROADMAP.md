@@ -20,9 +20,9 @@ Status: concluída.
 - Cadastro alinhado ao backend real.
 - Tratamento de erros e testes unitários.
 
-## TASK 03 recomendada — Sessão segura e login
+## TASK 03 — Sessão segura e login
 
-Aguardando autorização:
+Status: concluída (inclui Google e Apple; validação deles depende de development build).
 
 - Adicionar Expo SecureStore após validar a API de SDK 58.
 - Implementar armazenamento seguro de access/refresh tokens.

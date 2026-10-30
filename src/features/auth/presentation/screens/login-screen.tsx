@@ -1,25 +1,45 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Alert, KeyboardAvoidingView, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useFederatedSignIn } from '@/features/auth/hooks/use-federated-sign-in';
+import { useLogin } from '@/features/auth/hooks/use-login';
 import {
   AuthBackButton,
   AuthDivider,
   AuthTextField,
   Checkbox,
+  FormMessage,
   PrimaryButton,
   SocialButtons,
 } from '@/features/auth/presentation/components/auth-ui';
+import { createLoginSchema, type LoginFormValues } from '@/features/auth/schemas/login.schema';
 
 export function LoginScreen() {
   const { t } = useTranslation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(true);
+  const login = useLogin();
+  const federated = useFederatedSignIn();
+  const messageKey = federated.messageKey ?? login.messageKey;
 
-  const showUnavailable = () => Alert.alert(t('common.comingSoon'), t('auth.login.unavailable'));
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(createLoginSchema((key) => t(key))),
+    defaultValues: { email: '', password: '', rememberMe: true },
+  });
+
+  const submitForm = handleSubmit(({ email, password, rememberMe }) => {
+    federated.clearMessage();
+    return login.submit({ email, password }, { rememberMe });
+  });
+
+  const showForgotPassword = () =>
+    Alert.alert(t('common.comingSoon'), t('auth.login.forgotPasswordUnavailable'));
 
   return (
     <SafeAreaView className="flex-1 bg-auth-bg">
@@ -43,43 +63,67 @@ export function LoginScreen() {
             </Text>
           </View>
 
+          {messageKey ? <FormMessage message={t(messageKey)} /> : null}
+
           <View className="gap-4">
-            <AuthTextField
-              autoCapitalize="none"
-              autoComplete="email"
-              inputMode="email"
-              keyboardType="email-address"
-              label={t('auth.register.email')}
-              onChangeText={setEmail}
-              placeholder={t('auth.register.emailPlaceholder')}
-              returnKeyType="next"
-              textContentType="emailAddress"
-              value={email}
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onBlur, onChange, value } }) => (
+                <AuthTextField
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  error={errors.email?.message}
+                  inputMode="email"
+                  keyboardType="email-address"
+                  label={t('auth.register.email')}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  placeholder={t('auth.register.emailPlaceholder')}
+                  returnKeyType="next"
+                  textContentType="emailAddress"
+                  value={value}
+                />
+              )}
             />
-            <AuthTextField
-              autoCapitalize="none"
-              autoComplete="current-password"
-              label={t('auth.register.password')}
-              onChangeText={setPassword}
-              onSubmitEditing={showUnavailable}
-              password
-              placeholder="••••••••"
-              returnKeyType="done"
-              textContentType="password"
-              value={password}
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onBlur, onChange, value } }) => (
+                <AuthTextField
+                  autoCapitalize="none"
+                  autoComplete="current-password"
+                  error={errors.password?.message}
+                  label={t('auth.register.password')}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  onSubmitEditing={() => void submitForm()}
+                  password
+                  placeholder="••••••••"
+                  returnKeyType="done"
+                  textContentType="password"
+                  value={value}
+                />
+              )}
             />
 
             <View className="flex-row items-center justify-between gap-3">
-              <Checkbox
-                checked={rememberMe}
-                label={t('auth.login.rememberMe')}
-                onPress={() => setRememberMe((current) => !current)}
+              <Controller
+                control={control}
+                name="rememberMe"
+                render={({ field: { onChange, value } }) => (
+                  <Checkbox
+                    checked={value}
+                    label={t('auth.login.rememberMe')}
+                    onPress={() => onChange(!value)}
+                  />
+                )}
               />
               <Pressable
                 accessibilityRole="button"
                 className="active:opacity-70"
                 hitSlop={8}
-                onPress={showUnavailable}>
+                onPress={showForgotPassword}>
                 <Text className="text-xs text-auth-primary" maxFontSizeMultiplier={1.05}>
                   {t('auth.login.forgotPassword')}
                 </Text>
@@ -87,12 +131,23 @@ export function LoginScreen() {
             </View>
 
             <View className="mt-1">
-              <PrimaryButton label={t('auth.login.submit')} onPress={showUnavailable} />
+              <PrimaryButton
+                label={t('auth.login.submit')}
+                loading={login.status === 'loading'}
+                onPress={() => void submitForm()}
+              />
             </View>
           </View>
 
           <AuthDivider label={t('auth.login.continueWith')} />
-          <SocialButtons onPress={showUnavailable} />
+          <SocialButtons
+            appleAvailable={federated.appleAvailable}
+            onPress={(provider) => {
+              login.clearMessage();
+              void federated.start(provider);
+            }}
+            pending={federated.pending}
+          />
 
           <View className="mt-auto flex-row items-center justify-center pt-2">
             <Text className="text-sm text-auth-muted" maxFontSizeMultiplier={1.05}>

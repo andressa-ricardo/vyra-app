@@ -11,7 +11,6 @@
     "hidePassword": "Ocultar senha"
   },
   "auth": {
-    "socialUnavailable": "A autenticação social será conectada em uma próxima etapa.",
     "welcome": {
       "title": "Treine, corra e\nse alimente melhor.",
       "description": "Tudo o que você precisa para evoluir, em um só lugar.",
@@ -26,7 +25,10 @@
       "submit": "Entrar",
       "continueWith": "ou continue com",
       "noAccount": "Ainda não tem conta?",
-      "unavailable": "O login será conectado ao backend na próxima etapa."
+      "forgotPasswordUnavailable": "A recuperação de senha estará disponível em breve.",
+      "errors": {
+        "invalidCredentials": "E-mail ou senha incorretos."
+      }
     },
     "register": {
       "eyebrow": "VYRA",
@@ -49,7 +51,6 @@
       "privacyPolicy": "Política de privacidade",
       "hasAccount": "Já tem conta?",
       "submitting": "Criando conta…",
-      "success": "Conta criada com sucesso. A sessão será configurada na próxima etapa.",
       "validation": {
         "nameRequired": "Informe seu nome.",
         "nameMin": "O nome deve ter ao menos 2 caracteres.",
@@ -66,15 +67,35 @@
         "termsRequired": "Aceite os termos para continuar."
       },
       "errors": {
-        "validation": "Revise os dados informados e tente novamente.",
-        "emailAlreadyExists": "Não foi possível criar a conta com este e-mail.",
-        "rateLimited": "Muitas tentativas. Aguarde um momento e tente novamente.",
-        "network": "Não foi possível conectar ao servidor. Verifique a rede e o endereço da API.",
-        "timeout": "O servidor demorou para responder. Tente novamente.",
-        "server": "O servidor encontrou um problema. Tente novamente mais tarde.",
-        "configuration": "Configure o endereço da API antes de criar a conta.",
-        "unknown": "Não foi possível concluir o cadastro. Tente novamente."
+        "emailAlreadyExists": "Não foi possível criar a conta com este e-mail."
+      }
+    },
+    "errors": {
+      "validation": "Revise os dados informados e tente novamente.",
+      "rateLimited": "Muitas tentativas. Aguarde um momento e tente novamente.",
+      "network": "Não foi possível conectar ao servidor. Verifique a rede e o endereço da API.",
+      "timeout": "O servidor demorou para responder. Tente novamente.",
+      "server": "O servidor encontrou um problema. Tente novamente mais tarde.",
+      "configuration": "Configure o endereço da API antes de continuar.",
+      "unknown": "Não foi possível concluir agora. Tente novamente."
+    },
+    "federated": {
+      "errors": {
+        "requiresDevBuild": "O login com Google funciona apenas no app instalado (development build), não no Expo Go.",
+        "unavailable": "Este método de login não está disponível no momento.",
+        "notSupported": "Este método de login não é suportado neste dispositivo.",
+        "provider": "Não foi possível confirmar sua conta. Tente novamente.",
+        "linkRequired": "Já existe uma conta com este e-mail. Entre com e-mail e senha."
       }
     }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Bom dia, {{name}}",
+      "afternoon": "Boa tarde, {{name}}",
+      "evening": "Boa noite, {{name}}"
+    },
+    "notifications": "Notificações",
+    "notificationsUnavailable": "As notificações estarão disponíveis em breve."
   }
 }

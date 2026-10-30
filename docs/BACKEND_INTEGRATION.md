@@ -46,7 +46,31 @@ Resposta de sucesso HTTP 201:
 }
 ```
 
-Os tokens não são armazenados nesta task. A próxima etapa deve usar Expo SecureStore e implementar o ciclo completo da sessão.
+Os tokens são salvos no Expo SecureStore e o usuário entra direto na home.
+
+## Endpoints usados pelo app
+
+| Método | Rota | Uso |
+|---|---|---|
+| POST | `/auth/register` | Cadastro (autentica em seguida) |
+| POST | `/auth/login` | Login por e-mail e senha |
+| POST | `/auth/refresh` | Rotação automática ao receber 401 |
+| POST | `/auth/logout` | Revogar a sessão no logout |
+| POST | `/auth/federated/google` | Login com Google (`idToken`) |
+| POST | `/auth/federated/apple/nonce` | Nonce Apple de uso único |
+| POST | `/auth/federated/apple` | Login com Apple (`identityToken` + nonce bruto) |
+| GET | `/users/me` | Restaurar o usuário no startup |
+
+## Configurar Google e Apple
+
+Google não funciona no Expo Go. Para testar:
+
+1. No Google Cloud Console, crie clientes OAuth Web, Android (package + SHA-1) e iOS (Bundle ID).
+2. No app (`.env`): `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`, `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` e, para o build iOS, `GOOGLE_IOS_URL_SCHEME`.
+3. No backend: `GOOGLE_OAUTH_ENABLED=true` e `GOOGLE_OAUTH_CLIENT_IDS` contendo **o client Web** (o ID token emitido pelo SDK tem o client Web como `aud`) e o client iOS.
+4. Defina `android.package` e `ios.bundleIdentifier` em `app.json` e gere um development build com EAS.
+
+Apple aparece apenas no iOS. No Expo Go o `aud` é o bundle do Expo Go, então a validação real exige build com o Bundle ID em `APPLE_ALLOWED_AUDIENCES`.
 
 ## Configurar o ambiente mobile
 
@@ -139,7 +163,8 @@ Nenhuma mensagem técnica ou stack trace é exibida.
 ## Limitações atuais
 
 - O teste ponta a ponta depende do backend/banco em execução e não foi automatizado.
-- Tokens retornados são descartados.
-- Não há login, refresh, logout ou restauração de sessão.
+- Ainda não há botão de logout na interface.
+- O backend descarta o campo `code` dos erros; o app trata todo 409 federado como e-mail já cadastrado.
+- `isNewUser`/onboarding é ignorado até existir o fluxo de onboarding no app.
 - O idioma manual não é persistido.
 - HTTP local é apenas para desenvolvimento; produção deve usar HTTPS.

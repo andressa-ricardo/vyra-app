@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ComponentProps } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
@@ -17,11 +18,11 @@ import {
 
 type RegisterFormProps = {
   isSubmitting: boolean;
-  onSocialPress: () => void;
+  social: ComponentProps<typeof SocialButtons>;
   onSubmit: (values: RegisterFormValues) => Promise<boolean>;
 };
 
-export function RegisterForm({ isSubmitting, onSocialPress, onSubmit }: RegisterFormProps) {
+export function RegisterForm({ isSubmitting, onSubmit, social }: RegisterFormProps) {
   const { t } = useTranslation();
   const schema = createRegisterSchema((key) => t(key));
   const {
@@ -165,7 +166,7 @@ export function RegisterForm({ isSubmitting, onSocialPress, onSubmit }: Register
       </View>
 
       <AuthDivider label={t('auth.register.or')} />
-      <SocialButtons onPress={onSocialPress} />
+      <SocialButtons {...social} />
     </View>
   );
 }

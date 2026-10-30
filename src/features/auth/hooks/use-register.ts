@@ -1,47 +1,35 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
-import { normalizeHttpError, type ApiErrorCode } from '@/core/api/http-client';
+import { useSession } from '@/core/session/session-provider';
+import { getAuthErrorKey } from '@/features/auth/hooks/auth-error-message';
 import { registerUser } from '@/features/auth/infrastructure/auth-api';
 import type { RegisterRequest } from '@/features/auth/types/auth.types';
 
 type RegisterState =
-  | { status: 'idle'; messageKey: null }
-  | { status: 'loading'; messageKey: null }
-  | { status: 'success'; messageKey: 'auth.register.success' }
+  | { status: 'idle' | 'loading'; messageKey: null }
   | { status: 'error'; messageKey: string };
 
-const errorMessageKeys: Record<ApiErrorCode, string> = {
-  configuration: 'auth.register.errors.configuration',
-  validation: 'auth.register.errors.validation',
-  conflict: 'auth.register.errors.emailAlreadyExists',
-  'rate-limited': 'auth.register.errors.rateLimited',
-  network: 'auth.register.errors.network',
-  timeout: 'auth.register.errors.timeout',
-  server: 'auth.register.errors.server',
-  unknown: 'auth.register.errors.unknown',
-};
-
-const initialState: RegisterState = { status: 'idle', messageKey: null };
-
 export function useRegister() {
-  const [state, setState] = useState<RegisterState>(initialState);
+  const { signIn } = useSession();
+  const [state, setState] = useState<RegisterState>({ status: 'idle', messageKey: null });
 
-  const submit = useCallback(async (payload: RegisterRequest) => {
+  const submit = async (payload: RegisterRequest) => {
     setState({ status: 'loading', messageKey: null });
 
     try {
-      await registerUser(payload);
-      // The API returns tokens, but session persistence intentionally belongs to the next task.
-      setState({ status: 'success', messageKey: 'auth.register.success' });
+      // O cadastro já devolve a sessão; ao autenticar, as rotas protegidas levam à home.
+      await signIn(await registerUser(payload));
       return true;
     } catch (error) {
-      const normalizedError = normalizeHttpError(error);
-      setState({ status: 'error', messageKey: errorMessageKeys[normalizedError.code] });
+      setState({
+        status: 'error',
+        messageKey: getAuthErrorKey(error, { conflict: 'auth.register.errors.emailAlreadyExists' }),
+      });
       return false;
     }
-  }, []);
+  };
 
-  const resetStatus = useCallback(() => setState(initialState), []);
+  const clearMessage = () => setState({ status: 'idle', messageKey: null });
 
-  return { ...state, submit, resetStatus };
+  return { ...state, submit, clearMessage };
 }

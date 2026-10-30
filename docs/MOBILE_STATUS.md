@@ -37,20 +37,31 @@ Atualizado em 30 de outubro de 2026.
 - Rotas `/register` e `/login` com layout responsivo alinhado às referências visuais.
 - Cadastro continua integrado ao backend; login, recuperação de senha e provedores sociais permanecem explicitamente indisponíveis até sua implementação real.
 
+## TASK 03 — concluída
+
+- Sessão segura com Expo SecureStore, restauração no startup e rotas protegidas.
+- Login por e-mail e senha com "Lembrar de mim".
+- Cadastro autentica automaticamente.
+- Refresh com rotação em voo único e encerramento da sessão quando recusado.
+- Login com Google (development build) e Apple (iOS), seguindo o contrato de nonce do backend.
+- Home autenticada com data, saudação pelo horário e primeiro nome do usuário.
+- Testes de refresh concorrente, rotas públicas e saudação.
+
 ## Pendente
 
 - Criar um `.env` local com o IPv4 correto antes do teste real.
 - Executar backend e banco localmente para validar o cadastro ponta a ponta.
 - Persistir preferência manual de idioma.
-- Armazenar tokens com Expo SecureStore.
-- Implementar sessão, refresh, logout e restauração segura.
-- Login, recuperação de senha, autenticação social e onboarding.
+- Botão visível de logout (a lógica `signOut` já existe).
+- Configurar client IDs Google, package/Bundle ID e gerar development build para validar Google/Apple.
+- Backend: incluir `code` no corpo do `HttpExceptionFilter`.
+- Recuperação de senha, onboarding (`isNewUser`) e vinculação de contas federadas.
 - Design system completo e identidade visual final.
 - Features esportivas.
 - CI/CD, analytics e observabilidade.
 
 ## Segurança
 
-O app não registra senhas ou tokens. Os tokens retornados pelo cadastro não são persistidos nesta task. `EXPO_PUBLIC_API_URL` contém apenas a origem pública da API e fica visível no bundle, conforme esperado.
+O app não registra senhas ou tokens. Tokens ficam somente no Expo SecureStore (ou em memória, na web e sem "Lembrar de mim"). `EXPO_PUBLIC_API_URL` contém apenas a origem pública da API e fica visível no bundle, conforme esperado.
 
 O `npm audit --omit=dev` reporta vulnerabilidades transitivas dentro do toolchain do Expo (`@expo/config`/CLI, incluindo uma cópia interna antiga de Zod). A correção automática sugerida faria downgrade para Expo 51, portanto não foi aplicada. O Zod usado diretamente pelo formulário está em `4.6.7`, fora da faixa vulnerável indicada, e o Expo Doctor do SDK 58 passa integralmente.

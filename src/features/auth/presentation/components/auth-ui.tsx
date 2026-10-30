@@ -10,6 +10,7 @@ import {
   type TextInputProps,
 } from 'react-native';
 
+import type { FederatedProvider } from '@/features/auth/types/auth.types';
 import { authColors } from '@/theme';
 
 export function BrandLogo() {
@@ -152,42 +153,79 @@ export function AuthDivider({ label }: { label: string }) {
   );
 }
 
-export function SocialButtons({ onPress }: { onPress: () => void }) {
+export function SocialButtons({
+  appleAvailable,
+  onPress,
+  pending,
+}: {
+  appleAvailable: boolean;
+  onPress: (provider: FederatedProvider) => void;
+  pending: FederatedProvider | null;
+}) {
   return (
     <View className="flex-row gap-3">
       <SocialButton
+        disabled={pending !== null}
         iconSource={require('../../../../../assets/images/tabIcons/google.webp')}
         label="Google"
-        onPress={onPress}
+        loading={pending === 'google'}
+        onPress={() => onPress('google')}
       />
-      <SocialButton
-        iconSource={require('../../../../../assets/images/tabIcons/apple.webp')}
-        label="Apple"
-        onPress={onPress}
-      />
+      {appleAvailable ? (
+        <SocialButton
+          disabled={pending !== null}
+          iconSource={require('../../../../../assets/images/tabIcons/apple.webp')}
+          label="Apple"
+          loading={pending === 'apple'}
+          onPress={() => onPress('apple')}
+        />
+      ) : null}
     </View>
   );
 }
 
 function SocialButton({
+  disabled,
   iconSource,
   label,
+  loading,
   onPress,
 }: {
+  disabled: boolean;
   iconSource: number;
   label: string;
+  loading: boolean;
   onPress: () => void;
 }) {
   return (
     <Pressable
       accessibilityRole="button"
-      className="h-[50px] flex-1 flex-row items-center justify-center gap-2.5 rounded-[20px] border border-auth-border bg-auth-surface active:bg-auth-pressed"
+      accessibilityState={{ busy: loading, disabled }}
+      className="h-[50px] flex-1 flex-row items-center justify-center gap-2.5 rounded-[20px] border border-auth-border bg-auth-surface active:bg-auth-pressed disabled:opacity-60"
+      disabled={disabled}
       onPress={onPress}>
-      <Image className="h-5 w-5" resizeMode="contain" source={iconSource} />
+      {loading ? (
+        <ActivityIndicator color={authColors.text} size="small" />
+      ) : (
+        <Image className="h-5 w-5" resizeMode="contain" source={iconSource} />
+      )}
       <Text className="text-sm font-bold text-auth-text" maxFontSizeMultiplier={1.05}>
         {label}
       </Text>
     </Pressable>
+  );
+}
+
+export function FormMessage({ message }: { message: string }) {
+  return (
+    <View
+      accessibilityLiveRegion="polite"
+      accessibilityRole="alert"
+      className="rounded-xl border border-auth-danger bg-auth-surface p-3">
+      <Text className="text-[13px] leading-[18px] text-auth-text" maxFontSizeMultiplier={1.05}>
+        {message}
+      </Text>
+    </View>
   );
 }
 
