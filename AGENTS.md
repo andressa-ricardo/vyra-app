@@ -1,41 +1,82 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+# VYRA Mobile — convenções permanentes
 
-## Expo has changed — do not trust your training data
+Este é um aplicativo Expo/React Native. Priorize padrões mobile-first, performance, acessibilidade e compatibilidade entre Android, iOS e web.
 
-Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+## Expo muda a cada SDK
 
-1. Read the major version of the `expo` package in `package.json`.
-2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+Antes de escrever código que toque uma API Expo, EAS ou React Native:
 
-## Commands
+1. Leia a major do pacote `expo` em `package.json`.
+2. Consulte a documentação versionada correspondente em `https://docs.expo.dev/versions/v<major>.0.0/`.
+3. Consulte `https://docs.expo.dev/llms.txt` e siga o link específico da API necessária.
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
+Não responda nem implemente APIs Expo de memória.
+
+## Comandos
+
+Use `bunx` no lugar de `npx` somente quando existir `bun.lock`.
 
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+npx expo install <package>  # instalação compatível com o SDK
+npx expo start
+npm run lint
+npx tsc --noEmit
+npx expo-doctor
+npx expo install --fix
 ```
 
-Run lint and typecheck before declaring any task done.
+Use `npx expo lint` para a configuração inicial oficial; depois, use `npm run lint`. Rode TypeScript e ESLint antes de concluir qualquer alteração de código. Rode Expo Doctor em mudanças de arquitetura, dependências ou configuração Expo.
 
-## Navigation & Routing
+## Arquitetura
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
+- `src/app`: somente rotas, layouts e composição de navegação do Expo Router.
+- `src/features`: código organizado por domínio. Crie somente features e camadas necessárias para a task atual.
+- `src/shared`: componentes, hooks, tipos e utilitários realmente usados por múltiplas features.
+- `src/core`: infraestrutura transversal, configuração e providers.
+- `src/theme`: tokens semânticos, cores, espaçamento e tipografia.
+- `assets`: recursos estáticos.
 
-## Building with EAS
+Arquivos de rota devem ser finos. Não coloque neles regra de negócio, acesso à API, persistência ou estado de domínio. Código não relacionado a rotas fica fora de `src/app`.
 
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
+Use imports internos com `@/`. Prefira kebab-case em arquivos, PascalCase em componentes e tipos, e o prefixo `use` em hooks. Mantenha tipos próximos ao domínio proprietário.
 
-## Rules
+Uma feature não deve importar internals de outra feature. Compartilhe apenas contratos explícitos ou código transversal comprovado. Estado local é preferível enquanto não houver necessidade de compartilhamento. Não crie repositórios, factories, interfaces, stores ou barrels especulativos.
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+## Navegação
+
+Use Expo Router. Rotas vivem em `src/app`; `_layout.tsx` define navegadores. Importe `Link`, `router` e `useLocalSearchParams` de `expo-router`.
+
+Documentação: https://docs.expo.dev/router/introduction.md
+
+## Tema e UI
+
+- Consuma tokens de `@/theme`; não espalhe cores de marca por componentes.
+- Preserve suporte a light/dark seguindo o modo do sistema.
+- Componentes compartilhados devem ser independentes de domínio e ter uso real.
+- Considere safe areas, tamanhos de toque, leitores de tela, teclado e estados de loading/erro/vazio.
+- Evite trabalho pesado na thread JS e renders desnecessários; meça antes de adicionar otimizações complexas.
+
+## API, autenticação e armazenamento
+
+Componentes e rotas não chamam a API diretamente. Integrações entram em infraestrutura e são expostas à apresentação por contratos/casos de uso proporcionais à complexidade. Tokens e segredos nunca usam armazenamento não seguro. Não implemente essas camadas antes de existir escopo e contrato concretos.
+
+## Expo Go e código nativo
+
+- Não altere versões do Expo ou React Native sem task explícita de upgrade.
+- Instale pacotes com `npx expo install`, nunca diretamente com npm/yarn/pnpm/bun.
+- Avalie se uma biblioteca funciona no Expo Go antes de adotá-la.
+- Após adicionar código nativo não incluído no Expo Go, use development build.
+- Se `ios/` e `android/` não existirem, use CNG. Nunca os crie ou edite manualmente; configure comportamento nativo em `app.json` e config plugins.
+
+## EAS
+
+Use EAS para build, assinatura, submissão e updates. Em projetos npm, execute `npx eas-cli@latest <command>`; em projetos Bun, `bunx eas-cli <command>`.
+
+Documentação: https://docs.expo.dev/eas/index.md
+
+## Qualidade e escopo
+
+- Preserve mudanças locais do usuário e funcionalidades existentes.
+- Não instale dependências quando a plataforma já resolver o problema.
+- Não faça commit ou push sem solicitação explícita.
+- Atualize `docs/ARCHITECTURE.md`, `docs/MOBILE_STATUS.md` ou `docs/ROADMAP.md` quando uma decisão permanente ou marco mudar.

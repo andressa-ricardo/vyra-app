@@ -1,7 +1,7 @@
 import { NativeTabs } from 'expo-router/native-tabs';
 import { useColorScheme } from 'react-native';
 
-import { Colors } from '@/constants/theme';
+import { Colors } from '@/theme';
 
 export default function AppTabs() {
   const scheme = useColorScheme();
@@ -30,3 +30,4 @@ export default function AppTabs() {
     </NativeTabs>
   );
 }
+
