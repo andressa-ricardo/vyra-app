@@ -16,7 +16,8 @@ src/
 │   └── providers/        # Composition root da aplicação
 ├── features/
 │   ├── auth/             # Cadastro, login por senha, Google e Apple
-│   └── home/             # Tela inicial autenticada
+│   ├── home/             # Tela inicial autenticada
+│   └── onboarding/       # Boas-vindas, 4 etapas e resumo após o primeiro acesso
 ├── i18n/                 # Inicialização, idiomas e catálogos
 ├── shared/
 │   └── hooks/            # Hooks transversais em uso
@@ -88,6 +89,15 @@ O cadastro devolve uma sessão e autentica o usuário imediatamente.
 - `token-storage`: access e refresh tokens no Expo SecureStore (Keychain/Keystore). Na web, apenas em memória. Sem "Lembrar de mim", a sessão também fica só em memória.
 - `httpClient`: envia `Authorization: Bearer`, e ao receber 401 faz um único `POST /auth/refresh` compartilhado entre requisições simultâneas (o backend revoga a família inteira se um refresh token for reutilizado), salva os tokens rotacionados e repete a requisição. Rotas públicas de autenticação usam `skipAuth`.
 - `SessionProvider`/`useSession`: restaura a sessão no startup com `GET /users/me`, expõe `signIn` e `signOut` (que chama `POST /auth/logout` e apaga os tokens). Se o backend recusar o refresh, a sessão é encerrada e as rotas protegidas voltam para a landing. Falhas de rede no startup mantêm os tokens para a próxima abertura.
+
+## Onboarding
+
+- `OnboardingStatusProvider` consulta `GET /onboarding/me` sempre que a sessão muda de usuário. `NOT_STARTED`/`IN_PROGRESS` liberam só `/onboarding`; `COMPLETED`/`SKIPPED` liberam só `/home`. Se a consulta falhar, o usuário segue para a home e o onboarding volta na próxima abertura.
+- O fluxo vive numa única rota com estado local (`useOnboardingFlow`): 0 boas-vindas, 1–4 etapas do backend, 5 resumo. Cada "Continuar" faz `PATCH /onboarding/me` com `currentStep` e os dados da etapa antes de avançar; o status `IN_PROGRESS` retoma na etapa salva, com as seleções vindas de `GET /profiles/me`.
+- "Pular" chama `POST /onboarding/me/skip`; "Entrar no VYRA" chama `POST /onboarding/me/complete`.
+- Modalidades vêm de `GET /sport-modalities`; o i18n traduz pelo `slug` e usa o nome do backend como fallback.
+- Ícones usam `lucide-react-native` (SVG, sem download de fonte em runtime).
+- Componentes usados por mais de uma feature (logo, botão primário, campo de texto, voltar, mensagem de erro) ficam em `src/shared/components`.
 
 ## Login federado
 

@@ -7,16 +7,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useFederatedSignIn } from '@/features/auth/hooks/use-federated-sign-in';
 import { useLogin } from '@/features/auth/hooks/use-login';
-import {
-  AuthBackButton,
-  AuthDivider,
-  AuthTextField,
-  Checkbox,
-  FormMessage,
-  PrimaryButton,
-  SocialButtons,
-} from '@/features/auth/presentation/components/auth-ui';
+import { AuthDivider, Checkbox, SocialButtons } from '@/features/auth/presentation/components/auth-ui';
 import { createLoginSchema, type LoginFormValues } from '@/features/auth/schemas/login.schema';
+import { BackButton } from '@/shared/components/back-button';
+import { FormMessage } from '@/shared/components/form-message';
+import { PrimaryButton } from '@/shared/components/primary-button';
+import { TextField } from '@/shared/components/text-field';
 
 export function LoginScreen() {
   const { t } = useTranslation();
@@ -50,7 +46,7 @@ export function LoginScreen() {
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}>
-          <AuthBackButton onPress={() => router.replace('/')} />
+          <BackButton onPress={() => router.replace('/')} />
 
           <View className="gap-2">
             <Text
@@ -70,7 +66,7 @@ export function LoginScreen() {
               control={control}
               name="email"
               render={({ field: { onBlur, onChange, value } }) => (
-                <AuthTextField
+                <TextField
                   autoCapitalize="none"
                   autoComplete="email"
                   error={errors.email?.message}
@@ -90,7 +86,7 @@ export function LoginScreen() {
               control={control}
               name="password"
               render={({ field: { onBlur, onChange, value } }) => (
-                <AuthTextField
+                <TextField
                   autoCapitalize="none"
                   autoComplete="current-password"
                   error={errors.password?.message}

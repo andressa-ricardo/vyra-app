@@ -4,17 +4,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
-import {
-  AuthDivider,
-  AuthTextField,
-  Checkbox,
-  PrimaryButton,
-  SocialButtons,
-} from '@/features/auth/presentation/components/auth-ui';
+import { AuthDivider, Checkbox, SocialButtons } from '@/features/auth/presentation/components/auth-ui';
 import {
   createRegisterSchema,
   type RegisterFormValues,
 } from '@/features/auth/schemas/register.schema';
+import { PrimaryButton } from '@/shared/components/primary-button';
+import { TextField } from '@/shared/components/text-field';
 
 type RegisterFormProps = {
   isSubmitting: boolean;
@@ -52,7 +48,7 @@ export function RegisterForm({ isSubmitting, onSubmit, social }: RegisterFormPro
         control={control}
         name="name"
         render={({ field: { onBlur, onChange, value } }) => (
-          <AuthTextField
+          <TextField
             autoCapitalize="words"
             autoComplete="name"
             error={errors.name?.message}
@@ -71,7 +67,7 @@ export function RegisterForm({ isSubmitting, onSubmit, social }: RegisterFormPro
         control={control}
         name="email"
         render={({ field: { onBlur, onChange, value } }) => (
-          <AuthTextField
+          <TextField
             autoCapitalize="none"
             autoComplete="email"
             error={errors.email?.message}
@@ -92,7 +88,7 @@ export function RegisterForm({ isSubmitting, onSubmit, social }: RegisterFormPro
         control={control}
         name="password"
         render={({ field: { onBlur, onChange, value } }) => (
-          <AuthTextField
+          <TextField
             autoCapitalize="none"
             autoComplete="new-password"
             error={errors.password?.message}
@@ -112,7 +108,7 @@ export function RegisterForm({ isSubmitting, onSubmit, social }: RegisterFormPro
         control={control}
         name="confirmPassword"
         render={({ field: { onBlur, onChange, value } }) => (
-          <AuthTextField
+          <TextField
             autoCapitalize="none"
             autoComplete="new-password"
             error={errors.confirmPassword?.message}

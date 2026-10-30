@@ -3,8 +3,8 @@ import { Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-import { BrandLogo } from '@/features/auth/presentation/components/auth-ui';
 import { changeLanguage } from '@/i18n';
+import { BrandLogo } from '@/shared/components/brand-logo';
 
 export function WelcomeScreen() {
   const { i18n, t } = useTranslation();

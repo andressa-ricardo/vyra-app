@@ -97,5 +97,122 @@
     },
     "notifications": "Notificações",
     "notificationsUnavailable": "As notificações estarão disponíveis em breve."
+  },
+  "onboarding": {
+    "skip": "Pular",
+    "continue": "Continuar",
+    "stepOf": "Etapa {{step}} de {{total}}",
+    "done": "Concluído",
+    "saved": "Progresso salvo",
+    "saving": "Salvando…",
+    "retry": "Tentar novamente",
+    "errors": {
+      "load": "Não foi possível carregar suas informações. Verifique a conexão e tente novamente.",
+      "network": "Sem conexão com o servidor. Verifique a rede e tente novamente.",
+      "save": "Não foi possível salvar agora. Tente novamente."
+    },
+    "intro": {
+      "title": "Seu movimento\ncomeça aqui.",
+      "description": "Treine, explore novas modalidades e acompanhe sua evolução. Tudo em um só lugar.",
+      "start": "Começar",
+      "skip": "Pular por enquanto"
+    },
+    "experiences": {
+      "title": "O que faz parte da sua jornada?",
+      "description": "Selecione todas as opções que combinam com você. Você poderá mudar isso depois.",
+      "hint": "Você pode escolher mais de uma opção.",
+      "items": {
+        "PERSONAL_FITNESS": {
+          "title": "Praticar atividades físicas",
+          "description": "Quero registrar meus treinos, esportes e evolução."
+        },
+        "TRAINER": {
+          "title": "Sou personal trainer ou treinador(a)",
+          "description": "Quero acompanhar alunos e organizar treinos."
+        },
+        "NUTRITIONIST": {
+          "title": "Sou nutricionista",
+          "description": "Quero acompanhar pacientes e oferecer atendimento nutricional."
+        },
+        "GYM_MANAGEMENT": {
+          "title": "Gerencio uma organização esportiva",
+          "description": "Quero administrar uma academia, estúdio ou centro esportivo."
+        }
+      }
+    },
+    "modalities": {
+      "title": "Como você gosta de se movimentar?",
+      "description": "Escolha as modalidades que pratica ou deseja experimentar.",
+      "search": "Buscar modalidade",
+      "selected_one": "{{count}} selecionada",
+      "selected_other": "{{count}} selecionadas",
+      "empty": "Nenhuma modalidade encontrada.",
+      "items": {
+        "strength-training": "Musculação",
+        "running": "Corrida",
+        "walking": "Caminhada",
+        "calisthenics": "Calistenia",
+        "cycling": "Ciclismo",
+        "swimming": "Natação",
+        "pilates": "Pilates",
+        "yoga": "Yoga",
+        "crossfit": "CrossFit",
+        "jiu-jitsu": "Jiu-jítsu",
+        "other-martial-arts": "Outras artes marciais",
+        "dance": "Dança",
+        "football": "Futebol",
+        "basketball": "Basquete",
+        "other-sports": "Outros esportes"
+      }
+    },
+    "goal": {
+      "title": "O que você quer conquistar?",
+      "description": "Escolha seu objetivo principal. Você poderá mudar isso depois.",
+      "items": {
+        "BUILD_MUSCLE": "Ganhar massa muscular",
+        "LOSE_FAT": "Perder gordura",
+        "IMPROVE_ENDURANCE": "Melhorar resistência",
+        "GENERAL_FITNESS": "Melhorar o condicionamento físico",
+        "MAINTAIN_HEALTH": "Manter a saúde",
+        "IMPROVE_SPORT_PERFORMANCE": "Melhorar performance no esporte",
+        "BUILD_HEALTHY_ROUTINE": "Criar uma rotina saudável",
+        "IMPROVE_MOBILITY": "Melhorar mobilidade e flexibilidade",
+        "TRACK_PROGRESS": "Acompanhar minha evolução",
+        "EXPLORE_APP": "Só quero explorar o app"
+      }
+    },
+    "personal": {
+      "title": "Vamos personalizar sua experiência?",
+      "description": "Todos os campos são opcionais. Esses dados ajudam a personalizar metas e sugestões e podem ser adicionados depois.",
+      "displayName": "Nome de exibição",
+      "displayNamePlaceholder": "Como quer ser chamado(a)",
+      "birthDate": "Data de nascimento",
+      "birthDatePlaceholder": "dd/mm/aaaa",
+      "height": "Altura (cm)",
+      "weight": "Peso (kg)",
+      "fitnessLevel": "Nível de experiência",
+      "levels": {
+        "BEGINNER": "Iniciante",
+        "INTERMEDIATE": "Intermediário",
+        "ADVANCED": "Avançado"
+      },
+      "privacy": "Seus dados são usados apenas para personalizar sua experiência. Você controla o que compartilha.",
+      "fillLater": "Preencher depois",
+      "validation": {
+        "displayNameMax": "Use no máximo 120 caracteres.",
+        "birthDate": "Informe uma data válida no formato dd/mm/aaaa.",
+        "height": "Informe uma altura entre 50 e 300 cm.",
+        "weight": "Informe um peso entre 20 e 500 kg."
+      }
+    },
+    "summary": {
+      "title": "Seu VYRA está pronto\npara começar.",
+      "description": "Sua jornada é única. O VYRA acompanha cada movimento.",
+      "experiences": "Experiências",
+      "modalities": "Modalidades favoritas",
+      "goal": "Objetivo principal",
+      "professionalNote": "Você poderá configurar seu perfil profissional depois, dentro do aplicativo.",
+      "enter": "Entrar no VYRA"
+    }
   }
 }

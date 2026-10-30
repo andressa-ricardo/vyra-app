@@ -47,6 +47,12 @@ Atualizado em 30 de outubro de 2026.
 - Home autenticada com data, saudação pelo horário e primeiro nome do usuário.
 - Testes de refresh concorrente, rotas públicas e saudação.
 
+## TASK 04 — concluída
+
+- Onboarding após o primeiro acesso: boas-vindas, experiências, modalidades, objetivo, dados pessoais e resumo.
+- Progresso salvo a cada etapa, retomada no ponto salvo, pular e concluir integrados ao backend.
+- Ícones SVG com `lucide-react-native`.
+
 ## Pendente
 
 - Criar um `.env` local com o IPv4 correto antes do teste real.
@@ -55,7 +61,8 @@ Atualizado em 30 de outubro de 2026.
 - Botão visível de logout (a lógica `signOut` já existe).
 - Configurar client IDs Google, package/Bundle ID e gerar development build para validar Google/Apple.
 - Backend: incluir `code` no corpo do `HttpExceptionFilter`.
-- Recuperação de senha, onboarding (`isNewUser`) e vinculação de contas federadas.
+- Recuperação de senha e vinculação de contas federadas.
+- Tema claro (ícone de sol do design).
 - Design system completo e identidade visual final.
 - Features esportivas.
 - CI/CD, analytics e observabilidade.

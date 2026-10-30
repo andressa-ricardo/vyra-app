@@ -5,9 +5,10 @@ import { useTranslation } from 'react-i18next';
 
 import { useFederatedSignIn } from '@/features/auth/hooks/use-federated-sign-in';
 import { useRegister } from '@/features/auth/hooks/use-register';
-import { AuthBackButton, FormMessage } from '@/features/auth/presentation/components/auth-ui';
 import { RegisterForm } from '@/features/auth/presentation/components/register-form';
 import type { RegisterFormValues } from '@/features/auth/schemas/register.schema';
+import { BackButton } from '@/shared/components/back-button';
+import { FormMessage } from '@/shared/components/form-message';
 
 export function RegisterScreen() {
   const { t } = useTranslation();
@@ -33,7 +34,7 @@ export function RegisterScreen() {
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}>
-          <AuthBackButton onPress={() => router.replace('/')} />
+          <BackButton onPress={() => router.replace('/')} />
 
           <View className="gap-2">
             <Text

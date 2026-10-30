@@ -97,5 +97,122 @@
     },
     "notifications": "Notifications",
     "notificationsUnavailable": "Notifications will be available soon."
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "continue": "Continue",
+    "stepOf": "Step {{step}} of {{total}}",
+    "done": "Done",
+    "saved": "Progress saved",
+    "saving": "Saving…",
+    "retry": "Try again",
+    "errors": {
+      "load": "We couldn't load your information. Check your connection and try again.",
+      "network": "No connection to the server. Check your network and try again.",
+      "save": "We couldn't save right now. Please try again."
+    },
+    "intro": {
+      "title": "Your movement\nstarts here.",
+      "description": "Train, explore new sports and track your progress. All in one place.",
+      "start": "Get started",
+      "skip": "Skip for now"
+    },
+    "experiences": {
+      "title": "What is part of your journey?",
+      "description": "Select every option that fits you. You can change this later.",
+      "hint": "You can choose more than one option.",
+      "items": {
+        "PERSONAL_FITNESS": {
+          "title": "Do physical activities",
+          "description": "I want to log my workouts, sports and progress."
+        },
+        "TRAINER": {
+          "title": "I'm a personal trainer or coach",
+          "description": "I want to follow clients and organize workouts."
+        },
+        "NUTRITIONIST": {
+          "title": "I'm a nutritionist",
+          "description": "I want to follow patients and offer nutritional care."
+        },
+        "GYM_MANAGEMENT": {
+          "title": "I manage a sports organization",
+          "description": "I want to run a gym, studio or sports center."
+        }
+      }
+    },
+    "modalities": {
+      "title": "How do you like to move?",
+      "description": "Choose the sports you practice or want to try.",
+      "search": "Search sports",
+      "selected_one": "{{count}} selected",
+      "selected_other": "{{count}} selected",
+      "empty": "No sports found.",
+      "items": {
+        "strength-training": "Strength training",
+        "running": "Running",
+        "walking": "Walking",
+        "calisthenics": "Calisthenics",
+        "cycling": "Cycling",
+        "swimming": "Swimming",
+        "pilates": "Pilates",
+        "yoga": "Yoga",
+        "crossfit": "CrossFit",
+        "jiu-jitsu": "Jiu-jitsu",
+        "other-martial-arts": "Other martial arts",
+        "dance": "Dance",
+        "football": "Soccer",
+        "basketball": "Basketball",
+        "other-sports": "Other sports"
+      }
+    },
+    "goal": {
+      "title": "What do you want to achieve?",
+      "description": "Choose your main goal. You can change this later.",
+      "items": {
+        "BUILD_MUSCLE": "Build muscle",
+        "LOSE_FAT": "Lose fat",
+        "IMPROVE_ENDURANCE": "Improve endurance",
+        "GENERAL_FITNESS": "Improve overall fitness",
+        "MAINTAIN_HEALTH": "Stay healthy",
+        "IMPROVE_SPORT_PERFORMANCE": "Improve sports performance",
+        "BUILD_HEALTHY_ROUTINE": "Build a healthy routine",
+        "IMPROVE_MOBILITY": "Improve mobility and flexibility",
+        "TRACK_PROGRESS": "Track my progress",
+        "EXPLORE_APP": "Just explore the app"
+      }
+    },
+    "personal": {
+      "title": "Let's personalize your experience",
+      "description": "All fields are optional. This data helps personalize goals and suggestions and can be added later.",
+      "displayName": "Display name",
+      "displayNamePlaceholder": "What should we call you",
+      "birthDate": "Date of birth",
+      "birthDatePlaceholder": "dd/mm/yyyy",
+      "height": "Height (cm)",
+      "weight": "Weight (kg)",
+      "fitnessLevel": "Experience level",
+      "levels": {
+        "BEGINNER": "Beginner",
+        "INTERMEDIATE": "Intermediate",
+        "ADVANCED": "Advanced"
+      },
+      "privacy": "Your data is only used to personalize your experience. You control what you share.",
+      "fillLater": "Fill in later",
+      "validation": {
+        "displayNameMax": "Use at most 120 characters.",
+        "birthDate": "Enter a valid date as dd/mm/yyyy.",
+        "height": "Enter a height between 50 and 300 cm.",
+        "weight": "Enter a weight between 20 and 500 kg."
+      }
+    },
+    "summary": {
+      "title": "Your VYRA is ready\nto start.",
+      "description": "Your journey is unique. VYRA follows every move.",
+      "experiences": "Experiences",
+      "modalities": "Favorite sports",
+      "goal": "Main goal",
+      "professionalNote": "You can set up your professional profile later, inside the app.",
+      "enter": "Enter VYRA"
+    }
   }
 }

@@ -165,6 +165,6 @@ Nenhuma mensagem técnica ou stack trace é exibida.
 - O teste ponta a ponta depende do backend/banco em execução e não foi automatizado.
 - Ainda não há botão de logout na interface.
 - O backend descarta o campo `code` dos erros; o app trata todo 409 federado como e-mail já cadastrado.
-- `isNewUser`/onboarding é ignorado até existir o fluxo de onboarding no app.
+- O app decide o onboarding por `GET /onboarding/me` após qualquer login; `isNewUser` não é usado.
 - O idioma manual não é persistido.
 - HTTP local é apenas para desenvolvimento; produção deve usar HTTPS.
