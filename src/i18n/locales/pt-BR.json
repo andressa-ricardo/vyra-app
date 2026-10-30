@@ -4,13 +4,35 @@
     "portuguese": "Português",
     "english": "Inglês",
     "loading": "Carregando…",
-    "success": "Sucesso"
+    "success": "Sucesso",
+    "comingSoon": "Em breve",
+    "back": "Voltar",
+    "showPassword": "Mostrar senha",
+    "hidePassword": "Ocultar senha"
   },
   "auth": {
+    "socialUnavailable": "A autenticação social será conectada em uma próxima etapa.",
+    "welcome": {
+      "title": "Treine, corra e\nse alimente melhor.",
+      "description": "Tudo o que você precisa para evoluir, em um só lugar.",
+      "createAccount": "Criar conta",
+      "login": "Entrar"
+    },
+    "login": {
+      "title": "Bem-vinda de volta",
+      "description": "Entre para continuar sua evolução.",
+      "rememberMe": "Lembrar de mim",
+      "forgotPassword": "Esqueci a senha",
+      "submit": "Entrar",
+      "continueWith": "ou continue com",
+      "noAccount": "Ainda não tem conta?",
+      "unavailable": "O login será conectado ao backend na próxima etapa."
+    },
     "register": {
       "eyebrow": "VYRA",
       "title": "Crie sua conta",
       "description": "Cadastre-se para começar sua jornada multiesportiva.",
+      "shortDescription": "Leva menos de um minuto.",
       "name": "Nome",
       "namePlaceholder": "Seu nome completo",
       "email": "E-mail",
@@ -20,6 +42,12 @@
       "confirmPassword": "Confirmar senha",
       "confirmPasswordPlaceholder": "Digite a senha novamente",
       "submit": "Criar conta",
+      "or": "ou",
+      "termsPrefix": "Li e aceito os",
+      "termsOfUse": "Termos de uso",
+      "termsAnd": "e a",
+      "privacyPolicy": "Política de privacidade",
+      "hasAccount": "Já tem conta?",
       "submitting": "Criando conta…",
       "success": "Conta criada com sucesso. A sessão será configurada na próxima etapa.",
       "validation": {
@@ -34,7 +62,8 @@
         "passwordMax": "A senha deve ter no máximo 128 caracteres.",
         "passwordRules": "Use ao menos uma letra maiúscula, uma minúscula e um número.",
         "confirmPasswordRequired": "Confirme sua senha.",
-        "passwordMismatch": "As senhas não coincidem."
+        "passwordMismatch": "As senhas não coincidem.",
+        "termsRequired": "Aceite os termos para continuar."
       },
       "errors": {
         "validation": "Revise os dados informados e tente novamente.",

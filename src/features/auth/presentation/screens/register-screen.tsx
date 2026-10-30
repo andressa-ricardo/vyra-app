@@ -1,5 +1,6 @@
-import { useTranslation } from 'react-i18next';
+import { router } from 'expo-router';
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -9,58 +10,38 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { useRegister } from '@/features/auth/hooks/use-register';
+import { AuthBackButton } from '@/features/auth/presentation/components/auth-ui';
 import { RegisterForm } from '@/features/auth/presentation/components/register-form';
 import type { RegisterFormValues } from '@/features/auth/schemas/register.schema';
-import { changeLanguage } from '@/i18n';
-import type { SupportedLanguage } from '@/i18n/config';
-import { useTheme } from '@/shared/hooks/use-theme';
-import { fonts, spacing } from '@/theme';
+import { authColors, fonts, spacing } from '@/theme';
 
 export function RegisterScreen() {
-  const { i18n, t } = useTranslation();
-  const theme = useTheme();
+  const { t } = useTranslation();
   const { status, messageKey, submit } = useRegister();
-  const activeLanguage: SupportedLanguage = i18n.resolvedLanguage === 'en' ? 'en' : 'pt-BR';
 
-  const handleSubmit = ({ confirmPassword: _confirmPassword, ...payload }: RegisterFormValues) =>
-    submit(payload);
+  const handleSubmit = ({
+    acceptTerms: _acceptTerms,
+    confirmPassword: _confirmPassword,
+    ...payload
+  }: RegisterFormValues) => submit(payload);
+
+  const showUnavailable = () =>
+    Alert.alert(t('common.comingSoon'), t('auth.socialUnavailable'));
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
+    <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.flex}>
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps="handled">
-          <View style={styles.languageSection}>
-            <Text style={[styles.languageLabel, { color: theme.textSecondary }]}>
-              {t('common.language')}
-            </Text>
-            <View style={styles.languageControls}>
-              <LanguageButton
-                active={activeLanguage === 'pt-BR'}
-                label="PT-BR"
-                onPress={() => void changeLanguage('pt-BR')}
-              />
-              <LanguageButton
-                active={activeLanguage === 'en'}
-                label="EN"
-                onPress={() => void changeLanguage('en')}
-              />
-            </View>
-          </View>
+        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+          <AuthBackButton onPress={() => router.replace('/')} />
 
           <View style={styles.heading}>
-            <Text style={[styles.eyebrow, { color: theme.primary }]}>
-              {t('auth.register.eyebrow')}
-            </Text>
-            <Text style={[styles.title, { color: theme.text }]}>{t('auth.register.title')}</Text>
-            <Text style={[styles.description, { color: theme.textSecondary }]}>
-              {t('auth.register.description')}
-            </Text>
+            <Text style={styles.title}>{t('auth.register.title')}</Text>
+            <Text style={styles.description}>{t('auth.register.shortDescription')}</Text>
           </View>
 
           {messageKey ? (
@@ -68,115 +49,77 @@ export function RegisterScreen() {
               accessibilityLiveRegion="polite"
               style={[
                 styles.message,
-                {
-                  backgroundColor: theme.backgroundElement,
-                  borderColor: status === 'success' ? theme.success : theme.error,
-                },
+                status === 'success' ? styles.messageSuccess : styles.messageError,
               ]}>
-              <Text style={[styles.messageText, { color: theme.text }]}>{t(messageKey)}</Text>
+              <Text style={styles.messageText}>{t(messageKey)}</Text>
             </View>
           ) : null}
 
-          <RegisterForm isSubmitting={status === 'loading'} onSubmit={handleSubmit} />
+          <RegisterForm
+            isSubmitting={status === 'loading'}
+            onSocialPress={showUnavailable}
+            onSubmit={handleSubmit}
+          />
+
+          <View style={styles.footerRow}>
+            <Text style={styles.footerText}>{t('auth.register.hasAccount')} </Text>
+            <Pressable accessibilityRole="link" onPress={() => router.replace('/login')}>
+              <Text style={styles.link}>{t('auth.welcome.login')}</Text>
+            </Pressable>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
-type LanguageButtonProps = {
-  active: boolean;
-  label: string;
-  onPress: () => void;
-};
-
-function LanguageButton({ active, label, onPress }: LanguageButtonProps) {
-  const theme = useTheme();
-
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityState={{ selected: active }}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.languageButton,
-        {
-          backgroundColor: active ? theme.primary : theme.backgroundElement,
-          borderColor: active ? theme.primary : theme.border,
-        },
-        pressed && styles.pressed,
-      ]}>
-      <Text style={[styles.languageButtonText, { color: active ? theme.onPrimary : theme.text }]}>
-        {label}
-      </Text>
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  safeArea: { flex: 1 },
+  safeArea: { flex: 1, backgroundColor: authColors.background },
   content: {
     width: '100%',
     maxWidth: 520,
     alignSelf: 'center',
-    paddingHorizontal: spacing.four,
-    paddingVertical: spacing.four,
+    paddingHorizontal: 26,
+    paddingTop: 4,
+    paddingBottom: spacing.four,
     gap: spacing.four,
   },
-  languageSection: {
-    alignItems: 'flex-end',
-    gap: spacing.one,
-  },
-  languageLabel: {
-    fontFamily: fonts.sans,
-    fontSize: 12,
-  },
-  languageControls: {
-    flexDirection: 'row',
-    gap: spacing.two,
-  },
-  languageButton: {
-    minWidth: 64,
-    minHeight: 40,
-    borderWidth: 1,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.two,
-  },
-  languageButtonText: {
-    fontFamily: fonts.sans,
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  pressed: { opacity: 0.72 },
-  heading: { gap: spacing.two },
-  eyebrow: {
-    fontFamily: fonts.sans,
-    fontSize: 14,
-    fontWeight: '800',
-    letterSpacing: 1.5,
-  },
+  heading: { gap: 8, marginBottom: spacing.two },
   title: {
+    color: authColors.text,
     fontFamily: fonts.sans,
-    fontSize: 32,
-    lineHeight: 38,
-    fontWeight: '700',
+    fontSize: 28,
+    lineHeight: 34,
+    fontWeight: '800',
+    letterSpacing: -0.5,
   },
   description: {
+    color: authColors.muted,
     fontFamily: fonts.sans,
     fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 23,
   },
   message: {
     borderWidth: 1,
     borderRadius: 12,
-    padding: spacing.three,
+    backgroundColor: authColors.surface,
+    padding: 12,
   },
+  messageSuccess: { borderColor: authColors.success },
+  messageError: { borderColor: authColors.danger },
   messageText: {
+    color: authColors.text,
     fontFamily: fonts.sans,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
   },
+  footerRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: spacing.one,
+  },
+  footerText: { color: authColors.muted, fontFamily: fonts.sans, fontSize: 14 },
+  link: { color: authColors.primary, fontFamily: fonts.sans, fontSize: 14 },
 });

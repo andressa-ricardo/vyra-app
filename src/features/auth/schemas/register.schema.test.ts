@@ -8,6 +8,7 @@ describe('register schema', () => {
     email: 'ana@example.com',
     password: 'Strong123',
     confirmPassword: 'Strong123',
+    acceptTerms: true,
   };
 
   it('accepts the backend registration contract', () => {
@@ -27,5 +28,9 @@ describe('register schema', () => {
     if (!result.success) {
       expect(result.error.issues[0]?.path).toEqual(['confirmPassword']);
     }
+  });
+
+  it('requires acceptance of terms', () => {
+    expect(schema.safeParse({ ...validValues, acceptTerms: false }).success).toBe(false);
   });
 });

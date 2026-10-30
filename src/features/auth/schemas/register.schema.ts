@@ -29,6 +29,9 @@ export function createRegisterSchema(t: Translate) {
       confirmPassword: z
         .string()
         .min(1, t('auth.register.validation.confirmPasswordRequired')),
+      acceptTerms: z.boolean().refine(Boolean, {
+        message: t('auth.register.validation.termsRequired'),
+      }),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: t('auth.register.validation.passwordMismatch'),

@@ -1,4 +1,5 @@
 export const palette = {
+  blue500: '#3B82F6',
   blue600: '#2563EB',
   blue400: '#60A5FA',
   white: '#FFFFFF',
@@ -12,6 +13,19 @@ export const palette = {
   gray900: '#0F172A',
   red500: '#EF4444',
   green500: '#22C55E',
+} as const;
+
+export const authColors = {
+  background: '#030C1B',
+  surface: '#111E32',
+  surfacePressed: '#182942',
+  border: '#263A55',
+  primary: palette.blue500,
+  text: palette.white,
+  muted: '#91BCE4',
+  placeholder: '#6888A8',
+  danger: '#F87171',
+  success: '#4ADE80',
 } as const;
 
 export const colors = {

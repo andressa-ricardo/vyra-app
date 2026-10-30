@@ -23,7 +23,7 @@ src/
 
 ### `src/app`
 
-É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a tela de cadastro; o layout raiz compõe providers e o `Stack`.
+É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a landing, `/register` abre o cadastro integrado e `/login` abre a interface de login ainda sem integração. O layout raiz compõe providers e o `Stack`.
 
 ### `src/features`
 
@@ -34,6 +34,8 @@ Cada domínio contém apenas as camadas exigidas por seus casos de uso. A featur
 - `schemas`: validação frontend com Zod;
 - `infrastructure`: chamada ao endpoint de autenticação;
 - `types`: contrato HTTP verificado no backend.
+
+Os componentes visuais comuns ao fluxo de entrada ficam em `auth/presentation/components`, pois ainda são específicos de autenticação. A landing usa `assets/images/welcome-athlete.jpg`; cadastro e login reutilizam campos, botões, divisores, checkbox e botões sociais sem promover esses elementos prematuramente para `shared`.
 
 A confirmação de senha pertence ao formulário e nunca é enviada à API.
 
@@ -60,7 +62,7 @@ Centraliza tokens semânticos light/dark. Componentes consomem `primary`, `onPri
 ## Fluxo do cadastro
 
 ```text
-src/app/index
+src/app/register
   → RegisterScreen
     → RegisterForm + Zod
       → useRegister

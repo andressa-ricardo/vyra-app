@@ -32,6 +32,9 @@ Atualizado em 30 de outubro de 2026.
 - Loading, sucesso e erros traduzidos.
 - Testes de schema, serviço HTTP mockado e normalização de erros.
 - ESLint, TypeScript e Jest configurados.
+- Landing visual do VYRA com imagem full-screen e ações de entrada.
+- Rotas `/register` e `/login` com layout responsivo alinhado às referências visuais.
+- Cadastro continua integrado ao backend; login, recuperação de senha e provedores sociais permanecem explicitamente indisponíveis até sua implementação real.
 
 ## Pendente
 

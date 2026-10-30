@@ -27,6 +27,7 @@ Aguardando autorização:
 - Adicionar Expo SecureStore após validar a API de SDK 58.
 - Implementar armazenamento seguro de access/refresh tokens.
 - Implementar login por e-mail e senha.
+- Conectar a interface de login já criada ao backend.
 - Restaurar sessão no startup.
 - Implementar rotação de refresh token e logout idempotente.
 - Separar estado autenticado, não autenticado e carregamento.

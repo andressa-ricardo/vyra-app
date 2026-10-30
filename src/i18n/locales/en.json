@@ -4,13 +4,35 @@
     "portuguese": "Portuguese",
     "english": "English",
     "loading": "Loading…",
-    "success": "Success"
+    "success": "Success",
+    "comingSoon": "Coming soon",
+    "back": "Back",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "auth": {
+    "socialUnavailable": "Social authentication will be connected in a future step.",
+    "welcome": {
+      "title": "Train, run and\neat better.",
+      "description": "Everything you need to improve, all in one place.",
+      "createAccount": "Create account",
+      "login": "Log in"
+    },
+    "login": {
+      "title": "Welcome back",
+      "description": "Log in to continue your progress.",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password",
+      "submit": "Log in",
+      "continueWith": "or continue with",
+      "noAccount": "Don't have an account yet?",
+      "unavailable": "Login will be connected to the backend in the next step."
+    },
     "register": {
       "eyebrow": "VYRA",
       "title": "Create your account",
       "description": "Sign up to begin your multisport journey.",
+      "shortDescription": "It takes less than a minute.",
       "name": "Name",
       "namePlaceholder": "Your full name",
       "email": "Email",
@@ -20,6 +42,12 @@
       "confirmPassword": "Confirm password",
       "confirmPasswordPlaceholder": "Enter your password again",
       "submit": "Create account",
+      "or": "or",
+      "termsPrefix": "I accept the",
+      "termsOfUse": "Terms of Use",
+      "termsAnd": "and",
+      "privacyPolicy": "Privacy Policy",
+      "hasAccount": "Already have an account?",
       "submitting": "Creating account…",
       "success": "Account created successfully. Session setup will be implemented in the next step.",
       "validation": {
@@ -34,7 +62,8 @@
         "passwordMax": "Password must have at most 128 characters.",
         "passwordRules": "Use at least one uppercase letter, one lowercase letter, and one number.",
         "confirmPasswordRequired": "Confirm your password.",
-        "passwordMismatch": "Passwords do not match."
+        "passwordMismatch": "Passwords do not match.",
+        "termsRequired": "Accept the terms to continue."
       },
       "errors": {
         "validation": "Review the information and try again.",
