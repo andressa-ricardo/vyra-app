@@ -7,38 +7,46 @@ Atualizado em 30 de outubro de 2026.
 - Expo SDK 58 (`expo ~58.0.21`)
 - React Native 0.88.1
 - React 19.3.0
-- TypeScript em modo estrito
+- TypeScript 6 em modo estrito
 - Expo Router com typed routes
-- New Architecture/Hermes pelos padrões do Expo SDK 58
-- Package manager atual: npm (`package-lock.json`)
-- Fluxo nativo: Continuous Native Generation; não há `ios/` ou `android/` versionados
+- npm e `package-lock.json`
+- Continuous Native Generation, sem `ios/` ou `android/` versionados
+- Compatibilidade preservada com Expo Go
 
-## Concluído na TASK 01
+## TASK 01 — concluída
 
-- Estrutura Feature-First inicial criada.
-- Rotas isoladas da apresentação do template.
-- Provider raiz preparado em `src/core`.
-- Componentes e hooks transversais movidos para `src/shared`.
-- Tokens VYRA e temas light/dark criados em `src/theme`.
-- Primary light `#2563EB` e primary dark `#60A5FA` aplicados ao tema de navegação e disponíveis para componentes.
-- Alias `@/*` configurado para `src/*`, com alias de assets preservado.
-- Interface e navegação existentes do template preservadas em `features/starter`.
-- ESLint configurado com o preset oficial do Expo.
-- Documentação arquitetural e convenções permanentes adicionadas.
+- Arquitetura Feature-First inicial.
+- Separação de `app`, `core`, `features`, `shared` e `theme`.
+- Tokens VYRA e suporte light/dark.
+- Provider raiz e convenções permanentes.
 
-## Ainda não implementado
+## TASK 02 — concluída
 
-- Autenticação e autorização.
-- Onboarding.
-- Perfis e papéis de usuário.
-- API, serialização, tratamento de erros e configuração de ambientes.
-- Persistência local ou armazenamento seguro.
-- Estado global ou cache de servidor.
-- Design system completo e telas de produto.
-- Activities, sport-modalities, exercises, workouts, workout-sessions, running, nutrition e progress.
-- Professionals, organizations e appointments.
-- Testes automatizados, telemetria, analytics e CI/CD.
+- Conteúdo, rotas, componentes, animações e assets demonstrativos removidos.
+- Tela inicial substituída pelo cadastro funcional minimalista.
+- Português brasileiro e inglês com detecção do dispositivo e troca manual.
+- Cliente Axios centralizado com ambiente, timeout e normalização de erros.
+- Contrato real de `POST /api/v1/auth/register` implementado.
+- Validação alinhada ao backend: nome 2–120, e-mail até 254 e senha 8–128 com maiúscula, minúscula e número.
+- Confirmação de senha validada apenas no frontend.
+- Loading, sucesso e erros traduzidos.
+- Testes de schema, serviço HTTP mockado e normalização de erros.
+- ESLint, TypeScript e Jest configurados.
 
-## Compatibilidade
+## Pendente
 
-Nenhuma versão do Expo, React ou React Native foi alterada. Foram adicionados apenas `eslint` e `eslint-config-expo` como dependências de desenvolvimento para executar a validação exigida; não houve nova dependência de runtime. A validação local desta revisão está registrada na entrega da TASK 01.
+- Criar um `.env` local com o IPv4 correto antes do teste real.
+- Executar backend e banco localmente para validar o cadastro ponta a ponta.
+- Persistir preferência manual de idioma.
+- Armazenar tokens com Expo SecureStore.
+- Implementar sessão, refresh, logout e restauração segura.
+- Login, recuperação de senha, autenticação social e onboarding.
+- Design system completo e identidade visual final.
+- Features esportivas.
+- CI/CD, analytics e observabilidade.
+
+## Segurança
+
+O app não registra senhas ou tokens. Os tokens retornados pelo cadastro não são persistidos nesta task. `EXPO_PUBLIC_API_URL` contém apenas a origem pública da API e fica visível no bundle, conforme esperado.
+
+O `npm audit --omit=dev` reporta vulnerabilidades transitivas dentro do toolchain do Expo (`@expo/config`/CLI, incluindo uma cópia interna antiga de Zod). A correção automática sugerida faria downgrade para Expo 51, portanto não foi aplicada. O Zod usado diretamente pelo formulário está em `4.6.7`, fora da faixa vulnerável indicada, e o Expo Doctor do SDK 58 passa integralmente.

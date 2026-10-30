@@ -23,6 +23,7 @@ npm run lint
 npx tsc --noEmit
 npx expo-doctor
 npx expo install --fix
+npm test -- --watch=false
 ```
 
 Use `npx expo lint` para a configuração inicial oficial; depois, use `npm run lint`. Rode TypeScript e ESLint antes de concluir qualquer alteração de código. Rode Expo Doctor em mudanças de arquitetura, dependências ou configuração Expo.
@@ -60,6 +61,19 @@ Documentação: https://docs.expo.dev/router/introduction.md
 
 Componentes e rotas não chamam a API diretamente. Integrações entram em infraestrutura e são expostas à apresentação por contratos/casos de uso proporcionais à complexidade. Tokens e segredos nunca usam armazenamento não seguro. Não implemente essas camadas antes de existir escopo e contrato concretos.
 
+- Leia variáveis Expo com acesso estático, como `process.env.EXPO_PUBLIC_API_URL`; não use destructuring nem acesso por colchetes.
+- Variáveis `EXPO_PUBLIC_` são públicas no bundle e nunca contêm secrets.
+- Centralize base URL, timeout e normalização de erros em `src/core/api`.
+- Não exponha mensagens técnicas do backend diretamente ao usuário.
+- Não registre senhas, access tokens ou refresh tokens.
+
+## Internacionalização
+
+- Toda string visível ao usuário deve vir dos catálogos em `src/i18n/locales`.
+- Português brasileiro (`pt-BR`) é o fallback; inglês (`en`) é suportado desde a base.
+- Novos idiomas devem ser registrados em `src/i18n/config.ts` e `src/i18n/index.ts`.
+- Não persista preferência de idioma em armazenamento inseguro.
+
 ## Expo Go e código nativo
 
 - Não altere versões do Expo ou React Native sem task explícita de upgrade.
@@ -80,3 +94,4 @@ Documentação: https://docs.expo.dev/eas/index.md
 - Não instale dependências quando a plataforma já resolver o problema.
 - Não faça commit ou push sem solicitação explícita.
 - Atualize `docs/ARCHITECTURE.md`, `docs/MOBILE_STATUS.md` ou `docs/ROADMAP.md` quando uma decisão permanente ou marco mudar.
+- Mantenha testes próximos ao módulo testado e execute `npm test -- --watch=false` antes de concluir mudanças com regras ou integrações.

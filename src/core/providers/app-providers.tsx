@@ -3,6 +3,7 @@ import type { PropsWithChildren } from 'react';
 
 import { useColorScheme } from '@/shared/hooks/use-color-scheme';
 import { colors } from '@/theme';
+import '@/i18n';
 
 const lightNavigationTheme = {
   ...DefaultTheme,

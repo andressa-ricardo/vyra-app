@@ -1,1 +1,1 @@
-export { default } from '@/features/starter/presentation/screens/home-screen';
+export { RegisterScreen as default } from '@/features/auth/presentation/screens/register-screen';

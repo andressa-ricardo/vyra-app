@@ -17,6 +17,7 @@ export const palette = {
 export const colors = {
   light: {
     primary: palette.blue600,
+    onPrimary: palette.white,
     text: palette.gray900,
     textSecondary: palette.gray600,
     background: palette.white,
@@ -28,6 +29,7 @@ export const colors = {
   },
   dark: {
     primary: palette.blue400,
+    onPrimary: palette.gray900,
     text: palette.gray50,
     textSecondary: palette.gray400,
     background: palette.black,

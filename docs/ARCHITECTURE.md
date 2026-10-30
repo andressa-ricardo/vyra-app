@@ -2,85 +2,105 @@
 
 ## Objetivo
 
-O VYRA adota Feature-First com Clean Architecture pragmática. A estrutura separa navegação, apresentação, regras de negócio e infraestrutura sem criar interfaces ou camadas antes de existir uma necessidade real.
+O VYRA adota Feature-First com Clean Architecture pragmática. Navegação, apresentação, regras de negócio e infraestrutura permanecem separadas sem criar camadas antes de existir uma necessidade concreta.
 
-## Estrutura
+## Estrutura atual
 
 ```text
 src/
-├── app/                  # Expo Router: rotas e layouts somente
-├── core/                 # Infraestrutura transversal e providers da aplicação
-├── features/             # Funcionalidades organizadas por domínio
-├── shared/               # Código reutilizado por mais de uma feature
-└── theme/                # Tokens visuais e temas light/dark
+├── app/                  # Rotas e layouts do Expo Router
+├── core/
+│   ├── api/              # Cliente HTTP, configuração e erros transversais
+│   ├── config/           # Leitura tipada do ambiente público
+│   └── providers/        # Composition root da aplicação
+├── features/
+│   └── auth/             # Primeiro domínio real: cadastro
+├── i18n/                 # Inicialização, idiomas e catálogos
+├── shared/
+│   └── hooks/            # Hooks transversais em uso
+└── theme/                # Cores semânticas, espaçamento e tipografia
 ```
 
 ### `src/app`
 
-É a camada de navegação. Cada arquivo é uma rota do Expo Router, portanto deve ser pequeno: compõe layouts, lê parâmetros de rota quando necessário e delega a renderização para uma feature. Não contém regras de negócio, acesso à API ou estado de domínio.
+É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a tela de cadastro; o layout raiz compõe providers e o `Stack`.
 
 ### `src/features`
 
-Cada domínio nasce somente quando for implementado. Uma feature pode evoluir para:
+Cada domínio contém apenas as camadas exigidas por seus casos de uso. A feature `auth` possui:
 
-```text
-feature-name/
-├── domain/               # Entidades, contratos e regras puras, quando existirem
-├── application/          # Casos de uso e orquestração, quando necessários
-├── infrastructure/       # Implementações específicas do domínio
-└── presentation/
-    ├── components/
-    ├── hooks/
-    └── screens/
-```
+- `presentation`: tela e formulário;
+- `hooks`: estado assíncrono do cadastro;
+- `schemas`: validação frontend com Zod;
+- `infrastructure`: chamada ao endpoint de autenticação;
+- `types`: contrato HTTP verificado no backend.
 
-Essa árvore não é obrigatória por antecipação. Pastas e camadas são criadas conforme a complexidade real. Nesta etapa, `starter` preserva a interface do template original enquanto as features de produto ainda não existem.
-
-### `src/shared`
-
-Contém elementos realmente compartilhados e sem regra de um domínio específico. Componentes devem receber dados e callbacks por propriedades. Hooks compartilhados encapsulam comportamento transversal de UI. Uma feature não deve usar `shared` como depósito genérico.
+A confirmação de senha pertence ao formulário e nunca é enviada à API.
 
 ### `src/core`
 
-É o ponto de composição e da infraestrutura transversal. Providers globais ficam em `core/providers`. Clientes HTTP, autenticação, armazenamento e configuração serão adicionados apenas quando forem implementados, evitando contratos especulativos.
+O cliente Axios é compartilhado e aplica timeout, URL base e headers. A URL é resolvida no interceptor de request, permitindo que o app abra mesmo quando o ambiente ainda não foi configurado e apresente uma mensagem adequada somente ao tentar enviar.
+
+Erros técnicos são normalizados em códigos estáveis (`validation`, `conflict`, `network`, `timeout`, `server` etc.). A UI traduz esses códigos; mensagens e stack traces do backend não são exibidos diretamente.
+
+### `src/i18n`
+
+O i18next é inicializado uma vez com `react-i18next`. `expo-localization` escolhe inglês quando o idioma principal do dispositivo é inglês; os demais casos usam português brasileiro. O fallback é `pt-BR`. A troca manual acontece em memória e atualiza a UI sem reiniciar.
+
+A preferência manual ainda não é persistida. Isso evita introduzir armazenamento antes da definição da estratégia de preferências do usuário.
+
+### `src/shared`
+
+Contém somente código transversal em uso. Os componentes visuais do template foram removidos; os hooks de tema permanecem compartilhados.
 
 ### `src/theme`
 
-Centraliza cores semânticas, espaçamento e tipografia. Os componentes consomem nomes semânticos como `primary`, `background` e `text`, nunca uma variante de modo diretamente. O modo segue o sistema pelo `useColorScheme`, com `userInterfaceStyle: automatic` no app config.
+Centraliza tokens semânticos light/dark. Componentes consomem `primary`, `onPrimary`, `background`, `text`, `error` e `success`, sem cores de marca locais.
+
+## Fluxo do cadastro
+
+```text
+src/app/index
+  → RegisterScreen
+    → RegisterForm + Zod
+      → useRegister
+        → auth-api
+          → httpClient
+            → POST /api/v1/auth/register
+```
+
+A resposta contém tokens, mas eles são descartados nesta task. Persistência exige Expo SecureStore e gerenciamento de sessão próprios, previstos para a próxima etapa.
 
 ## Dependências permitidas
 
 ```text
-app → core / features / shared / theme
-features → core / shared / theme
-core → shared / theme
+app → core / features
+features → core / shared / theme / i18n
+core → theme (quando necessário)
 shared → theme
+i18n → expo-localization
 theme → React Native
 ```
 
-Features não importam internals umas das outras. Quando uma integração entre domínios surgir, deve existir um contrato pequeno e explícito no domínio proprietário ou uma composição no nível da aplicação.
+Features não importam internals umas das outras. Integrações futuras devem usar contratos explícitos ou composição em nível superior.
 
 ## Convenções
 
 - Imports internos usam o alias `@/`, apontando para `src/`.
-- Nomes de arquivos usam kebab-case; componentes e tipos usam PascalCase; hooks começam com `use`.
-- Tipos ficam próximos de quem os possui. Um tipo só vai para `shared` quando for verdadeiramente transversal.
-- Estado local permanece no componente quando não precisa ser compartilhado.
-- Chamadas de API não são feitas por arquivos de rota ou componentes visuais.
-- SOLID é aplicado onde reduz acoplamento; não justifica wrappers, interfaces ou factories sem uso concreto.
-- Código deve funcionar em Android, iOS e web, salvo arquivo específico de plataforma (`.android`, `.ios` ou `.web`).
+- Arquivos usam kebab-case; componentes e tipos usam PascalCase; hooks começam com `use`.
+- Strings visíveis ao usuário pertencem aos catálogos de tradução.
+- Variáveis `EXPO_PUBLIC_` nunca contêm secrets.
+- Rotas e componentes visuais não fazem requisições HTTP diretamente.
+- Respostas de erro externas são normalizadas antes de chegar à UI.
+- Testes ficam próximos ao módulo testado.
+- SOLID é aplicado quando reduz acoplamento, sem interfaces ou factories especulativas.
 
-## Decisões desta etapa
+## Decisões da TASK 02
 
-1. O Expo Router existente e suas native tabs foram preservados para não remover comportamento do template.
-2. A interface do template foi isolada em `features/starter`; ela não representa uma feature de produto e será substituída gradualmente.
-3. `AppProviders` é o composition root de providers globais e atualmente configura apenas o tema de navegação.
-4. Não foram criados clientes HTTP, repositórios, stores, autenticação ou armazenamento porque ainda não há caso de uso que determine seus contratos.
-5. Foram adicionadas somente as dependências de desenvolvimento que o comando oficial de lint do Expo exige; nenhuma dependência de runtime ou diretório nativo foi adicionado. O projeto continua no fluxo CNG e compatível com Expo Go.
-
-## Referências oficiais
-
-- [Expo SDK 58](https://docs.expo.dev/versions/v58.0.0/)
-- [Expo Router](https://docs.expo.dev/router/introduction/)
-- [TypeScript e aliases](https://docs.expo.dev/guides/typescript/)
-- [Temas de cor](https://docs.expo.dev/develop/user-interface/color-themes/)
+1. O conteúdo `starter`, rotas vazias e assets do Expo foram removidos integralmente.
+2. A navegação foi reduzida a um `Stack` com a rota de cadastro.
+3. O contrato de cadastro foi obtido diretamente do DTO e serviço do backend VYRA.
+4. A origem da API vem de `EXPO_PUBLIC_API_URL`; o app acrescenta `/api/v1` sem duplicá-lo.
+5. i18n não usa persistência nesta etapa.
+6. Tokens retornados pelo cadastro não são logados nem armazenados.
+7. Jest usa o preset `jest-expo`; testes de integração HTTP usam cliente mockado e não criam usuários reais.

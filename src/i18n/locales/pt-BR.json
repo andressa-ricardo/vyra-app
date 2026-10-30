@@ -1,0 +1,51 @@
+{
+  "common": {
+    "language": "Idioma",
+    "portuguese": "Português",
+    "english": "Inglês",
+    "loading": "Carregando…",
+    "success": "Sucesso"
+  },
+  "auth": {
+    "register": {
+      "eyebrow": "VYRA",
+      "title": "Crie sua conta",
+      "description": "Cadastre-se para começar sua jornada multiesportiva.",
+      "name": "Nome",
+      "namePlaceholder": "Seu nome completo",
+      "email": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "password": "Senha",
+      "passwordPlaceholder": "Ao menos 8 caracteres",
+      "confirmPassword": "Confirmar senha",
+      "confirmPasswordPlaceholder": "Digite a senha novamente",
+      "submit": "Criar conta",
+      "submitting": "Criando conta…",
+      "success": "Conta criada com sucesso. A sessão será configurada na próxima etapa.",
+      "validation": {
+        "nameRequired": "Informe seu nome.",
+        "nameMin": "O nome deve ter ao menos 2 caracteres.",
+        "nameMax": "O nome deve ter no máximo 120 caracteres.",
+        "emailRequired": "Informe seu e-mail.",
+        "emailInvalid": "Informe um e-mail válido.",
+        "emailMax": "O e-mail deve ter no máximo 254 caracteres.",
+        "passwordRequired": "Informe uma senha.",
+        "passwordMin": "A senha deve ter ao menos 8 caracteres.",
+        "passwordMax": "A senha deve ter no máximo 128 caracteres.",
+        "passwordRules": "Use ao menos uma letra maiúscula, uma minúscula e um número.",
+        "confirmPasswordRequired": "Confirme sua senha.",
+        "passwordMismatch": "As senhas não coincidem."
+      },
+      "errors": {
+        "validation": "Revise os dados informados e tente novamente.",
+        "emailAlreadyExists": "Não foi possível criar a conta com este e-mail.",
+        "rateLimited": "Muitas tentativas. Aguarde um momento e tente novamente.",
+        "network": "Não foi possível conectar ao servidor. Verifique a rede e o endereço da API.",
+        "timeout": "O servidor demorou para responder. Tente novamente.",
+        "server": "O servidor encontrou um problema. Tente novamente mais tarde.",
+        "configuration": "Configure o endereço da API antes de criar a conta.",
+        "unknown": "Não foi possível concluir o cadastro. Tente novamente."
+      }
+    }
+  }
+}

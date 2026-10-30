@@ -1,32 +1,44 @@
 # Roadmap mobile
 
-O roadmap é incremental. Cada task deve entregar um recorte utilizável e validado, sem antecipar estruturas das etapas seguintes.
+O roadmap é incremental. Cada task entrega um recorte validável sem antecipar abstrações das etapas seguintes.
 
 ## TASK 01 — Arquitetura inicial
 
 Status: concluída.
 
-- Separação entre rotas, features, shared, core e theme.
-- Tokens light/dark e provider raiz.
-- Convenções, status e decisões documentados.
+- Feature-First e Clean Architecture pragmática.
+- Tema light/dark, aliases e providers.
+- Convenções e documentação.
 
-## TASK 02 — Fundação de produto e design system mínimo
+## TASK 02 — Limpeza, i18n e cadastro integrado
 
-Sugestão, aguardando autorização:
+Status: concluída.
 
-- Definir requisitos do primeiro fluxo real e o mapa de rotas.
-- Criar somente os primitives usados por esse fluxo (por exemplo, botão, campo, container de tela e feedback de carregamento/erro).
-- Definir acessibilidade, estados interativos e escala tipográfica mínima.
-- Substituir gradualmente a UI `starter` sem implementar integrações de backend antes dos contratos estarem definidos.
-- Adicionar testes para os primitives e para o primeiro fluxo escolhido.
+- Remoção integral do template demonstrativo.
+- i18n `pt-BR` e `en`.
+- Cliente HTTP e ambiente.
+- Cadastro alinhado ao backend real.
+- Tratamento de erros e testes unitários.
+
+## TASK 03 recomendada — Sessão segura e login
+
+Aguardando autorização:
+
+- Adicionar Expo SecureStore após validar a API de SDK 58.
+- Implementar armazenamento seguro de access/refresh tokens.
+- Implementar login por e-mail e senha.
+- Restaurar sessão no startup.
+- Implementar rotação de refresh token e logout idempotente.
+- Separar estado autenticado, não autenticado e carregamento.
+- Adicionar testes de sessão, refresh concorrente e limpeza segura.
+- Definir o comportamento de navegação sem iniciar onboarding social.
 
 ## Etapas futuras
 
-1. Auth e onboarding, com contratos de sessão e armazenamento seguro definidos a partir da API real.
-2. Profiles e seleção de modalidades.
-3. Activities, exercises, workouts e workout-sessions.
-4. Running, nutrition e progress.
-5. Professionals, organizations e appointments.
-6. Observabilidade, offline/cache, acessibilidade ampliada e automação de releases.
-
-A ordem pode mudar conforme validação de produto e disponibilidade do backend. Cada domínio deve nascer como feature independente apenas quando entrar no escopo.
+1. Onboarding adaptativo, perfil e modalidades.
+2. Recuperação de senha.
+3. Auth Google/Apple em development builds apropriados.
+4. Activities, exercises, workouts e workout-sessions.
+5. Running, nutrition e progress.
+6. Professionals, organizations e appointments.
+7. Observabilidade, offline/cache e automação de releases.

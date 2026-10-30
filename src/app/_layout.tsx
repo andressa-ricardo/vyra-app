@@ -1,16 +1,11 @@
-import * as SplashScreen from 'expo-splash-screen';
+import { Stack } from 'expo-router';
 
 import { AppProviders } from '@/core/providers/app-providers';
-import { AnimatedSplashOverlay } from '@/features/starter/presentation/components/animated-icon';
-import AppTabs from '@/features/starter/presentation/components/app-tabs';
 
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
+export default function RootLayout() {
   return (
     <AppProviders>
-      <AnimatedSplashOverlay />
-      <AppTabs />
+      <Stack screenOptions={{ headerShown: false }} />
     </AppProviders>
   );
 }
