@@ -35,18 +35,26 @@ function RootNavigator() {
   if (!booted && session.status !== 'loading' && !resolvingOnboarding) setBooted(true);
   if (!booted) return <View className="flex-1 bg-auth-bg" />;
 
+  // Destino explícito de cada redirecionamento: sem ele, abrir o app logado em `/`
+  // (rota de boas-vindas) cai em "Unmatched Route", pois o grupo de abas não tem `/`.
+  const signedInHome = onboarding.status === 'pending' ? '/onboarding' : '/home';
+
   return (
     <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#030C1B' } }}>
       {/* Logo após o login, a tela atual permanece até o status do onboarding chegar. */}
-      <Stack.Protected guard={!signedIn || resolvingOnboarding}>
+      <Stack.Protected guard={!signedIn || resolvingOnboarding} redirectTo={signedInHome}>
         <Stack.Screen name="index" />
         <Stack.Screen name="login" />
         <Stack.Screen name="register" />
       </Stack.Protected>
-      <Stack.Protected guard={signedIn && onboarding.status === 'pending'}>
+      <Stack.Protected
+        guard={signedIn && onboarding.status === 'pending'}
+        redirectTo={signedIn ? '/home' : '/'}>
         <Stack.Screen name="onboarding" />
       </Stack.Protected>
-      <Stack.Protected guard={signedIn && onboarding.status === 'done'}>
+      <Stack.Protected
+        guard={signedIn && onboarding.status === 'done'}
+        redirectTo={signedIn ? '/onboarding' : '/'}>
         <Stack.Screen name="(tabs)" />
       </Stack.Protected>
     </Stack>

@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs } from 'expo-router/js-tabs';
 import Apple from 'lucide-react-native/icons/apple';
 import Dumbbell from 'lucide-react-native/icons/dumbbell';
 import Footprints from 'lucide-react-native/icons/footprints';
