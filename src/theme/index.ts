@@ -1,6 +1,7 @@
 export {
   authColors,
   colors,
+  metricColors,
   palette,
   type ColorSchemeName,
   type ThemeColor,

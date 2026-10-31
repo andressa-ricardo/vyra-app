@@ -266,14 +266,48 @@
     "newRecord": "Novo recorde: {{records}}",
     "splits": "Splits",
     "firstSplit": "Complete 1 km para gerar o primeiro split.",
-    "save": "Salvar e concluir",
+    "save": "Salvar",
     "saving": "Salvando…",
     "units": {
       "kilometers": "km",
-      "pace": "/km"
+      "pace": "/km",
+      "kcal": "kcal",
+      "meters": "m",
+      "speed": "km/h"
     },
     "finishPending": "Corrida finalizada no aparelho. Ela será salva assim que houver conexão.",
-    "retrySync": "Tentar sincronizar agora"
+    "retrySync": "Tentar sincronizar agora",
+    "distance": "Distância",
+    "paused": "Pausado",
+    "gps": {
+      "searching": "Buscando GPS",
+      "strong": "GPS forte",
+      "medium": "GPS médio",
+      "weak": "GPS fraco"
+    },
+    "calories": "Calorias",
+    "averageSpeed": "Velocidade média",
+    "elevationGain": "Ganho de elevação",
+    "mapLayers": "Alternar camadas do mapa",
+    "recenter": "Seguir minha posição",
+    "lock": "Bloquear",
+    "unlock": "Desbloquear controles",
+    "unlockHint": "Toque e segure para desbloquear",
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "summaryTitle": "Resumo da corrida",
+    "editName": "Editar nome da corrida",
+    "totalTime": "Tempo total",
+    "bestSplit": "Melhor km",
+    "charts": {
+      "pace": "Ritmo",
+      "elevation": "Elevação"
+    },
+    "pacePerKm": "Ritmo por quilômetro",
+    "elevationProfile": "Elevação no percurso",
+    "noElevation": "Sem dados de altitude neste percurso.",
+    "share": "Compartilhar",
+    "shareMessage": "{{name}} no VYRA: {{distance}} km em {{duration}} (pace {{pace}}/km)"
   },
   "tabs": {
     "home": "Início",

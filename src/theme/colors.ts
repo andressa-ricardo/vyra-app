@@ -28,6 +28,16 @@ export const authColors = {
   success: '#4ADE80',
 } as const;
 
+/** Cores de destaque das métricas de atividade; o azul continua sendo o `authColors.primary`. */
+export const metricColors = {
+  calories: '#F97316',
+  time: '#22C55E',
+  pace: '#A855F7',
+  elevation: '#22C55E',
+  start: '#22C55E',
+  warning: '#FACC15',
+} as const;
+
 export const colors = {
   light: {
     primary: palette.blue600,

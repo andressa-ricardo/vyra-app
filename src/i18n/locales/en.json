@@ -266,14 +266,48 @@
     "newRecord": "New record: {{records}}",
     "splits": "Splits",
     "firstSplit": "Complete 1 km to generate the first split.",
-    "save": "Save and finish",
+    "save": "Save",
     "saving": "Saving…",
     "units": {
       "kilometers": "km",
-      "pace": "/km"
+      "pace": "/km",
+      "kcal": "kcal",
+      "meters": "m",
+      "speed": "km/h"
     },
     "finishPending": "Run finished on this device. It will be saved as soon as you are online.",
-    "retrySync": "Try syncing now"
+    "retrySync": "Try syncing now",
+    "distance": "Distance",
+    "paused": "Paused",
+    "gps": {
+      "searching": "Searching GPS",
+      "strong": "Strong GPS",
+      "medium": "Fair GPS",
+      "weak": "Weak GPS"
+    },
+    "calories": "Calories",
+    "averageSpeed": "Average speed",
+    "elevationGain": "Elevation gain",
+    "mapLayers": "Toggle map layers",
+    "recenter": "Follow my position",
+    "lock": "Lock",
+    "unlock": "Unlock controls",
+    "unlockHint": "Press and hold to unlock",
+    "pause": "Pause",
+    "resume": "Resume",
+    "summaryTitle": "Run summary",
+    "editName": "Edit run name",
+    "totalTime": "Total time",
+    "bestSplit": "Best km",
+    "charts": {
+      "pace": "Pace",
+      "elevation": "Elevation"
+    },
+    "pacePerKm": "Pace per kilometer",
+    "elevationProfile": "Route elevation",
+    "noElevation": "No altitude data for this route.",
+    "share": "Share",
+    "shareMessage": "{{name}} on VYRA: {{distance}} km in {{duration}} ({{pace}}/km pace)"
   },
   "tabs": {
     "home": "Home",

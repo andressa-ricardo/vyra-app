@@ -93,3 +93,15 @@ export function formatPace(seconds: number | null) {
   if (!seconds || !Number.isFinite(seconds)) return '--:--';
   return `${Math.floor(seconds / 60)}:${String(Math.round(seconds % 60)).padStart(2, '0')}`;
 }
+
+export function formatDistanceKm(meters: number, locale?: string) {
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(meters / 1_000);
+}
+
+export function formatDecimal(value: number | null, locale?: string, digits = 1) {
+  if (value === null || !Number.isFinite(value)) return '--';
+  return new Intl.NumberFormat(locale, { maximumFractionDigits: digits }).format(value);
+}

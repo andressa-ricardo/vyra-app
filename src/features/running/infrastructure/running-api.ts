@@ -80,3 +80,10 @@ export async function setWeeklyRunningGoal(targetDistanceMeters: number) {
   );
   return data;
 }
+
+/** Peso do perfil, usado apenas para estimar calorias. */
+export async function getBodyWeightKg() {
+  const { data } = await httpClient.get<{ currentWeightKg: string | number | null }>('/profiles/me');
+  const weight = Number(data.currentWeightKg);
+  return data.currentWeightKg !== null && Number.isFinite(weight) && weight > 0 ? weight : null;
+}

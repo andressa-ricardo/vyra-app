@@ -8,6 +8,8 @@
 - Cronômetro derivado de timestamps (correto após segundo plano) e pontos capturados em segundo plano exibidos ao voltar ao app.
 - Fila local idempotente, sincronização em lotes e recuperação da sessão ativa.
 - Resumo real com nome editável, mapa, métricas, splits e recordes.
+- Telas de corrida e resumo no visual escuro do app: mapa escuro com início/posição, sinal de GPS, bloqueio de controles e gráficos de ritmo por km e elevação.
+- Calorias são estimadas (peso do perfil × km) e o ganho de elevação vem da altitude do GPS. Cadência e frequência cardíaca não são exibidas: o app ainda não tem pedômetro nem sensor cardíaco.
 
 O segundo plano está configurado, mas exige Development Build e validação física. Permanecem pendentes testes com tela bloqueada/fabricantes Android, bateria, chave Google Maps Android (`GOOGLE_MAPS_ANDROID_API_KEY`, lida em `app.config.js`) e armazenamento local cifrado de GPS.
 
@@ -66,7 +68,7 @@ Atualizado em 30 de outubro de 2026.
 
 ## TASK 05 — concluída
 
-- Barra de abas: Início, Treinos, Corrida, Nutrição e Mais (Treinos, Corrida e Nutrição ainda são estados "em breve").
+- Barra de abas: Início, Treinos, Corrida, Nutrição e Mais (Treinos e Nutrição ainda são estados "em breve").
 - Tela Mais com perfil, menu de seções e logout com confirmação.
 
 ## Pendente
