@@ -1,5 +1,16 @@
 # Status mobile
 
+## Running — implementação funcional
+
+- Dashboard integrado a estatísticas semanais, meta, histórico e recordes reais.
+- GPS real, mapa, cronômetro e percurso incremental.
+- Pausa, retomada, finalização e descarte funcionam offline e são sincronizados depois, com o horário do aparelho.
+- Cronômetro derivado de timestamps (correto após segundo plano) e pontos capturados em segundo plano exibidos ao voltar ao app.
+- Fila local idempotente, sincronização em lotes e recuperação da sessão ativa.
+- Resumo real com nome editável, mapa, métricas, splits e recordes.
+
+O segundo plano está configurado, mas exige Development Build e validação física. Permanecem pendentes testes com tela bloqueada/fabricantes Android, bateria, chave Google Maps Android (`GOOGLE_MAPS_ANDROID_API_KEY`, lida em `app.config.js`) e armazenamento local cifrado de GPS.
+
 Atualizado em 30 de outubro de 2026.
 
 ## Base técnica

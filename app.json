@@ -22,7 +22,17 @@
       "expo-router",
       "expo-localization",
       "expo-secure-store",
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Permita que o VYRA use sua localização para registrar o percurso da corrida.",
+          "locationAlwaysAndWhenInUsePermission": "Permita que o VYRA registre sua corrida mesmo com a tela bloqueada.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

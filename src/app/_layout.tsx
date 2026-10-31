@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import '../../global.css';
+import '@/features/running/infrastructure/background-location-task';
 
 import { AppProviders } from '@/core/providers/app-providers';
 import { useSession } from '@/core/session/session-provider';
@@ -56,6 +57,8 @@ function RootNavigator() {
         guard={signedIn && onboarding.status === 'done'}
         redirectTo={signedIn ? '/onboarding' : '/'}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="run" />
+        <Stack.Screen name="running-summary/[id]" />
       </Stack.Protected>
     </Stack>
   );

@@ -1,5 +1,9 @@
 # Integração com o backend VYRA
 
+## Running
+
+O mobile usa endpoints autenticados em `/running`. Pontos GPS são enviados em lotes com `clientPointId`; somente confirmações do servidor removem itens da fila local. A finalização cria uma única Activity por `running:<sessionId>` e o resumo apenas renomeia essa Activity. Pausa, retomada e finalização enviam o horário do aparelho (`at`, `endedAt`), validado pelo backend, para que eventos sincronizados após um período offline não contem o tempo de espera. As estatísticas recebem o fuso IANA do aparelho (`timeZone`, via `expo-localization`). A migration `20261030000000_activities_running` precisa ser aplicada antes do teste ponta a ponta.
+
 ## Contrato verificado
 
 O backend foi inspecionado em `C:\Users\andre\Documents\vyra-be`. O cadastro está implementado por `AuthController`, `RegisterDto` e `AuthService`.

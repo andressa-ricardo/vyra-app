@@ -1,5 +1,5 @@
-import { ComingSoonScreen } from '@/shared/components/coming-soon-screen';
+import { RunningDashboardScreen } from '@/features/running/presentation/screens/running-dashboard-screen';
 
 export default function RunningRoute() {
-  return <ComingSoonScreen titleKey="tabs.running" />;
+  return <RunningDashboardScreen />;
 }

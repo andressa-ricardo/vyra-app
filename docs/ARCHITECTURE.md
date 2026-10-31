@@ -1,5 +1,13 @@
 # Arquitetura mobile do VYRA
 
+## Running
+
+`src/features/running` concentra contratos HTTP, fila local temporária, captura GPS e telas. A aba compõe o dashboard; `/run` registra a sessão e `/running-summary/[id]` apresenta o resultado persistido. Pontos possuem identificadores idempotentes e são enviados em lotes de até 200. O backend é a autoridade para distância, duração, pace, splits e recordes.
+
+A corrida é *offline-first*: o estado local (`LocalRunningState` no AsyncStorage, chaveado pelo `clientRequestId`) é a fonte da verdade durante a corrida. Iniciar, pausar, retomar e finalizar alteram primeiro o estado local com o horário do aparelho; `running-sync.ts` envia depois, em ordem, criação idempotente, pontos, pausas/retomadas e finalização (com `at`/`endedAt`), descartando apenas falhas permanentes (400/403/404/409/422). Descartes feitos offline ficam numa lista pendente. O cronômetro é derivado de `startedAt` e das pausas, e não de um contador.
+
+`watchPositionAsync` atualiza a interface em primeiro plano. A task global do Expo TaskManager é registrada no layout raiz para Development Builds com permissão de segundo plano. A fila usa AsyncStorage e é apagada ao finalizar/descartar; como esse armazenamento não tem criptografia própria, a estratégia cifrada e a política de retenção de GPS ainda são requisitos de produção.
+
 ## Objetivo
 
 O VYRA adota Feature-First com Clean Architecture pragmática. Navegação, apresentação, regras de negócio e infraestrutura permanecem separadas sem criar camadas antes de existir uma necessidade concreta.

@@ -1,5 +1,9 @@
 # Roadmap mobile
 
+## Marco Running
+
+O primeiro fluxo vertical foi implementado: backend Activities/Running, GPS real, sincronização offline, dashboard e resumo. Antes de produção: migration controlada, teste físico, política de retenção/criptografia de coordenadas e validação de background tracking.
+
 O roadmap é incremental. Cada task entrega um recorte validável sem antecipar abstrações das etapas seguintes.
 
 ## TASK 01 — Arquitetura inicial
