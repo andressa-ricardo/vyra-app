@@ -51,6 +51,7 @@ Documentação: https://docs.expo.dev/router/introduction.md
 
 ## Tema e UI
 
+- Use NativeWind (`className`) como padrão para layout e estilos estáticos. Reserve `style`/`StyleSheet` para valores dinâmicos ou propriedades sem suporte equivalente.
 - Consuma tokens de `@/theme`; não espalhe cores de marca por componentes.
 - Preserve suporte a light/dark seguindo o modo do sistema.
 - Componentes compartilhados devem ser independentes de domínio e ter uso real.
