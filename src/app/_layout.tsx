@@ -47,7 +47,7 @@ function RootNavigator() {
         <Stack.Screen name="onboarding" />
       </Stack.Protected>
       <Stack.Protected guard={signedIn && onboarding.status === 'done'}>
-        <Stack.Screen name="home" />
+        <Stack.Screen name="(tabs)" />
       </Stack.Protected>
     </Stack>
   );

@@ -16,6 +16,7 @@ src/
 │   └── providers/        # Composition root da aplicação
 ├── features/
 │   ├── auth/             # Cadastro, login por senha, Google e Apple
+│   ├── account/          # Tela "Mais": perfil, menu e logout
 │   ├── home/             # Tela inicial autenticada
 │   └── onboarding/       # Boas-vindas, 4 etapas e resumo após o primeiro acesso
 ├── i18n/                 # Inicialização, idiomas e catálogos
@@ -26,7 +27,7 @@ src/
 
 ### `src/app`
 
-É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a landing, `/register` e `/login` abrem o cadastro e o login integrados, e `/home` é a tela autenticada. O layout raiz compõe providers e o `Stack`, usando `Stack.Protected` para liberar `/`, `/login` e `/register` somente sem sessão e `/home` somente com sessão. A troca de estado da sessão redireciona sozinha, sem `router.replace` após login ou logout.
+É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a landing, `/register` e `/login` abrem o cadastro e o login integrados, e o grupo `(tabs)` reúne as abas autenticadas (`/home`, `/workouts`, `/running`, `/nutrition`, `/more`). O layout raiz compõe providers e o `Stack`, usando `Stack.Protected` para liberar `/`, `/login` e `/register` somente sem sessão e o grupo `(tabs)` somente com sessão e onboarding resolvido. A troca de estado da sessão redireciona sozinha, sem `router.replace` após login ou logout.
 
 ### `src/features`
 

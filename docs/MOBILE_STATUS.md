@@ -53,12 +53,16 @@ Atualizado em 30 de outubro de 2026.
 - Progresso salvo a cada etapa, retomada no ponto salvo, pular e concluir integrados ao backend.
 - Ícones SVG com `lucide-react-native`.
 
+## TASK 05 — concluída
+
+- Barra de abas: Início, Treinos, Corrida, Nutrição e Mais (Treinos, Corrida e Nutrição ainda são estados "em breve").
+- Tela Mais com perfil, menu de seções e logout com confirmação.
+
 ## Pendente
 
 - Criar um `.env` local com o IPv4 correto antes do teste real.
 - Executar backend e banco localmente para validar o cadastro ponta a ponta.
 - Persistir preferência manual de idioma.
-- Botão visível de logout (a lógica `signOut` já existe).
 - Configurar client IDs Google, package/Bundle ID e gerar development build para validar Google/Apple.
 - Backend: incluir `code` no corpo do `HttpExceptionFilter`.
 - Recuperação de senha e vinculação de contas federadas.

@@ -8,7 +8,9 @@
     "comingSoon": "Coming soon",
     "back": "Back",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "cancel": "Cancel",
+    "comingSoonDescription": "We're preparing this area. It will be available soon."
   },
   "auth": {
     "welcome": {
@@ -213,6 +215,32 @@
       "goal": "Main goal",
       "professionalNote": "You can set up your professional profile later, inside the app.",
       "enter": "Enter VYRA"
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "workouts": "Workouts",
+    "running": "Running",
+    "nutrition": "Nutrition",
+    "more": "More"
+  },
+  "more": {
+    "items": {
+      "profile": "My profile",
+      "progress": "My progress",
+      "gym": "My gym",
+      "professionals": "My professionals",
+      "appointments": "My appointments",
+      "achievements": "My achievements",
+      "premium": "Premium subscription",
+      "notifications": "Notifications",
+      "settings": "Settings",
+      "help": "Help and support"
+    },
+    "signOut": "Log out",
+    "signOutConfirm": {
+      "title": "Log out?",
+      "message": "You'll need to log in again to access VYRA."
     }
   }
 }
