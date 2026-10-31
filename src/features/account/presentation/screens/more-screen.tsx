@@ -1,18 +1,16 @@
-import {
-  Bell,
-  Building2,
-  CalendarDays,
-  ChevronRight,
-  CircleHelp,
-  Crown,
-  LogOut,
-  Settings,
-  Stethoscope,
-  TrendingUp,
-  Trophy,
-  User,
-  type LucideIcon,
-} from 'lucide-react-native';
+import Bell from 'lucide-react-native/icons/bell';
+import BuildingComplex from 'lucide-react-native/icons/building-complex';
+import CalendarDays from 'lucide-react-native/icons/calendar-days';
+import ChevronRight from 'lucide-react-native/icons/chevron-right';
+import CircleQuestionMark from 'lucide-react-native/icons/circle-question-mark';
+import Crown from 'lucide-react-native/icons/crown';
+import LogOut from 'lucide-react-native/icons/log-out';
+import Settings from 'lucide-react-native/icons/settings';
+import Stethoscope from 'lucide-react-native/icons/stethoscope';
+import TrendingUp from 'lucide-react-native/icons/trending-up';
+import Trophy from 'lucide-react-native/icons/trophy';
+import User from 'lucide-react-native/icons/user';
+import type { LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from 'react-native';
@@ -25,14 +23,14 @@ import { authColors } from '@/theme';
 const menuItems: { key: string; Icon: LucideIcon }[] = [
   { key: 'profile', Icon: User },
   { key: 'progress', Icon: TrendingUp },
-  { key: 'gym', Icon: Building2 },
+  { key: 'gym', Icon: BuildingComplex },
   { key: 'professionals', Icon: Stethoscope },
   { key: 'appointments', Icon: CalendarDays },
   { key: 'achievements', Icon: Trophy },
   { key: 'premium', Icon: Crown },
   { key: 'notifications', Icon: Bell },
   { key: 'settings', Icon: Settings },
-  { key: 'help', Icon: CircleHelp },
+  { key: 'help', Icon: CircleQuestionMark },
 ];
 
 export function MoreScreen() {

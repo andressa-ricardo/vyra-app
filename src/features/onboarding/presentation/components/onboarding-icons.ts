@@ -1,28 +1,26 @@
-import {
-  Activity,
-  Apple,
-  Bike,
-  Building2,
-  CalendarCheck,
-  CircleDashed,
-  CircleDot,
-  Compass,
-  Dumbbell,
-  Flame,
-  Flower2,
-  Footprints,
-  Heart,
-  HeartPulse,
-  Music,
-  PersonStanding,
-  Shield,
-  Swords,
-  TrendingUp,
-  Trophy,
-  Volleyball,
-  Waves,
-  type LucideIcon,
-} from 'lucide-react-native';
+import Activity from 'lucide-react-native/icons/activity';
+import Apple from 'lucide-react-native/icons/apple';
+import Bike from 'lucide-react-native/icons/bike';
+import BuildingComplex from 'lucide-react-native/icons/building-complex';
+import CalendarCheck from 'lucide-react-native/icons/calendar-check';
+import CircleDashed from 'lucide-react-native/icons/circle-dashed';
+import CircleDot from 'lucide-react-native/icons/circle-dot';
+import Compass from 'lucide-react-native/icons/compass';
+import Dumbbell from 'lucide-react-native/icons/dumbbell';
+import Flame from 'lucide-react-native/icons/flame';
+import Flower2 from 'lucide-react-native/icons/flower-2';
+import Footprints from 'lucide-react-native/icons/footprints';
+import Heart from 'lucide-react-native/icons/heart';
+import HeartPulse from 'lucide-react-native/icons/heart-pulse';
+import EighthNotes from 'lucide-react-native/icons/eighth-notes';
+import PersonStanding from 'lucide-react-native/icons/person-standing';
+import Shield from 'lucide-react-native/icons/shield';
+import Swords from 'lucide-react-native/icons/swords';
+import TrendingUp from 'lucide-react-native/icons/trending-up';
+import Trophy from 'lucide-react-native/icons/trophy';
+import Volleyball from 'lucide-react-native/icons/volleyball';
+import WavesHorizontal from 'lucide-react-native/icons/waves-horizontal';
+import type { LucideIcon } from 'lucide-react-native';
 
 import type { OnboardingExperience, PrimaryGoal } from '../../types/onboarding.types';
 
@@ -30,7 +28,7 @@ export const experienceIcons: Record<OnboardingExperience, LucideIcon> = {
   PERSONAL_FITNESS: Activity,
   TRAINER: Dumbbell,
   NUTRITIONIST: Apple,
-  GYM_MANAGEMENT: Building2,
+  GYM_MANAGEMENT: BuildingComplex,
 };
 
 export const goalIcons: Record<PrimaryGoal, LucideIcon> = {
@@ -52,13 +50,13 @@ const modalityIcons: Record<string, LucideIcon> = {
   walking: PersonStanding,
   calisthenics: Activity,
   cycling: Bike,
-  swimming: Waves,
+  swimming: WavesHorizontal,
   pilates: CircleDot,
   yoga: Flower2,
   crossfit: Flame,
   'jiu-jitsu': Shield,
   'other-martial-arts': Swords,
-  dance: Music,
+  dance: EighthNotes,
   football: CircleDashed,
   basketball: Volleyball,
   'other-sports': Trophy,

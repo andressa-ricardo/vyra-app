@@ -97,7 +97,7 @@ O cadastro devolve uma sessão e autentica o usuário imediatamente.
 - O fluxo vive numa única rota com estado local (`useOnboardingFlow`): 0 boas-vindas, 1–4 etapas do backend, 5 resumo. Cada "Continuar" faz `PATCH /onboarding/me` com `currentStep` e os dados da etapa antes de avançar; o status `IN_PROGRESS` retoma na etapa salva, com as seleções vindas de `GET /profiles/me`.
 - "Pular" chama `POST /onboarding/me/skip`; "Entrar no VYRA" chama `POST /onboarding/me/complete`.
 - Modalidades vêm de `GET /sport-modalities`; o i18n traduz pelo `slug` e usa o nome do backend como fallback.
-- Ícones usam `lucide-react-native` (SVG, sem download de fonte em runtime).
+- Ícones usam `lucide-react-native` (SVG, sem download de fonte em runtime). Importe cada ícone pelo caminho (`lucide-react-native/icons/<nome>`); o import pela raiz leva os ~2.000 ícones ao bundle e dobra o tempo de build. Só tipos (`LucideIcon`) vêm da raiz.
 - Componentes usados por mais de uma feature (logo, botão primário, campo de texto, voltar, mensagem de erro) ficam em `src/shared/components`.
 
 ## Login federado

@@ -1,5 +1,10 @@
 import { Tabs } from 'expo-router';
-import { Apple, Dumbbell, Footprints, House, Menu, type LucideIcon } from 'lucide-react-native';
+import Apple from 'lucide-react-native/icons/apple';
+import Dumbbell from 'lucide-react-native/icons/dumbbell';
+import Footprints from 'lucide-react-native/icons/footprints';
+import House from 'lucide-react-native/icons/house';
+import Menu from 'lucide-react-native/icons/menu';
+import type { LucideIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import type { ColorValue } from 'react-native';
 

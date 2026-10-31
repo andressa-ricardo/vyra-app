@@ -1,4 +1,4 @@
-import { Hourglass } from 'lucide-react-native';
+import Hourglass from 'lucide-react-native/icons/hourglass';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

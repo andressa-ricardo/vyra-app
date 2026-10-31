@@ -1,4 +1,5 @@
-import { Info, Sparkles } from 'lucide-react-native';
+import Info from 'lucide-react-native/icons/info';
+import Sparkles from 'lucide-react-native/icons/sparkles';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
