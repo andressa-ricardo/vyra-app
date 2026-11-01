@@ -2,21 +2,25 @@ import ChevronRight from 'lucide-react-native/icons/chevron-right';
 import { router } from 'expo-router';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Pressable, ScrollView, Switch, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { LanguageSelectionModal } from '@/features/account/presentation/components/language-selection-modal';
 import { changeLanguage } from '@/i18n';
 import type { SupportedLanguage } from '@/i18n/config';
 import { BackButton } from '@/shared/components/back-button';
+import { Toggle } from '@/shared/components/toggle';
 import { authColors } from '@/theme';
 
 type NavigationRowProps = {
+  isLast?: boolean;
   label: string;
   onPress: () => void;
   value?: string;
 };
 
 type ToggleRowProps = {
+  isLast?: boolean;
   label: string;
   onValueChange: (value: boolean) => void;
   value: boolean;
@@ -33,11 +37,14 @@ function SettingsSection({ children, title }: { children: ReactNode; title: stri
   );
 }
 
-function NavigationRow({ label, onPress, value }: NavigationRowProps) {
+function NavigationRow({ isLast = false, label, onPress, value }: NavigationRowProps) {
   return (
     <Pressable
       accessibilityRole="button"
-      className="min-h-[53px] flex-row items-center gap-3 border-b border-auth-border/70 px-4 py-3 last:border-b-0 active:bg-auth-pressed"
+      className={[
+        'min-h-[53px] flex-row items-center gap-3 px-4 py-3 active:bg-auth-pressed',
+        isLast ? '' : 'border-b border-auth-border',
+      ].join(' ')}
       onPress={onPress}>
       <Text className="flex-1 text-[15px] font-medium text-auth-text" maxFontSizeMultiplier={1.05}>
         {label}
@@ -52,18 +59,19 @@ function NavigationRow({ label, onPress, value }: NavigationRowProps) {
   );
 }
 
-function ToggleRow({ label, onValueChange, value }: ToggleRowProps) {
+function ToggleRow({ isLast = false, label, onValueChange, value }: ToggleRowProps) {
   return (
-    <View className="min-h-[53px] flex-row items-center gap-3 border-b border-auth-border/70 px-4 py-2 last:border-b-0">
+    <View
+      className={[
+        'min-h-[53px] flex-row items-center gap-3 px-4 py-2',
+        isLast ? '' : 'border-b border-auth-border',
+      ].join(' ')}>
       <Text className="flex-1 text-[15px] font-medium text-auth-text" maxFontSizeMultiplier={1.05}>
         {label}
       </Text>
-      <Switch
+      <Toggle
         accessibilityLabel={label}
-        ios_backgroundColor={authColors.surfacePressed}
         onValueChange={onValueChange}
-        thumbColor={value ? '#FFFFFF' : authColors.placeholder}
-        trackColor={{ false: authColors.surfacePressed, true: authColors.primary }}
         value={value}
       />
     </View>
@@ -76,17 +84,15 @@ export function SettingsScreen() {
   const [waterReminders, setWaterReminders] = useState(true);
   const [newsAndOffers, setNewsAndOffers] = useState(false);
   const [privateProfile, setPrivateProfile] = useState(false);
+  const [languageModalVisible, setLanguageModalVisible] = useState(false);
 
   const showComingSoon = () => Alert.alert(t('common.comingSoon'), t('common.comingSoonDescription'));
 
-  const selectLanguage = () => {
-    const setLanguage = (language: SupportedLanguage) => void changeLanguage(language);
+  const selectedLanguage: SupportedLanguage = i18n.resolvedLanguage?.startsWith('en') ? 'en' : 'pt-BR';
 
-    Alert.alert(t('settings.language'), t('settings.languagePrompt'), [
-      { text: t('common.portuguese'), onPress: () => setLanguage('pt-BR') },
-      { text: t('common.english'), onPress: () => setLanguage('en') },
-      { text: t('common.cancel'), style: 'cancel' },
-    ]);
+  const selectLanguage = (language: SupportedLanguage) => {
+    void changeLanguage(language);
+    setLanguageModalVisible(false);
   };
 
   const confirmDeleteAccount = () =>
@@ -95,7 +101,7 @@ export function SettingsScreen() {
       { text: t('common.understood'), style: 'destructive' },
     ]);
 
-  const languageLabel = i18n.resolvedLanguage?.startsWith('en')
+  const languageLabel = selectedLanguage === 'en'
     ? t('settings.values.english')
     : t('settings.values.portugueseBrazil');
 
@@ -115,7 +121,7 @@ export function SettingsScreen() {
         showsVerticalScrollIndicator={false}>
         <SettingsSection title={t('settings.sections.account')}>
           <NavigationRow label={t('settings.editProfile')} onPress={showComingSoon} />
-          <NavigationRow label={t('settings.changePassword')} onPress={showComingSoon} />
+          <NavigationRow isLast label={t('settings.changePassword')} onPress={showComingSoon} />
         </SettingsSection>
 
         <SettingsSection title={t('settings.sections.notifications')}>
@@ -130,6 +136,7 @@ export function SettingsScreen() {
             value={waterReminders}
           />
           <ToggleRow
+            isLast
             label={t('settings.newsAndOffers')}
             onValueChange={setNewsAndOffers}
             value={newsAndOffers}
@@ -142,13 +149,18 @@ export function SettingsScreen() {
             onPress={showComingSoon}
             value={t('settings.values.metric')}
           />
-          <NavigationRow label={t('settings.language')} onPress={selectLanguage} value={languageLabel} />
+          <NavigationRow
+            label={t('settings.language')}
+            onPress={() => setLanguageModalVisible(true)}
+            value={languageLabel}
+          />
           <NavigationRow
             label={t('settings.theme')}
             onPress={showComingSoon}
             value={t('settings.values.dark')}
           />
           <ToggleRow
+            isLast
             label={t('settings.privateProfile')}
             onValueChange={setPrivateProfile}
             value={privateProfile}
@@ -164,6 +176,13 @@ export function SettingsScreen() {
           </Text>
         </Pressable>
       </ScrollView>
+
+      <LanguageSelectionModal
+        onClose={() => setLanguageModalVisible(false)}
+        onSelect={selectLanguage}
+        selectedLanguage={selectedLanguage}
+        visible={languageModalVisible}
+      />
     </SafeAreaView>
   );
 }

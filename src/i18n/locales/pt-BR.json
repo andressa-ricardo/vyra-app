@@ -10,6 +10,7 @@
     "showPassword": "Mostrar senha",
     "hidePassword": "Ocultar senha",
     "cancel": "Cancelar",
+    "close": "Fechar",
     "understood": "Entendi",
     "comingSoonDescription": "Estamos preparando esta área. Ela estará disponível em breve."
   },
@@ -291,6 +292,8 @@
     "elevationGain": "Ganho de elevação",
     "mapLayers": "Alternar camadas do mapa",
     "recenter": "Seguir minha posição",
+    "expandPanel": "Expandir painel da corrida",
+    "collapsePanel": "Recolher painel da corrida",
     "lock": "Bloquear",
     "unlock": "Desbloquear controles",
     "unlockHint": "Toque e segure para desbloquear",
@@ -355,6 +358,10 @@
     "units": "Unidades",
     "language": "Idioma",
     "languagePrompt": "Escolha o idioma do aplicativo.",
+    "languageModal": {
+      "title": "Escolha o idioma",
+      "description": "O aplicativo será atualizado imediatamente."
+    },
     "theme": "Tema",
     "privateProfile": "Perfil privado",
     "deleteAccount": "Excluir conta",

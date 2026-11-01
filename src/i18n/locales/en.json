@@ -10,6 +10,7 @@
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "cancel": "Cancel",
+    "close": "Close",
     "understood": "Got it",
     "comingSoonDescription": "We're preparing this area. It will be available soon."
   },
@@ -291,6 +292,8 @@
     "elevationGain": "Elevation gain",
     "mapLayers": "Toggle map layers",
     "recenter": "Follow my position",
+    "expandPanel": "Expand run panel",
+    "collapsePanel": "Collapse run panel",
     "lock": "Lock",
     "unlock": "Unlock controls",
     "unlockHint": "Press and hold to unlock",
@@ -355,6 +358,10 @@
     "units": "Units",
     "language": "Language",
     "languagePrompt": "Choose the app language.",
+    "languageModal": {
+      "title": "Choose a language",
+      "description": "The app will update immediately."
+    },
     "theme": "Theme",
     "privateProfile": "Private profile",
     "deleteAccount": "Delete account",

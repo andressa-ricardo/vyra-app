@@ -1,10 +1,11 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import type { PropsWithChildren } from 'react';
+import { I18nextProvider } from 'react-i18next';
 
 import { SessionProvider } from '@/core/session/session-provider';
 import { useColorScheme } from '@/shared/hooks/use-color-scheme';
 import { colors } from '@/theme';
-import '@/i18n';
+import { i18n } from '@/i18n';
 
 const lightNavigationTheme = {
   ...DefaultTheme,
@@ -34,8 +35,10 @@ export function AppProviders({ children }: PropsWithChildren) {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? darkNavigationTheme : lightNavigationTheme}>
-      <SessionProvider>{children}</SessionProvider>
-    </ThemeProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider value={colorScheme === 'dark' ? darkNavigationTheme : lightNavigationTheme}>
+        <SessionProvider>{children}</SessionProvider>
+      </ThemeProvider>
+    </I18nextProvider>
   );
 }
