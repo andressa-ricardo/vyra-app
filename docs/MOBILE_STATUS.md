@@ -71,6 +71,7 @@ Atualizado em 31 de outubro de 2026.
 
 - Barra de abas: Início, Treinos, Corrida, Nutrição e Mais (Treinos e Nutrição ainda são estados "em breve").
 - Tela Mais com perfil, menu de seções e logout com confirmação.
+- Tela de configurações acessível pela aba Mais, com conta, notificações, preferências, troca de idioma e exclusão de conta sinalizada como indisponível enquanto não houver contrato de backend.
 
 ## Pendente
 

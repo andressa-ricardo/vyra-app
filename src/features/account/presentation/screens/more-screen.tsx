@@ -11,6 +11,7 @@ import TrendingUp from 'lucide-react-native/icons/trending-up';
 import Trophy from 'lucide-react-native/icons/trophy';
 import User from 'lucide-react-native/icons/user';
 import type { LucideIcon } from 'lucide-react-native';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from 'react-native';
@@ -39,6 +40,15 @@ export function MoreScreen() {
   const [signingOut, setSigningOut] = useState(false);
 
   const showComingSoon = () => Alert.alert(t('common.comingSoon'), t('common.comingSoonDescription'));
+
+  const handleMenuPress = (key: string) => {
+    if (key === 'settings') {
+      router.push('/more/settings');
+      return;
+    }
+
+    showComingSoon();
+  };
 
   const confirmSignOut = () =>
     Alert.alert(t('more.signOutConfirm.title'), t('more.signOutConfirm.message'), [
@@ -89,7 +99,7 @@ export function MoreScreen() {
                 'h-[52px] flex-row items-center gap-3.5 px-4 active:bg-auth-pressed',
                 index > 0 ? 'border-t border-auth-border/60' : '',
               ].join(' ')}
-              onPress={showComingSoon}>
+              onPress={() => handleMenuPress(key)}>
               <Icon color={authColors.muted} size={20} strokeWidth={1.75} />
               <Text className="flex-1 text-[15px] text-auth-text" maxFontSizeMultiplier={1.05}>
                 {t(`more.items.${key}`)}

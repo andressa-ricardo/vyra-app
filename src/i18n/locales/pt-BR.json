@@ -10,6 +10,7 @@
     "showPassword": "Mostrar senha",
     "hidePassword": "Ocultar senha",
     "cancel": "Cancelar",
+    "understood": "Entendi",
     "comingSoonDescription": "Estamos preparando esta área. Ela estará disponível em breve."
   },
   "auth": {
@@ -337,6 +338,32 @@
     "signOutConfirm": {
       "title": "Sair da conta?",
       "message": "Você precisará entrar novamente para acessar o VYRA."
+    }
+  },
+  "settings": {
+    "title": "Configurações",
+    "sections": {
+      "account": "Conta",
+      "notifications": "Notificações",
+      "preferences": "Preferências"
+    },
+    "editProfile": "Editar perfil",
+    "changePassword": "Alterar senha",
+    "workoutReminders": "Lembretes de treino",
+    "waterReminders": "Lembrete de água",
+    "newsAndOffers": "Novidades e ofertas",
+    "units": "Unidades",
+    "language": "Idioma",
+    "languagePrompt": "Escolha o idioma do aplicativo.",
+    "theme": "Tema",
+    "privateProfile": "Perfil privado",
+    "deleteAccount": "Excluir conta",
+    "deleteUnavailable": "A exclusão de conta ainda não está disponível. Nenhum dado foi removido.",
+    "values": {
+      "metric": "Métrico (kg, km)",
+      "portugueseBrazil": "Português (Brasil)",
+      "english": "English",
+      "dark": "Escuro"
     }
   }
 }
