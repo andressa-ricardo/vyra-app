@@ -307,7 +307,11 @@
     "elevationProfile": "Elevação no percurso",
     "noElevation": "Sem dados de altitude neste percurso.",
     "share": "Compartilhar",
-    "shareMessage": "{{name}} no VYRA: {{distance}} km em {{duration}} (pace {{pace}}/km)"
+    "shareMessage": "{{name}} no VYRA: {{distance}} km em {{duration}} (pace {{pace}}/km)",
+    "liveStatus": {
+      "title": "Corrida em andamento",
+      "paused": "Corrida pausada"
+    }
   },
   "tabs": {
     "home": "Início",

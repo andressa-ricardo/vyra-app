@@ -9,11 +9,12 @@
 - Fila local idempotente, sincronização em lotes e recuperação da sessão ativa.
 - Resumo real com nome editável, mapa, métricas, splits e recordes.
 - Telas de corrida e resumo no visual escuro do app: mapa escuro com início/posição, sinal de GPS, bloqueio de controles e gráficos de ritmo por km e elevação.
+- Aviso de corrida em andamento na tela de bloqueio: notificação fixa no Android e Live Activity/Dynamic Island no iOS, com distância, tempo e pace médio. Exige development build; o iOS exige conta Apple Developer (App Group `group.com.vyra.app`) e ainda não foi compilado.
 - Calorias são estimadas (peso do perfil × km) e o ganho de elevação vem da altitude do GPS. Cadência e frequência cardíaca não são exibidas: o app ainda não tem pedômetro nem sensor cardíaco.
 
 O segundo plano está configurado, mas exige Development Build e validação física. Permanecem pendentes testes com tela bloqueada/fabricantes Android, bateria, chave Google Maps Android (`GOOGLE_MAPS_ANDROID_API_KEY`, lida em `app.config.js`) e armazenamento local cifrado de GPS.
 
-Atualizado em 30 de outubro de 2026.
+Atualizado em 31 de outubro de 2026.
 
 ## Base técnica
 

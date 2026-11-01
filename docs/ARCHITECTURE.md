@@ -99,7 +99,16 @@ O cadastro devolve uma sessão e autentica o usuário imediatamente.
 - `httpClient`: envia `Authorization: Bearer`, e ao receber 401 faz um único `POST /auth/refresh` compartilhado entre requisições simultâneas (o backend revoga a família inteira se um refresh token for reutilizado), salva os tokens rotacionados e repete a requisição. Rotas públicas de autenticação usam `skipAuth`.
 - `SessionProvider`/`useSession`: restaura a sessão no startup com `GET /users/me`, expõe `signIn` e `signOut` (que chama `POST /auth/logout` e apaga os tokens). Se o backend recusar o refresh, a sessão é encerrada e as rotas protegidas voltam para a landing. Falhas de rede no startup mantêm os tokens para a próxima abertura.
 
-## Onboarding
+## Atividade em andamento (tela de bloqueio)
+
+`src/core/activity-status` mostra o aviso de qualquer esporte em andamento, com `expo-widgets`:
+
+- Android: notificação fixa (`createCustomNotification`, layout em `@expo/ui/jetpack-compose`), substituída no lugar a cada atualização.
+- iOS: Live Activity na tela de bloqueio e na Dynamic Island (`createLiveActivity`, layout em `@expo/ui/swift-ui`). O tempo é contado pelo próprio iOS a partir de `timerStartMs`.
+- Os layouts usam a diretiva `'widget'` e rodam num runtime isolado: sem hooks, i18n ou imports em tempo de execução. A feature envia `ActivityStatus` já traduzido e formatado.
+- Os módulos são carregados sob demanda; no Expo Go e na web o aviso simplesmente não aparece.
+- A corrida publica pela tela (no máximo a cada 5 s, imediatamente ao pausar/retomar) e pela tarefa de localização em segundo plano, que continua a distância a partir de `LocalRunningState.live`.
+
 
 - `OnboardingStatusProvider` consulta `GET /onboarding/me` sempre que a sessão muda de usuário. `NOT_STARTED`/`IN_PROGRESS` liberam só `/onboarding`; `COMPLETED`/`SKIPPED` liberam só `/home`. Se a consulta falhar, o usuário segue para a home e o onboarding volta na próxima abertura.
 - O fluxo vive numa única rota com estado local (`useOnboardingFlow`): 0 boas-vindas, 1–4 etapas do backend, 5 resumo. Cada "Continuar" faz `PATCH /onboarding/me` com `currentStep` e os dados da etapa antes de avançar; o status `IN_PROGRESS` retoma na etapa salva, com as seleções vindas de `GET /profiles/me`.

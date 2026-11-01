@@ -307,7 +307,11 @@
     "elevationProfile": "Route elevation",
     "noElevation": "No altitude data for this route.",
     "share": "Share",
-    "shareMessage": "{{name}} on VYRA: {{distance}} km in {{duration}} ({{pace}}/km pace)"
+    "shareMessage": "{{name}} on VYRA: {{distance}} km in {{duration}} ({{pace}}/km pace)",
+    "liveStatus": {
+      "title": "Run in progress",
+      "paused": "Run paused"
+    }
   },
   "tabs": {
     "home": "Home",

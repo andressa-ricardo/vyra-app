@@ -3,6 +3,8 @@ import type { LocationObject } from 'expo-location';
 import type { RunningPause, RunningPoint } from '@/features/running/types/running.types';
 
 const EARTH_RADIUS_M = 6_371_000;
+const MAX_ACCURACY_M = 100;
+const MAX_SPEED_M_S = 15;
 
 export function createLocationPointId(timestamp: number, latitude: number, longitude: number) {
   return `gps-${Math.round(timestamp)}-${latitude.toFixed(5)}-${longitude.toFixed(5)}`;
@@ -51,6 +53,32 @@ export function distanceBetween(a: RunningPoint, b: RunningPoint) {
       Math.cos(b.latitude * radians) *
       Math.sin(lon / 2) ** 2;
   return 2 * EARTH_RADIUS_M * Math.asin(Math.sqrt(value));
+}
+
+/** Rejects imprecise fixes and GPS jumps faster than a runner could move. */
+export function acceptsPoint(previous: RunningPoint | undefined, point: RunningPoint) {
+  if (point.accuracyM !== null && point.accuracyM > MAX_ACCURACY_M) return false;
+  if (!previous) return true;
+  const seconds =
+    (new Date(point.recordedAt).getTime() - new Date(previous.recordedAt).getTime()) / 1_000;
+  return seconds > 0 && distanceBetween(previous, point) / seconds <= MAX_SPEED_M_S;
+}
+
+/** Adds to the stored distance the accepted points newer than the last one counted. */
+export function advanceLiveDistance(
+  live: { distanceMeters: number; lastPoint: RunningPoint } | undefined,
+  points: RunningPoint[],
+) {
+  let next = live;
+  for (const point of mergePoints(points)) {
+    if (next && point.recordedAt <= next.lastPoint.recordedAt) continue;
+    if (!acceptsPoint(next?.lastPoint, point)) continue;
+    next = {
+      distanceMeters: next ? next.distanceMeters + distanceBetween(next.lastPoint, point) : 0,
+      lastPoint: point,
+    };
+  }
+  return next;
 }
 
 /** Route length; like the backend, segments overlapping a pause are not counted. */

@@ -8,7 +8,12 @@ import {
   getActiveRunningSession,
   getRunningSession,
 } from '@/features/running/infrastructure/running-api';
+import { requestActivityStatusPermission } from '@/core/activity-status/activity-status';
 import { RUNNING_LOCATION_TASK } from '@/features/running/infrastructure/background-location-task';
+import {
+  clearRunningStatus,
+  publishRunningStatus,
+} from '@/features/running/infrastructure/running-activity-status';
 import {
   addPendingDiscard,
   appendRunningPoints,
@@ -28,7 +33,7 @@ import type {
 import {
   activeSeconds,
   currentPace,
-  distanceBetween,
+  acceptsPoint,
   mergePoints,
   routeDistance,
   toRunningPoint,
@@ -38,8 +43,6 @@ import { i18n } from '@/i18n';
 type TrackerState = 'loading' | 'ready' | 'permission-denied' | 'error';
 
 const SYNC_INTERVAL_MS = 15_000;
-const MAX_ACCURACY_M = 100;
-const MAX_SPEED_M_S = 15;
 
 const locationOptions = {
   accuracy: Location.Accuracy.BestForNavigation,
@@ -133,6 +136,7 @@ export function useRunningTracker() {
 
   const goToSummary = useCallback(async (completed: RunningSession) => {
     await stopBackgroundUpdates();
+    void clearRunningStatus(completed.clientRequestId);
     router.replace({ pathname: '/running-summary/[id]', params: { id: completed.id } });
   }, []);
 
@@ -154,13 +158,26 @@ export function useRunningTracker() {
     }
   }, [applyRun, goToSummary]);
 
+  /** Stores the distance so far; the background task continues it for the lock screen status. */
+  const saveLiveDistance = useCallback(() => {
+    const current = runRef.current;
+    const lastPoint = pointsRef.current.at(-1);
+    if (!current || current.finish || !lastPoint) return;
+    const distanceMeters = routeDistance(pointsRef.current, current.pauses);
+    void updateLocalRun(current.clientRequestId, (stored) => ({
+      ...stored,
+      live: { distanceMeters, lastPoint },
+    }));
+  }, []);
+
   /** Includes points written by the background task while the screen was not visible. */
   const reloadQueuedPoints = useCallback(async () => {
     const current = runRef.current;
     if (!current) return;
     const queued = await readRunningPointQueue(current.clientRequestId);
     applyPoints(mergePoints(pointsRef.current, queued));
-  }, [applyPoints]);
+    saveLiveDistance();
+  }, [applyPoints, saveLiveDistance]);
 
   useEffect(() => {
     let active = true;
@@ -182,6 +199,8 @@ export function useRunningTracker() {
         setState('ready');
         void sync();
         if (loaded.finish) return;
+        saveLiveDistance();
+        void requestActivityStatusPermission();
 
         const background = await Location.getBackgroundPermissionsAsync();
         if (background.status === 'granted') await startBackgroundUpdates();
@@ -190,16 +209,10 @@ export function useRunningTracker() {
           const current = runRef.current;
           if (!current || current.status !== 'ACTIVE' || current.finish) return;
           const point = toRunningPoint(location);
-          if (point.accuracyM !== null && point.accuracyM > MAX_ACCURACY_M) return;
-          const previous = pointsRef.current.at(-1);
-          if (previous) {
-            const seconds =
-              (new Date(point.recordedAt).getTime() - new Date(previous.recordedAt).getTime()) /
-              1_000;
-            if (seconds <= 0 || distanceBetween(previous, point) / seconds > MAX_SPEED_M_S) return;
-          }
+          if (!acceptsPoint(pointsRef.current.at(-1), point)) return;
           void appendRunningPoints(current.clientRequestId, [point]);
           applyPoints([...pointsRef.current, point]);
+          saveLiveDistance();
         });
         if (!active) subscription.remove();
       } catch {
@@ -212,7 +225,7 @@ export function useRunningTracker() {
       active = false;
       subscription?.remove();
     };
-  }, [applyPoints, applyRun, sync]);
+  }, [applyPoints, applyRun, saveLiveDistance, sync]);
 
   useEffect(() => {
     if (run?.status !== 'ACTIVE' || run.finish) return;
@@ -294,6 +307,8 @@ export function useRunningTracker() {
       setNow(new Date(endedAt).getTime());
     }
     await stopBackgroundUpdates();
+    // Finalizada no aparelho, a corrida deixa de estar em andamento mesmo antes de sincronizar.
+    void clearRunningStatus(current.clientRequestId);
     return sync();
   };
 
@@ -304,6 +319,7 @@ export function useRunningTracker() {
     await clearLocalRun(current.clientRequestId);
     applyRun(null);
     await stopBackgroundUpdates();
+    void clearRunningStatus(current.clientRequestId);
     void syncLocalRun().catch(() => undefined);
     router.replace('/running');
   };
@@ -314,6 +330,13 @@ export function useRunningTracker() {
   const distanceMeters = routeDistance(points, pauses);
   const averagePaceSecondsKm =
     distanceMeters >= 10 ? Math.round(elapsedSeconds / (distanceMeters / 1_000)) : null;
+
+  // Aviso da tela de bloqueio / barra de notificações; `now` avança a cada segundo e a publicação
+  // respeita um intervalo mínimo, exceto ao pausar ou retomar.
+  useEffect(() => {
+    if (!run || run.finish) return;
+    void publishRunningStatus(run, distanceMeters);
+  }, [run, distanceMeters, now]);
 
   return {
     state,
