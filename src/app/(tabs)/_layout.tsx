@@ -7,6 +7,7 @@ import Menu from 'lucide-react-native/icons/menu';
 import type { LucideIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import type { ColorValue } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { authColors } from '@/theme';
 
@@ -19,20 +20,47 @@ function tabIcon(Icon: LucideIcon) {
 
 export default function TabsLayout() {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: authColors.primary,
+        tabBarActiveBackgroundColor: authColors.surfacePressed,
         tabBarInactiveTintColor: authColors.muted,
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
         tabBarAllowFontScaling: false,
-        tabBarStyle: {
-          backgroundColor: authColors.background,
-          borderTopColor: authColors.surface,
+        tabBarHideOnKeyboard: true,
+        tabBarItemStyle: {
+          borderRadius: 28,
+          marginHorizontal: 2,
+          marginVertical: 6,
         },
-        sceneStyle: { backgroundColor: authColors.background },
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: Math.max(insets.bottom, 12),
+          left: 16,
+          right: 16,
+          height: 72,
+          paddingHorizontal: 6,
+          paddingBottom: 0,
+          paddingTop: 0,
+          borderTopWidth: 1,
+          borderWidth: 1,
+          borderColor: authColors.border,
+          borderRadius: 36,
+          backgroundColor: authColors.surface,
+          shadowColor: '#000000',
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: 0.3,
+          shadowRadius: 16,
+          elevation: 12,
+        },
+        sceneStyle: {
+          backgroundColor: authColors.background,
+          paddingBottom: 84 + Math.max(insets.bottom, 12),
+        },
       }}>
       <Tabs.Screen name="home" options={{ title: t('tabs.home'), tabBarIcon: tabIcon(House) }} />
       <Tabs.Screen
