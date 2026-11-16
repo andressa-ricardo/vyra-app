@@ -53,6 +53,7 @@ export function ProfileScreen() {
     Alert.alert(t('common.comingSoon'), t('common.comingSoonDescription'));
 
   const handleMenu = (key: (typeof menuItems)[number]['key']) => {
+    if (key === 'activities') return router.navigate('/running');
     if (key === 'edit') return setEditVisible(true);
     if (key === 'settings') return router.push('/more/settings');
     openUnavailable();
