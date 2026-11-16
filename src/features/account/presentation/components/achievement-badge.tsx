@@ -8,7 +8,7 @@ import Sunrise from 'lucide-react-native/icons/sunrise';
 import Trophy from 'lucide-react-native/icons/trophy';
 import type { LucideIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { Image, Text, View, type ImageSourcePropType } from 'react-native';
 
 import type { Achievement } from '@/features/account/types/profile.types';
 import { authColors, metricColors } from '@/theme';
@@ -30,6 +30,20 @@ const rarityColors: Record<Achievement['rarity'], string> = {
   legendary: metricColors.warning,
 };
 
+// `require` precisa ser estático para o Metro incluir as medalhas no bundle nativo.
+const medalImages: Record<string, ImageSourcePropType> = {
+  firstKm: require('../../../../../assets/medals/common-1.png'),
+  earlyBird: require('../../../../../assets/medals/common-2.png'),
+  firstSteps: require('../../../../../assets/medals/common-3.png'),
+  firstSet: require('../../../../../assets/medals/common-4.png'),
+  tenKClub: require('../../../../../assets/medals/rare-1.png'),
+  firstRide: require('../../../../../assets/medals/rare-3.png'),
+  sevenDayStreak: require('../../../../../assets/medals/rare-5.png'),
+  marathoner: require('../../../../../assets/medals/legendary-1.png'),
+  fiftyKm: require('../../../../../assets/medals/rare-6.png'),
+  centuryRide: require('../../../../../assets/medals/legendary-3.png'),
+};
+
 export function AchievementBadge({
   achievement,
   compact = false,
@@ -41,6 +55,7 @@ export function AchievementBadge({
   const Icon = icons[achievement.icon];
   const color = rarityColors[achievement.rarity];
   const locked = achievement.state === 'locked';
+  const medalSource = medalImages[achievement.id];
 
   return (
     <View
@@ -49,17 +64,30 @@ export function AchievementBadge({
         compact ? 'min-h-[156px] py-3' : 'min-h-[238px] justify-center py-5',
         locked ? 'opacity-45' : '',
       ].join(' ')}>
-      <View className={compact ? 'mb-3 h-[70px] w-[70px] items-center' : 'mb-5 h-[96px] w-[96px] items-center'}>
-        <View className="absolute top-0 h-8 w-4 -rotate-12 bg-auth-primary/70" />
-        <View className="absolute top-0 h-8 w-4 translate-x-3 rotate-12 bg-auth-primary/70" />
-        <View
-          className={[
-            'absolute bottom-0 items-center justify-center rounded-full border-[3px] bg-auth-pressed',
-            compact ? 'h-[58px] w-[58px]' : 'h-[78px] w-[78px]',
-          ].join(' ')}
-          style={{ borderColor: color }}>
-          <Icon color={color} size={compact ? 29 : 39} strokeWidth={1.8} />
-        </View>
+      <View
+        className={
+          compact
+            ? 'mb-2 h-[86px] w-[86px] items-center justify-center'
+            : 'mb-3 h-[118px] w-[118px] items-center justify-center'
+        }>
+        {medalSource ? (
+          <Image
+            accessibilityIgnoresInvertColors
+            accessibilityLabel={t(`profile.achievements.items.${achievement.id}.title`)}
+            className="h-full w-full"
+            resizeMode="contain"
+            source={medalSource}
+          />
+        ) : (
+          <View
+            className={[
+              'items-center justify-center rounded-full border-[3px] bg-auth-pressed',
+              compact ? 'h-[58px] w-[58px]' : 'h-[78px] w-[78px]',
+            ].join(' ')}
+            style={{ borderColor: color }}>
+            <Icon color={color} size={compact ? 29 : 39} strokeWidth={1.8} />
+          </View>
+        )}
       </View>
 
       <Text
