@@ -1,8 +1,10 @@
 import { create, isAxiosError, type AxiosError } from 'axios';
 
+import { env } from '@/core/config/env';
 import { clearTokens, getTokens, saveTokens, type SessionTokens } from '@/core/session/token-storage';
 
 import { API_TIMEOUT_MS, getApiBaseUrl } from './api-config';
+import { mockApiAdapter } from './mock-api-adapter';
 
 declare module 'axios' {
   interface AxiosRequestConfig {
@@ -35,12 +37,13 @@ export class ApiError extends Error {
 }
 
 export const httpClient = create({
+  adapter: env.useBackend === false ? mockApiAdapter : undefined,
   timeout: API_TIMEOUT_MS,
   headers: { 'Content-Type': 'application/json' },
 });
 
 httpClient.interceptors.request.use((config) => {
-  config.baseURL = getApiBaseUrl();
+  if (env.useBackend !== false) config.baseURL = getApiBaseUrl();
   const tokens = getTokens();
   if (tokens && !config.skipAuth) {
     config.headers.Authorization = `Bearer ${tokens.accessToken}`;

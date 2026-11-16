@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { env } from '@/core/config/env';
 import { useSession } from '@/core/session/session-provider';
 import type { AuthSession } from '@/core/session/session.types';
 import { getAuthErrorKey } from '@/features/auth/hooks/auth-error-message';
@@ -17,11 +18,15 @@ const sdkErrorKeys: Record<FederatedSignInError['code'], string> = {
 };
 
 async function authenticateWithGoogle(): Promise<AuthSession | null> {
+  if (!env.useBackend) return loginWithGoogle('mock-google-id-token');
   const idToken = await requestGoogleIdToken();
   return idToken ? loginWithGoogle(idToken) : null;
 }
 
 async function authenticateWithApple(): Promise<AuthSession | null> {
+  if (!env.useBackend) {
+    return loginWithApple({ identityToken: 'mock-apple-identity-token', nonce: 'mock-apple-nonce' });
+  }
   const { nonce } = await createAppleNonce();
   const identityToken = await requestAppleIdentityToken(nonce);
   return identityToken ? loginWithApple({ identityToken, nonce }) : null;
@@ -31,9 +36,10 @@ export function useFederatedSignIn() {
   const { signIn } = useSession();
   const [pending, setPending] = useState<FederatedProvider | null>(null);
   const [messageKey, setMessageKey] = useState<string | null>(null);
-  const [appleAvailable, setAppleAvailable] = useState(false);
+  const [appleAvailable, setAppleAvailable] = useState(!env.useBackend);
 
   useEffect(() => {
+    if (!env.useBackend) return;
     let active = true;
     void isAppleSignInAvailable()
       .catch(() => false)

@@ -27,6 +27,7 @@ Atualizado em 31 de outubro de 2026.
 - Continuous Native Generation, sem `ios/` ou `android/` versionados
 - Compatibilidade preservada com Expo Go
 - NativeWind 4 + Tailwind 3 para estilização
+- Alternância entre API real e backend mock local por `EXPO_PUBLIC_USE_BACKEND`
 
 ## TASK 01 — concluída
 
@@ -72,6 +73,7 @@ Atualizado em 31 de outubro de 2026.
 - Barra de abas: Início, Treinos, Corrida, Nutrição e Mais (Treinos e Nutrição ainda são estados "em breve").
 - Tela Mais com perfil, menu de seções e logout com confirmação.
 - Tela de configurações acessível pela aba Mais, com conta, notificações, preferências, troca de idioma e exclusão de conta sinalizada como indisponível enquanto não houver contrato de backend.
+- Modo mock sem conexão HTTP para autenticação, sessão, onboarding, perfil, modalidades e corrida.
 
 ## Pendente
 

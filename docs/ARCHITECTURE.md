@@ -55,6 +55,8 @@ A confirmação de senha pertence ao formulário e nunca é enviada à API.
 
 O cliente Axios é compartilhado e aplica timeout, URL base e headers. A URL é resolvida no interceptor de request, permitindo que o app abra mesmo quando o ambiente ainda não foi configurado e apresente uma mensagem adequada somente ao tentar enviar.
 
+`EXPO_PUBLIC_USE_BACKEND=true` usa a API configurada em `EXPO_PUBLIC_API_URL`. Com `false`, o Axios usa `mock-api-adapter.ts`: um adaptador em memória que implementa os contratos consumidos pelo app sem abrir conexão HTTP. O modo mock serve ao desenvolvimento visual e não substitui testes de integração com o backend real; seu estado é reiniciado quando o bundle recarrega.
+
 Erros técnicos são normalizados em códigos estáveis (`validation`, `conflict`, `network`, `timeout`, `server` etc.). A UI traduz esses códigos; mensagens e stack traces do backend não são exibidos diretamente.
 
 ### `src/i18n`

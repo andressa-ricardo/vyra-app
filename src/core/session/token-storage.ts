@@ -1,13 +1,17 @@
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
+import { env } from '@/core/config/env';
+
 export type SessionTokens = {
   accessToken: string;
   refreshToken: string;
 };
 
-const ACCESS_TOKEN_KEY = 'vyra.session.accessToken';
-const REFRESH_TOKEN_KEY = 'vyra.session.refreshToken';
+// O mock usa outro namespace para nunca enviar tokens fictícios à API ao trocar de modo.
+const SESSION_NAMESPACE = env.useBackend === false ? 'vyra.mockSession' : 'vyra.session';
+const ACCESS_TOKEN_KEY = `${SESSION_NAMESPACE}.accessToken`;
+const REFRESH_TOKEN_KEY = `${SESSION_NAMESPACE}.refreshToken`;
 
 // SecureStore não existe na web; lá a sessão vive apenas em memória.
 const canPersist = Platform.OS !== 'web';
