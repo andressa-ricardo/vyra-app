@@ -343,6 +343,113 @@
       "message": "You'll need to log in again to access VYRA."
     }
   },
+  "profile": {
+    "title": "Profile",
+    "fallbackName": "VYRA athlete",
+    "defaultBio": "Every workout is a new achievement.",
+    "editProfile": "Edit profile",
+    "loadError": "We couldn't load the profile. Tap to try again.",
+    "stats": {
+      "activities": "Activities",
+      "distance": "Distance",
+      "time": "Time"
+    },
+    "highlights": {
+      "title": "Featured achievements",
+      "description": "The trophies that represent your journey.",
+      "customize": "Customize"
+    },
+    "menu": {
+      "activities": "My activities",
+      "statistics": "Statistics",
+      "goals": "Goals",
+      "edit": "Edit profile",
+      "settings": "Settings"
+    },
+    "achievementPreview": "New achievement preview",
+    "edit": {
+      "title": "Edit profile",
+      "description": "Your identity, your way.",
+      "fullName": "Display name",
+      "username": "Username",
+      "bio": "Bio",
+      "nameError": "Enter a name between 2 and 120 characters.",
+      "localFieldsNote": "Username and bio are local in this version. The current backend only persists the display name.",
+      "saveErrorTitle": "Unable to save",
+      "saveErrorMessage": "Check your connection and try again.",
+      "save": "Save changes"
+    },
+    "achievements": {
+      "title": "My achievements",
+      "subtitle": "Every achievement tells your story.",
+      "viewAll": "View all achievements",
+      "progressCount": "{{count}} of {{total}} achievements",
+      "progressDescription": "{{progress}}% of the collection unlocked.",
+      "total": "{{count}} achievements",
+      "empty": "No achievements found for this filter.",
+      "unlocked": "✓ Unlocked",
+      "locked": "Locked",
+      "categories": {
+        "all": "All",
+        "running": "Running",
+        "strength": "Strength",
+        "cycling": "Cycling",
+        "walking": "Walking"
+      },
+      "states": {
+        "all": "All",
+        "unlocked": "Unlocked",
+        "locked": "Locked"
+      },
+      "rarity": {
+        "common": "Common",
+        "rare": "Rare",
+        "legendary": "Legendary"
+      },
+      "items": {
+        "firstKm": {
+          "title": "First KM",
+          "description": "Complete a 1-kilometer run."
+        },
+        "earlyBird": {
+          "title": "Good morning, athlete",
+          "description": "Log an activity before 7 a.m."
+        },
+        "firstSteps": {
+          "title": "First steps",
+          "description": "Complete a 2-kilometer walk."
+        },
+        "firstSet": {
+          "title": "First set",
+          "description": "Complete your first strength workout."
+        },
+        "tenKClub": {
+          "title": "10K Club",
+          "description": "Complete a 10-kilometer run."
+        },
+        "firstRide": {
+          "title": "First ride",
+          "description": "Log your first cycling activity."
+        },
+        "sevenDayStreak": {
+          "title": "Champion rhythm",
+          "description": "Maintain a 7-day active streak."
+        },
+        "marathoner": {
+          "title": "Marathoner",
+          "description": "Complete the legendary 42.195 kilometers."
+        },
+        "fiftyKm": {
+          "title": "50 kilometers",
+          "description": "Accumulate 50 kilometers of running."
+        },
+        "centuryRide": {
+          "title": "Century ride",
+          "description": "Complete a 100-kilometer ride."
+        }
+      }
+    }
+  },
   "settings": {
     "title": "Settings",
     "sections": {

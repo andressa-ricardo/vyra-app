@@ -120,7 +120,10 @@ export function SettingsScreen() {
         contentContainerClassName="w-full max-w-[520px] gap-7 self-center px-5 pb-8 pt-3"
         showsVerticalScrollIndicator={false}>
         <SettingsSection title={t('settings.sections.account')}>
-          <NavigationRow label={t('settings.editProfile')} onPress={showComingSoon} />
+          <NavigationRow
+            label={t('settings.editProfile')}
+            onPress={() => router.push('/more/profile')}
+          />
           <NavigationRow isLast label={t('settings.changePassword')} onPress={showComingSoon} />
         </SettingsSection>
 

@@ -42,6 +42,16 @@ export function MoreScreen() {
   const showComingSoon = () => Alert.alert(t('common.comingSoon'), t('common.comingSoonDescription'));
 
   const handleMenuPress = (key: string) => {
+    if (key === 'profile') {
+      router.push('/more/profile');
+      return;
+    }
+
+    if (key === 'achievements') {
+      router.push('/more/achievements');
+      return;
+    }
+
     if (key === 'settings') {
       router.push('/more/settings');
       return;
@@ -70,7 +80,7 @@ export function MoreScreen() {
         <Pressable
           accessibilityRole="button"
           className="flex-row items-center gap-4 rounded-[20px] px-1 py-2 active:opacity-80"
-          onPress={showComingSoon}>
+          onPress={() => router.push('/more/profile')}>
           <View className="h-[60px] w-[60px] items-center justify-center rounded-full bg-auth-primary">
             <Text className="text-xl font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
               {user ? getInitials(user.name) : ''}

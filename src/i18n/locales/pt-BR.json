@@ -343,6 +343,113 @@
       "message": "Você precisará entrar novamente para acessar o VYRA."
     }
   },
+  "profile": {
+    "title": "Perfil",
+    "fallbackName": "Atleta VYRA",
+    "defaultBio": "Cada treino é uma nova conquista.",
+    "editProfile": "Editar perfil",
+    "loadError": "Não foi possível carregar o perfil. Toque para tentar novamente.",
+    "stats": {
+      "activities": "Atividades",
+      "distance": "Distância",
+      "time": "Tempo"
+    },
+    "highlights": {
+      "title": "Conquistas em destaque",
+      "description": "Os troféus que representam sua jornada.",
+      "customize": "Personalizar"
+    },
+    "menu": {
+      "activities": "Minhas atividades",
+      "statistics": "Estatísticas",
+      "goals": "Metas",
+      "edit": "Editar perfil",
+      "settings": "Configurações"
+    },
+    "achievementPreview": "Prévia de nova conquista",
+    "edit": {
+      "title": "Editar perfil",
+      "description": "Sua identidade, do seu jeito.",
+      "fullName": "Nome de exibição",
+      "username": "Nome de usuário",
+      "bio": "Biografia",
+      "nameError": "Informe um nome entre 2 e 120 caracteres.",
+      "localFieldsNote": "Nome de usuário e biografia são locais nesta versão. O backend atual persiste apenas o nome de exibição.",
+      "saveErrorTitle": "Não foi possível salvar",
+      "saveErrorMessage": "Verifique sua conexão e tente novamente.",
+      "save": "Salvar alterações"
+    },
+    "achievements": {
+      "title": "Minhas conquistas",
+      "subtitle": "Cada conquista conta sua história.",
+      "viewAll": "Ver todas as conquistas",
+      "progressCount": "{{count}} de {{total}} conquistas",
+      "progressDescription": "{{progress}}% da coleção desbloqueada.",
+      "total": "{{count}} conquistas",
+      "empty": "Nenhuma conquista encontrada neste filtro.",
+      "unlocked": "✓ Desbloqueada",
+      "locked": "Bloqueada",
+      "categories": {
+        "all": "Todas",
+        "running": "Corrida",
+        "strength": "Musculação",
+        "cycling": "Ciclismo",
+        "walking": "Caminhada"
+      },
+      "states": {
+        "all": "Todas",
+        "unlocked": "Desbloqueadas",
+        "locked": "Bloqueadas"
+      },
+      "rarity": {
+        "common": "Comum",
+        "rare": "Rara",
+        "legendary": "Lendária"
+      },
+      "items": {
+        "firstKm": {
+          "title": "Primeiro KM",
+          "description": "Complete uma corrida de 1 quilômetro."
+        },
+        "earlyBird": {
+          "title": "Bom dia, atleta",
+          "description": "Registre uma atividade antes das 7h."
+        },
+        "firstSteps": {
+          "title": "Primeiros passos",
+          "description": "Complete uma caminhada de 2 quilômetros."
+        },
+        "firstSet": {
+          "title": "Primeira série",
+          "description": "Conclua seu primeiro treino de musculação."
+        },
+        "tenKClub": {
+          "title": "10K Club",
+          "description": "Complete uma corrida de 10 quilômetros."
+        },
+        "firstRide": {
+          "title": "Primeiro pedal",
+          "description": "Registre sua primeira atividade de ciclismo."
+        },
+        "sevenDayStreak": {
+          "title": "Ritmo de campeão",
+          "description": "Mantenha uma sequência de 7 dias ativos."
+        },
+        "marathoner": {
+          "title": "Maratonista",
+          "description": "Complete os lendários 42,195 quilômetros."
+        },
+        "fiftyKm": {
+          "title": "50 quilômetros",
+          "description": "Acumule 50 quilômetros de corrida."
+        },
+        "centuryRide": {
+          "title": "Pedal centenário",
+          "description": "Complete um pedal de 100 quilômetros."
+        }
+      }
+    }
+  },
   "settings": {
     "title": "Configurações",
     "sections": {

@@ -14,7 +14,7 @@
 
 O segundo plano está configurado, mas exige Development Build e validação física. Permanecem pendentes testes com tela bloqueada/fabricantes Android, bateria, chave Google Maps Android (`GOOGLE_MAPS_ANDROID_API_KEY`, lida em `app.config.js`) e armazenamento local cifrado de GPS.
 
-Atualizado em 31 de outubro de 2026.
+Atualizado em 16 de novembro de 2026.
 
 ## Base técnica
 
@@ -73,6 +73,7 @@ Atualizado em 31 de outubro de 2026.
 - Barra de abas: Início, Treinos, Corrida, Nutrição e Mais (Treinos e Nutrição ainda são estados "em breve").
 - Tela Mais com perfil, menu de seções e logout com confirmação.
 - Tela de configurações acessível pela aba Mais, com conta, notificações, preferências, troca de idioma e exclusão de conta sinalizada como indisponível enquanto não houver contrato de backend.
+- Perfil com resumo, estatísticas demonstrativas, destaques, edição do nome de exibição e galeria filtrável de conquistas.
 - Modo mock sem conexão HTTP para autenticação, sessão, onboarding, perfil, modalidades e corrida.
 
 ## Pendente

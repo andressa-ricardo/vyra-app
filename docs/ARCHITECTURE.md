@@ -51,6 +51,8 @@ Os componentes visuais comuns ao fluxo de entrada ficam em `auth/presentation/co
 
 A confirmação de senha pertence ao formulário e nunca é enviada à API.
 
+A feature `account` concentra Mais, configurações, perfil e conquistas. As rotas em `src/app/(tabs)/more` apenas exportam telas; `use-profile.ts` coordena carregamento e atualização, enquanto `profile-api.ts` é o único ponto que conhece `GET/PATCH /profiles/me`. Somente `displayName` é persistido porque esse é o contrato atual do backend. Nome de usuário, biografia, estatísticas e conquistas permanecem demonstrativos até existirem contratos próprios.
+
 ### `src/core`
 
 O cliente Axios é compartilhado e aplica timeout, URL base e headers. A URL é resolvida no interceptor de request, permitindo que o app abra mesmo quando o ambiente ainda não foi configurado e apresente uma mensagem adequada somente ao tentar enviar.

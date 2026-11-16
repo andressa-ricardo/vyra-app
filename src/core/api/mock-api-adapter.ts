@@ -67,6 +67,7 @@ let onboarding = {
 
 let profile: JsonObject = {
   displayName: 'Andressa',
+  avatarUrl: null,
   birthDate: '1998-05-12',
   heightCm: '168',
   currentWeightKg: '68.5',
@@ -123,6 +124,7 @@ export const mockApiAdapter: AxiosAdapter = async (config) => {
     };
     profile = {
       displayName: null,
+      avatarUrl: null,
       birthDate: null,
       heightCm: null,
       currentWeightKg: null,
@@ -189,6 +191,11 @@ export const mockApiAdapter: AxiosAdapter = async (config) => {
     return respond(config, onboarding);
   }
   if (method === 'GET' && path === '/profiles/me') return respond(config, profile);
+  if (method === 'PATCH' && path === '/profiles/me') {
+    const payload = readBody<JsonObject>(config);
+    profile = { ...profile, ...payload };
+    return respond(config, profile);
+  }
   if (method === 'GET' && path === '/sport-modalities') return respond(config, sportModalities);
 
   if (method === 'GET' && path === '/running/statistics') {
