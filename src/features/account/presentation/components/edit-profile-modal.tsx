@@ -10,7 +10,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { PrimaryButton } from '@/shared/components/primary-button';
 import { TextField } from '@/shared/components/text-field';
@@ -38,6 +38,7 @@ export function EditProfileModal({
   visible,
 }: EditProfileModalProps) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const [values, setValues] = useState(initialValues);
   const [nameError, setNameError] = useState<string | undefined>();
 
@@ -65,44 +66,56 @@ export function EditProfileModal({
   return (
     <Modal
       animationType="slide"
+      hardwareAccelerated
       navigationBarTranslucent
       onRequestClose={onClose}
+      presentationStyle="overFullScreen"
       statusBarTranslucent
       transparent
       visible={visible}>
-      <Pressable className="flex-1 justify-end bg-black/75" onPress={onClose}>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View className="flex-1 justify-end">
+        <Pressable
+          accessibilityLabel={t('common.close')}
+          accessibilityRole="button"
+          className="absolute inset-0 bg-black/75"
+          onPress={onClose}
+        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          className="flex-1 justify-end"
+          pointerEvents="box-none">
           <Pressable
             accessibilityRole="none"
-            className="max-h-[86%] rounded-t-[28px] border-t border-auth-border bg-auth-surface px-5 pt-3"
-            onPress={(event) => event.stopPropagation()}>
-            <SafeAreaView edges={['bottom']}>
-              <View className="mb-3 items-center">
-                <View className="h-1.5 w-14 rounded-full bg-auth-border" />
+            className="max-h-[88%] rounded-t-[28px] border-t border-auth-border bg-auth-surface px-5 pt-3"
+            onPress={(event) => event.stopPropagation()}
+            style={{ paddingBottom: Platform.OS === 'ios' ? Math.max(insets.bottom, 12) : 12 }}>
+            <View className="mb-3 items-center">
+              <View className="h-1.5 w-14 rounded-full bg-auth-border" />
+            </View>
+            <View className="mb-5 flex-row items-start justify-between">
+              <View className="flex-1 gap-1">
+                <Text className="text-[20px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
+                  {t('profile.edit.title')}
+                </Text>
+                <Text className="text-[13px] text-auth-muted" maxFontSizeMultiplier={1.05}>
+                  {t('profile.edit.description')}
+                </Text>
               </View>
-              <View className="mb-5 flex-row items-start justify-between">
-                <View className="flex-1 gap-1">
-                  <Text className="text-[20px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
-                    {t('profile.edit.title')}
-                  </Text>
-                  <Text className="text-[13px] text-auth-muted" maxFontSizeMultiplier={1.05}>
-                    {t('profile.edit.description')}
-                  </Text>
-                </View>
-                <Pressable
-                  accessibilityLabel={t('common.close')}
-                  accessibilityRole="button"
-                  className="h-10 w-10 items-center justify-center rounded-full active:bg-auth-pressed"
-                  hitSlop={8}
-                  onPress={onClose}>
-                  <X color={authColors.muted} size={20} />
-                </Pressable>
-              </View>
+              <Pressable
+                accessibilityLabel={t('common.close')}
+                accessibilityRole="button"
+                className="h-10 w-10 items-center justify-center rounded-full active:bg-auth-pressed"
+                hitSlop={8}
+                onPress={onClose}>
+                <X color={authColors.muted} size={20} />
+              </Pressable>
+            </View>
 
-              <ScrollView
-                contentContainerClassName="gap-4 pb-3"
-                keyboardShouldPersistTaps="handled"
-                showsVerticalScrollIndicator={false}>
+            <ScrollView
+              className="flex-shrink"
+              contentContainerClassName="gap-4 pb-2"
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}>
                 <TextField
                   autoCapitalize="words"
                   error={nameError}
@@ -132,16 +145,18 @@ export function EditProfileModal({
                 <Text className="text-[10px] leading-4 text-auth-placeholder" maxFontSizeMultiplier={1.05}>
                   {t('profile.edit.localFieldsNote')}
                 </Text>
-                <PrimaryButton
-                  label={t('profile.edit.save')}
-                  loading={saving}
-                  onPress={() => void submit()}
-                />
-              </ScrollView>
-            </SafeAreaView>
+            </ScrollView>
+
+            <View className="border-t border-auth-border/60 pt-3">
+              <PrimaryButton
+                label={t('profile.edit.save')}
+                loading={saving}
+                onPress={() => void submit()}
+              />
+            </View>
           </Pressable>
         </KeyboardAvoidingView>
-      </Pressable>
+      </View>
     </Modal>
   );
 }
