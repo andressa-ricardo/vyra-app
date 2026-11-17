@@ -317,6 +317,50 @@
       "paused": "Run paused"
     }
   },
+  "workouts": {
+    "title": "Workouts",
+    "add": "Add workout",
+    "shortcuts": {
+      "exercises": "Exercises",
+      "gym": "My gym"
+    },
+    "sections": {
+      "mine": "My workouts",
+      "coach": "From your coach",
+      "history": "Recent history"
+    },
+    "today": "TODAY",
+    "exerciseCount_one": "{{count}} exercise",
+    "exerciseCount_other": "{{count}} exercises",
+    "duration": "{{minutes}} min",
+    "lastPerformed": {
+      "threeDays": "3 days ago",
+      "fiveDays": "5 days ago",
+      "oneWeek": "1 week ago",
+      "twoWeeks": "2 weeks ago",
+      "never": "never"
+    },
+    "templates": {
+      "upperA": "Upper A",
+      "lowerA": "Lower A",
+      "push": "Push",
+      "pull": "Pull",
+      "legs": "Legs",
+      "fullBody": "Full Body"
+    },
+    "start": "Start {{name}}",
+    "coachPlan": {
+      "title": "Hypertrophy — Phase 1",
+      "updated": "{{coach}} · updated on {{date}}"
+    },
+    "historyDates": {
+      "oct16": "Thu, Oct 16",
+      "oct14": "Tue, Oct 14",
+      "oct11": "Sat, Oct 11"
+    },
+    "historyMetric": "{{minutes}} min · {{volume}} kg",
+    "unavailable": "This feature will be available when the workouts module is connected."
+  },
   "tabs": {
     "home": "Home",
     "workouts": "Workouts",

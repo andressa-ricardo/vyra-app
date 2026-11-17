@@ -1,5 +1,5 @@
-import { ComingSoonScreen } from '@/shared/components/coming-soon-screen';
+import { WorkoutsScreen } from '@/features/workouts/presentation/screens/workouts-screen';
 
 export default function WorkoutsRoute() {
-  return <ComingSoonScreen titleKey="tabs.workouts" />;
+  return <WorkoutsScreen />;
 }

@@ -317,6 +317,50 @@
       "paused": "Corrida pausada"
     }
   },
+  "workouts": {
+    "title": "Treinos",
+    "add": "Adicionar treino",
+    "shortcuts": {
+      "exercises": "Exercícios",
+      "gym": "Minha academia"
+    },
+    "sections": {
+      "mine": "Meus treinos",
+      "coach": "Do seu treinador",
+      "history": "Histórico recente"
+    },
+    "today": "HOJE",
+    "exerciseCount_one": "{{count}} exercício",
+    "exerciseCount_other": "{{count}} exercícios",
+    "duration": "{{minutes}} min",
+    "lastPerformed": {
+      "threeDays": "há 3 dias",
+      "fiveDays": "há 5 dias",
+      "oneWeek": "há 1 semana",
+      "twoWeeks": "há 2 semanas",
+      "never": "nunca"
+    },
+    "templates": {
+      "upperA": "Superior A",
+      "lowerA": "Inferior A",
+      "push": "Push",
+      "pull": "Pull",
+      "legs": "Legs",
+      "fullBody": "Full Body"
+    },
+    "start": "Iniciar {{name}}",
+    "coachPlan": {
+      "title": "Hipertrofia — Fase 1",
+      "updated": "{{coach}} · atualizado em {{date}}"
+    },
+    "historyDates": {
+      "oct16": "Qui, 16 out",
+      "oct14": "Ter, 14 out",
+      "oct11": "Sáb, 11 out"
+    },
+    "historyMetric": "{{minutes}} min · {{volume}} kg",
+    "unavailable": "Esta funcionalidade estará disponível quando o módulo de treinos for conectado."
+  },
   "tabs": {
     "home": "Início",
     "workouts": "Treinos",

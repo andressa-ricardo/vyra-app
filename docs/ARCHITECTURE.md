@@ -26,7 +26,8 @@ src/
 │   ├── auth/             # Cadastro, login por senha, Google e Apple
 │   ├── account/          # Tela "Mais": perfil, menu e logout
 │   ├── home/             # Tela inicial autenticada
-│   └── onboarding/       # Boas-vindas, 4 etapas e resumo após o primeiro acesso
+│   ├── onboarding/       # Boas-vindas, 4 etapas e resumo após o primeiro acesso
+│   └── workouts/         # Apresentação demonstrativa da aba Treinos
 ├── i18n/                 # Inicialização, idiomas e catálogos
 ├── shared/
 │   └── hooks/            # Hooks transversais em uso
@@ -52,6 +53,8 @@ Os componentes visuais comuns ao fluxo de entrada ficam em `auth/presentation/co
 A confirmação de senha pertence ao formulário e nunca é enviada à API.
 
 A feature `account` concentra Mais, configurações, perfil e conquistas. As rotas em `src/app/(tabs)/more` apenas exportam telas; `use-profile.ts` coordena carregamento e atualização, enquanto `profile-api.ts` é o único ponto que conhece `GET/PATCH /profiles/me`. Somente `displayName` é persistido porque esse é o contrato atual do backend. Nome de usuário, biografia, estatísticas e conquistas permanecem demonstrativos até existirem contratos próprios.
+
+A feature `workouts` contém somente apresentação e dados demonstrativos da aba Treinos. Ela não possui adaptador HTTP nem simula persistência porque o backend ainda não implementa o módulo de treinos; as ações comunicam indisponibilidade até que um contrato real seja definido.
 
 ### `src/core`
 
