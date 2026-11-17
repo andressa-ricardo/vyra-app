@@ -9,6 +9,6 @@ export const profileAchievements: Achievement[] = [
   { id: 'firstRide', category: 'cycling', rarity: 'common', state: 'unlocked', icon: 'bike' },
   { id: 'sevenDayStreak', category: 'running', rarity: 'rare', state: 'unlocked', icon: 'flame' },
   { id: 'marathoner', category: 'running', rarity: 'legendary', state: 'unlocked', icon: 'trophy' },
-  { id: 'fiftyKm', category: 'running', rarity: 'rare', state: 'locked', icon: 'route' },
-  { id: 'centuryRide', category: 'cycling', rarity: 'legendary', state: 'locked', icon: 'bike' },
+  { id: 'fiftyKm', category: 'walking', rarity: 'legendary', state: 'locked', icon: 'route' },
+  { id: 'centuryRide', category: 'strength', rarity: 'legendary', state: 'locked', icon: 'trophy' },
 ];

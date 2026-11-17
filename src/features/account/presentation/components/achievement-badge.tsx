@@ -2,13 +2,14 @@ import Bike from 'lucide-react-native/icons/bike';
 import Dumbbell from 'lucide-react-native/icons/dumbbell';
 import Flame from 'lucide-react-native/icons/flame';
 import Footprints from 'lucide-react-native/icons/footprints';
+import Lock from 'lucide-react-native/icons/lock';
 import Route from 'lucide-react-native/icons/route';
 import SportShoe from 'lucide-react-native/icons/sport-shoe';
 import Sunrise from 'lucide-react-native/icons/sunrise';
 import Trophy from 'lucide-react-native/icons/trophy';
 import type { LucideIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, View, type ImageSourcePropType } from 'react-native';
+import { Image, Platform, Text, View, type ImageSourcePropType } from 'react-native';
 
 import type { Achievement } from '@/features/account/types/profile.types';
 import { authColors, metricColors } from '@/theme';
@@ -40,8 +41,8 @@ const medalImages: Record<string, ImageSourcePropType> = {
   firstRide: require('../../../../../assets/medals/rare-3.png'),
   sevenDayStreak: require('../../../../../assets/medals/rare-5.png'),
   marathoner: require('../../../../../assets/medals/legendary-1.png'),
-  fiftyKm: require('../../../../../assets/medals/rare-6.png'),
-  centuryRide: require('../../../../../assets/medals/legendary-3.png'),
+  fiftyKm: require('../../../../../assets/medals/legendary-5.png'),
+  centuryRide: require('../../../../../assets/medals/legendary-6.png'),
 };
 
 export function AchievementBadge({
@@ -62,7 +63,6 @@ export function AchievementBadge({
       className={[
         'flex-1 items-center rounded-[20px] border border-auth-border bg-auth-surface px-2',
         compact ? 'min-h-[156px] py-3' : 'min-h-[238px] justify-center py-5',
-        locked ? 'opacity-45' : '',
       ].join(' ')}>
       <View
         className={
@@ -77,6 +77,14 @@ export function AchievementBadge({
             className="h-full w-full"
             resizeMode="contain"
             source={medalSource}
+            style={
+              locked
+                ? Platform.select({
+                    android: { filter: [{ grayscale: 1 }, { brightness: 0.62 }] },
+                    default: { opacity: 0.38 },
+                  })
+                : undefined
+            }
           />
         ) : (
           <View
@@ -88,6 +96,11 @@ export function AchievementBadge({
             <Icon color={color} size={compact ? 29 : 39} strokeWidth={1.8} />
           </View>
         )}
+        {locked ? (
+          <View className="absolute bottom-1 right-0 h-8 w-8 items-center justify-center rounded-full border border-auth-border bg-auth-pressed">
+            <Lock color={authColors.muted} size={17} strokeWidth={1.8} />
+          </View>
+        ) : null}
       </View>
 
       <Text

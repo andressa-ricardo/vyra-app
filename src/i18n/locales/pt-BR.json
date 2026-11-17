@@ -440,12 +440,12 @@
           "description": "Complete os lendários 42,195 quilômetros."
         },
         "fiftyKm": {
-          "title": "50 quilômetros",
-          "description": "Acumule 50 quilômetros de corrida."
+          "title": "Caminho dos mil",
+          "description": "Acumule 1.000 quilômetros caminhando."
         },
         "centuryRide": {
-          "title": "Pedal centenário",
-          "description": "Complete um pedal de 100 quilômetros."
+          "title": "Atleta de uma vida",
+          "description": "Conclua 1.000 atividades."
         }
       }
     }

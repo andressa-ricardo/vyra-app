@@ -440,12 +440,12 @@
           "description": "Complete the legendary 42.195 kilometers."
         },
         "fiftyKm": {
-          "title": "50 kilometers",
-          "description": "Accumulate 50 kilometers of running."
+          "title": "Path of a thousand",
+          "description": "Accumulate 1,000 kilometers of walking."
         },
         "centuryRide": {
-          "title": "Century ride",
-          "description": "Complete a 100-kilometer ride."
+          "title": "Lifetime athlete",
+          "description": "Complete 1,000 activities."
         }
       }
     }
