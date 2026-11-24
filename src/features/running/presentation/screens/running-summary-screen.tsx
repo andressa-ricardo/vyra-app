@@ -13,7 +13,16 @@ import Trophy from 'lucide-react-native/icons/trophy';
 import Zap from 'lucide-react-native/icons/zap';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, ScrollView, Share, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Pressable,
+  ScrollView,
+  Share,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useBodyWeight } from '@/features/running/hooks/use-body-weight';
@@ -134,9 +143,11 @@ export function RunningSummaryScreen() {
         <View className="h-11 w-11" />
       </View>
 
-      <ScrollView
-        contentContainerClassName="w-full max-w-[520px] self-center gap-4 px-5 pb-6 pt-2"
-        keyboardShouldPersistTaps="handled">
+      <KeyboardAvoidingView behavior="padding" className="flex-1">
+        <ScrollView
+          contentContainerClassName="w-full max-w-[520px] self-center gap-4 px-5 pb-6 pt-2"
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled">
         <View className="flex-row items-center gap-3.5 rounded-[20px] bg-auth-surface p-3.5">
           <View className="h-14 w-14 items-center justify-center rounded-2xl bg-auth-primary/15">
             <Footprints color={authColors.primary} size={26} />
@@ -273,7 +284,8 @@ export function RunningSummaryScreen() {
         ) : (
           <ElevationChart profile={elevationProfile(session.points)} />
         )}
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <View className="w-full max-w-[520px] flex-row gap-3 self-center px-5 pb-2 pt-3">
         <Pressable

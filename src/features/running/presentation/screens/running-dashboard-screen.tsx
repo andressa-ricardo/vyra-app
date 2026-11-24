@@ -4,7 +4,17 @@ import Play from 'lucide-react-native/icons/play';
 import Trophy from 'lucide-react-native/icons/trophy';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Modal, Pressable, RefreshControl, ScrollView, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Modal,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getRunningDashboard, setWeeklyRunningGoal } from '@/features/running/infrastructure/running-api';
@@ -158,37 +168,39 @@ export function RunningDashboardScreen() {
         ) : null}
       </ScrollView>
       <Modal animationType="fade" transparent visible={goalOpen} onRequestClose={() => setGoalOpen(false)}>
-        <View className="flex-1 items-center justify-center bg-black/70 px-6">
-          <View className="w-full max-w-[420px] gap-4 rounded-[24px] bg-auth-surface p-5">
-            <Text className="text-lg font-extrabold text-auth-text">{t('running.goalQuestion')}</Text>
-            <TextInput
-              className="h-12 rounded-2xl border border-auth-border px-4 text-auth-text"
-              inputMode="decimal"
-              onChangeText={setGoalKm}
-              placeholder={t('running.goalPlaceholder')}
-              placeholderTextColor={authColors.placeholder}
-              value={goalKm}
-            />
-            <View className="flex-row gap-3">
-              <Pressable className="h-12 flex-1 items-center justify-center rounded-2xl bg-auth-bg" onPress={() => setGoalOpen(false)}>
-                <Text className="font-bold text-auth-text">{t('common.cancel')}</Text>
-              </Pressable>
-              <Pressable
-                className="h-12 flex-1 items-center justify-center rounded-2xl bg-auth-primary"
-                onPress={() => {
-                  const kilometers = Number(goalKm.replace(',', '.'));
-                  if (!Number.isFinite(kilometers) || kilometers < 0.1) return;
-                  void setWeeklyRunningGoal(Math.round(kilometers * 1_000)).then(async () => {
-                    setGoalOpen(false);
-                    setLoading(true);
-                    await load();
-                  });
-                }}>
-                <Text className="font-bold text-white">{t('running.saveGoal')}</Text>
-              </Pressable>
+        <KeyboardAvoidingView behavior="padding" className="flex-1">
+          <View className="flex-1 items-center justify-center bg-black/70 px-6">
+            <View className="w-full max-w-[420px] gap-4 rounded-[24px] bg-auth-surface p-5">
+              <Text className="text-lg font-extrabold text-auth-text">{t('running.goalQuestion')}</Text>
+              <TextInput
+                className="h-12 rounded-2xl border border-auth-border px-4 text-auth-text"
+                inputMode="decimal"
+                onChangeText={setGoalKm}
+                placeholder={t('running.goalPlaceholder')}
+                placeholderTextColor={authColors.placeholder}
+                value={goalKm}
+              />
+              <View className="flex-row gap-3">
+                <Pressable className="h-12 flex-1 items-center justify-center rounded-2xl bg-auth-bg" onPress={() => setGoalOpen(false)}>
+                  <Text className="font-bold text-auth-text">{t('common.cancel')}</Text>
+                </Pressable>
+                <Pressable
+                  className="h-12 flex-1 items-center justify-center rounded-2xl bg-auth-primary"
+                  onPress={() => {
+                    const kilometers = Number(goalKm.replace(',', '.'));
+                    if (!Number.isFinite(kilometers) || kilometers < 0.1) return;
+                    void setWeeklyRunningGoal(Math.round(kilometers * 1_000)).then(async () => {
+                      setGoalOpen(false);
+                      setLoading(true);
+                      await load();
+                    });
+                  }}>
+                  <Text className="font-bold text-white">{t('running.saveGoal')}</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </SafeAreaView>
   );

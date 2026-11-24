@@ -36,6 +36,7 @@ export default function TabsLayout() {
           borderRadius: 28,
           marginHorizontal: 2,
           marginVertical: 6,
+          overflow: 'hidden',
         },
         tabBarStyle: {
           position: 'absolute',

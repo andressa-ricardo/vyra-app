@@ -1,5 +1,5 @@
 import X from 'lucide-react-native/icons/x';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   KeyboardAvoidingView,
@@ -42,13 +42,6 @@ export function EditProfileModal({
   const [values, setValues] = useState(initialValues);
   const [nameError, setNameError] = useState<string | undefined>();
 
-  useEffect(() => {
-    if (visible) {
-      setValues(initialValues);
-      setNameError(undefined);
-    }
-  }, [initialValues, visible]);
-
   const submit = async () => {
     const displayName = values.displayName.trim();
     if (displayName.length < 2 || displayName.length > 120) {
@@ -69,6 +62,10 @@ export function EditProfileModal({
       hardwareAccelerated
       navigationBarTranslucent
       onRequestClose={onClose}
+      onShow={() => {
+        setValues(initialValues);
+        setNameError(undefined);
+      }}
       presentationStyle="overFullScreen"
       statusBarTranslucent
       transparent
@@ -81,7 +78,7 @@ export function EditProfileModal({
           onPress={onClose}
         />
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          behavior="padding"
           className="flex-1 justify-end"
           pointerEvents="box-none">
           <Pressable

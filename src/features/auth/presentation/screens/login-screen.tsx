@@ -58,7 +58,7 @@ export function LoginScreen() {
   return (
     <SafeAreaView className="flex-1 bg-auth-bg">
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior="padding"
         className="flex-1"
       >
         <ScrollView
