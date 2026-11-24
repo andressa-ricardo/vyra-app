@@ -1,98 +1,20 @@
 import { router } from 'expo-router';
 import Activity from 'lucide-react-native/icons/activity';
 import ArrowUpRight from 'lucide-react-native/icons/arrow-up-right';
-import Bike from 'lucide-react-native/icons/bike';
-import ChevronRight from 'lucide-react-native/icons/chevron-right';
-import Dumbbell from 'lucide-react-native/icons/dumbbell';
-import Footprints from 'lucide-react-native/icons/footprints';
 import LayoutGrid from 'lucide-react-native/icons/layout-grid';
-import PersonStanding from 'lucide-react-native/icons/person-standing';
 import Target from 'lucide-react-native/icons/target';
-import Waves from 'lucide-react-native/icons/waves-horizontal';
-import type { LucideIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { ActivityRow, IconBadge } from '@/features/sports/presentation/components/activity-row';
+import { openSport } from '@/features/sports/presentation/open-sport';
+import { sampleActivities, weeklySummary } from '@/features/sports/sample-data';
+import { getModalityIcon } from '@/shared/utils/modality-icons';
 import { authColors } from '@/theme';
 
-type SportId = 'running' | 'strength' | 'walking' | 'cycling' | 'swimming';
-
-const sportIcons: Record<SportId, LucideIcon> = {
-  running: Footprints,
-  strength: Dumbbell,
-  walking: PersonStanding,
-  cycling: Bike,
-  swimming: Waves,
-};
-
-// Dados de exemplo até existir um contrato de atividades multiesporte no backend.
-const weeklySummary = { activities: 5, durationMinutes: 222, goalActivities: 6 };
-
-type RecentActivity = {
-  daysAgo: number;
-  distanceKm?: number;
-  durationSeconds?: number;
-  id: string;
-  name: 'morningRun' | 'upperBody' | 'sundayRide' | 'eveningWalk';
-  sport: SportId;
-  time: [hours: number, minutes: number];
-};
-
-const recentActivities: RecentActivity[] = [
-  { id: '1', name: 'morningRun', sport: 'running', daysAgo: 0, time: [7, 12], distanceKm: 8.04, durationSeconds: 2652 },
-  { id: '2', name: 'upperBody', sport: 'strength', daysAgo: 1, time: [18, 30], durationSeconds: 3120 },
-  { id: '3', name: 'sundayRide', sport: 'cycling', daysAgo: 2, time: [8, 0], distanceKm: 18.6 },
-  { id: '4', name: 'eveningWalk', sport: 'walking', daysAgo: 3, time: [19, 15], distanceKm: 3.2 },
-];
-
-function stripDot(value: string) {
-  return value.replace(/\.$/, '');
-}
-
-function useActivityFormat() {
-  const { i18n, t } = useTranslation();
-  const locale = i18n.resolvedLanguage;
-
-  const distance = (km: number) =>
-    `${km.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 2 })} km`;
-
-  const duration = (seconds: number) => {
-    const hours = Math.floor(seconds / 3_600);
-    const minutes = Math.floor((seconds % 3_600) / 60);
-    const rest = seconds % 60;
-    const pad = (value: number) => String(value).padStart(2, '0');
-    return hours ? `${hours}:${pad(minutes)}:${pad(rest)}` : `${pad(minutes)}:${pad(rest)}`;
-  };
-
-  const when = ({ daysAgo, time }: RecentActivity) => {
-    const date = new Date();
-    date.setDate(date.getDate() - daysAgo);
-    date.setHours(time[0], time[1], 0, 0);
-    const clock = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
-
-    let day: string;
-    if (daysAgo === 0) day = t('sports.recent.today');
-    else if (daysAgo === 1) day = t('sports.recent.yesterday');
-    else {
-      const weekday = stripDot(date.toLocaleDateString(locale, { weekday: 'short' }));
-      const month = stripDot(date.toLocaleDateString(locale, { month: 'short' }));
-      day = `${weekday.charAt(0).toUpperCase()}${weekday.slice(1)}, ${date.getDate()} ${month}`;
-    }
-    return `${day} · ${clock}`;
-  };
-
-  return { distance, duration, when };
-}
-
-function IconBadge({ Icon, square = false }: { Icon: LucideIcon; square?: boolean }) {
-  return (
-    <View
-      className={`h-9 w-9 items-center justify-center bg-[#183A70] ${square ? 'rounded-xl' : 'rounded-full'}`}>
-      <Icon color={authColors.primary} size={17} strokeWidth={1.8} />
-    </View>
-  );
-}
+/** Slugs do catálogo `GET /sport-modalities` em destaque no hub. */
+type SportId = 'running' | 'strength-training' | 'walking' | 'cycling' | 'swimming';
 
 function SportCard({ sport, onPress }: { sport: SportId; onPress: () => void }) {
   const { t } = useTranslation();
@@ -105,7 +27,7 @@ function SportCard({ sport, onPress }: { sport: SportId; onPress: () => void }) 
       className="min-h-[96px] flex-1 rounded-[18px] border border-auth-border bg-auth-surface p-3 active:bg-auth-pressed"
       onPress={onPress}>
       <View className="flex-row items-start justify-between">
-        <IconBadge Icon={sportIcons[sport]} />
+        <IconBadge Icon={getModalityIcon(sport)} />
         <ArrowUpRight color={authColors.muted} size={15} strokeWidth={1.8} />
       </View>
       <Text className="mt-2 text-[14px] font-bold text-auth-text" maxFontSizeMultiplier={1.1}>
@@ -120,14 +42,7 @@ function SportCard({ sport, onPress }: { sport: SportId; onPress: () => void }) 
 
 export function SportsScreen() {
   const { t } = useTranslation();
-  const format = useActivityFormat();
   const showComingSoon = () => Alert.alert(t('common.comingSoon'), t('sports.unavailable'));
-
-  const openSport = (sport: SportId) => {
-    if (sport === 'running') return router.push('/sports/running');
-    if (sport === 'strength') return router.push('/workouts');
-    showComingSoon();
-  };
 
   const hours = Math.floor(weeklySummary.durationMinutes / 60);
   const minutes = weeklySummary.durationMinutes % 60;
@@ -197,7 +112,7 @@ export function SportsScreen() {
         <View className="gap-3">
           <View className="flex-row gap-3">
             <SportCard sport="running" onPress={() => openSport('running')} />
-            <SportCard sport="strength" onPress={() => openSport('strength')} />
+            <SportCard sport="strength-training" onPress={() => openSport('strength-training')} />
           </View>
           <View className="flex-row gap-3">
             <SportCard sport="walking" onPress={() => openSport('walking')} />
@@ -230,35 +145,9 @@ export function SportsScreen() {
           </Pressable>
         </View>
         <View className="gap-2.5">
-          {recentActivities.map((activity) => {
-            const details = [
-              t(`sports.items.${activity.sport}.title`),
-              activity.distanceKm !== undefined ? format.distance(activity.distanceKm) : null,
-              activity.durationSeconds !== undefined
-                ? activity.distanceKm !== undefined
-                  ? format.duration(activity.durationSeconds)
-                  : t('sports.recent.minutes', { count: Math.round(activity.durationSeconds / 60) })
-                : null,
-            ].filter(Boolean);
-
-            return (
-              <Pressable
-                accessibilityRole="button"
-                className="min-h-[72px] flex-row items-center rounded-[18px] border border-auth-border bg-auth-surface px-3.5 py-3 active:bg-auth-pressed"
-                key={activity.id}
-                onPress={() => openSport(activity.sport)}>
-                <IconBadge Icon={sportIcons[activity.sport]} />
-                <View className="ml-3 flex-1 pr-2">
-                  <Text className="text-[14px] font-bold text-auth-text" maxFontSizeMultiplier={1.1}>
-                    {t(`sports.recent.names.${activity.name}`)}
-                  </Text>
-                  <Text className="mt-0.5 text-[12px] text-auth-muted">{details.join(' · ')}</Text>
-                  <Text className="mt-0.5 text-[11px] text-auth-muted">{format.when(activity)}</Text>
-                </View>
-                <ChevronRight color={authColors.muted} size={17} strokeWidth={1.8} />
-              </Pressable>
-            );
-          })}
+          {sampleActivities.slice(0, 4).map((activity) => (
+            <ActivityRow activity={activity} key={activity.id} onPress={() => openSport(activity.sport)} />
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>

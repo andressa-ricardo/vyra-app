@@ -406,7 +406,7 @@
         "title": "Corrida",
         "description": "GPS, ritmo e distância"
       },
-      "strength": {
+      "strength-training": {
         "title": "Musculação",
         "description": "Séries, cargas e evolução"
       },
@@ -438,7 +438,8 @@
         "morningRun": "Corrida matinal",
         "upperBody": "Treino de superiores",
         "sundayRide": "Pedalada de domingo",
-        "eveningWalk": "Caminhada noturna"
+        "eveningWalk": "Caminhada noturna",
+        "poolSession": "Treino na piscina"
       }
     },
     "more": {
@@ -446,9 +447,31 @@
       "subtitle": "Escolha uma modalidade para começar.",
       "search": "Buscar modalidade",
       "available": "Disponível",
-      "soon": "Em breve",
+      "soon": "Prévia",
       "empty": "Nenhuma modalidade encontrada.",
       "loadError": "Não foi possível carregar as modalidades. Toque para tentar novamente."
+    },
+    "detail": {
+      "preview": "Prévia da atividade",
+      "defaultDescription": "Tempo e frequência",
+      "activityTime": "Tempo de atividade",
+      "status": {
+        "idle": "Tudo pronto para começar",
+        "active": "Em andamento",
+        "paused": "Pausado"
+      },
+      "start": "Iniciar {{sport}}",
+      "pause": "Pausar",
+      "resume": "Retomar",
+      "finish": "Finalizar",
+      "keepGoing": "Continuar",
+      "finishTitle": "Finalizar atividade?",
+      "finishMessage": "Você fez {{time}} de {{sport}}. Nesta prévia, a atividade ainda não é salva no seu histórico.",
+      "leaveTitle": "Descartar atividade?",
+      "leaveMessage": "O cronômetro está rodando. Se sair agora, o tempo registrado será perdido.",
+      "discard": "Descartar",
+      "empty": "Nenhuma atividade de {{sport}} ainda.",
+      "activityUnavailable": "Os detalhes desta atividade estarão disponíveis em breve."
     }
   },
   "tabs": {

@@ -1,11 +1,10 @@
-import { router, type Href } from 'expo-router';
+import { router } from 'expo-router';
 import ChevronRight from 'lucide-react-native/icons/chevron-right';
 import Search from 'lucide-react-native/icons/search';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
-  Alert,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -16,16 +15,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { fetchSportModalities } from '@/features/sports/infrastructure/sports-api';
+import { openSport, sportsWithOwnScreen } from '@/features/sports/presentation/open-sport';
 import type { SportModality } from '@/features/sports/types/sports.types';
 import { BackButton } from '@/shared/components/back-button';
 import { getModalityIcon } from '@/shared/utils/modality-icons';
 import { authColors } from '@/theme';
-
-/** Modalidades que já têm uma tela própria no app. */
-const modalityRoutes: Record<string, Href> = {
-  running: '/sports/running',
-  'strength-training': '/workouts',
-};
 
 function normalize(text: string) {
   return text
@@ -87,12 +81,6 @@ export function ModalitiesScreen() {
     }
     return [...groups.entries()];
   }, [labelOf, query, state]);
-
-  const open = (modality: SportModality) => {
-    const route = modalityRoutes[modality.slug];
-    if (route) return router.push(route);
-    Alert.alert(labelOf(modality), t('sports.unavailable'));
-  };
 
   return (
     <SafeAreaView className="flex-1 bg-auth-bg" edges={['top', 'left', 'right']}>
@@ -157,14 +145,14 @@ export function ModalitiesScreen() {
             <View className="gap-2.5">
               {modalities.map((modality) => {
                 const Icon = getModalityIcon(modality.slug);
-                const available = modality.slug in modalityRoutes;
+                const available = sportsWithOwnScreen.has(modality.slug);
 
                 return (
                   <Pressable
                     accessibilityRole="button"
                     className="min-h-[60px] flex-row items-center rounded-[18px] border border-auth-border bg-auth-surface px-3.5 py-2.5 active:bg-auth-pressed"
                     key={modality.id}
-                    onPress={() => open(modality)}>
+                    onPress={() => openSport(modality.slug, modality.name)}>
                     <View className="h-9 w-9 items-center justify-center rounded-full bg-[#183A70]">
                       <Icon color={authColors.primary} size={17} strokeWidth={1.8} />
                     </View>

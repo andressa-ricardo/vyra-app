@@ -406,7 +406,7 @@
         "title": "Running",
         "description": "GPS, pace and distance"
       },
-      "strength": {
+      "strength-training": {
         "title": "Strength",
         "description": "Sets, loads and progress"
       },
@@ -438,7 +438,8 @@
         "morningRun": "Morning run",
         "upperBody": "Upper body workout",
         "sundayRide": "Sunday ride",
-        "eveningWalk": "Evening walk"
+        "eveningWalk": "Evening walk",
+        "poolSession": "Pool session"
       }
     },
     "more": {
@@ -446,9 +447,31 @@
       "subtitle": "Pick a sport to get started.",
       "search": "Search sports",
       "available": "Available",
-      "soon": "Coming soon",
+      "soon": "Preview",
       "empty": "No sports found.",
       "loadError": "Couldn't load sports. Tap to try again."
+    },
+    "detail": {
+      "preview": "Activity preview",
+      "defaultDescription": "Time and frequency",
+      "activityTime": "Activity time",
+      "status": {
+        "idle": "All set to start",
+        "active": "In progress",
+        "paused": "Paused"
+      },
+      "start": "Start {{sport}}",
+      "pause": "Pause",
+      "resume": "Resume",
+      "finish": "Finish",
+      "keepGoing": "Keep going",
+      "finishTitle": "Finish activity?",
+      "finishMessage": "You did {{time}} of {{sport}}. In this preview, the activity isn't saved to your history yet.",
+      "leaveTitle": "Discard activity?",
+      "leaveMessage": "The timer is running. If you leave now, the recorded time will be lost.",
+      "discard": "Discard",
+      "empty": "No {{sport}} activities yet.",
+      "activityUnavailable": "Details for this activity will be available soon."
     }
   },
   "tabs": {
