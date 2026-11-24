@@ -26,8 +26,6 @@ const sportIcons: Record<SportId, LucideIcon> = {
   swimming: Waves,
 };
 
-const sports: SportId[] = ['running', 'strength', 'walking', 'cycling', 'swimming'];
-
 // Dados de exemplo até existir um contrato de atividades multiesporte no backend.
 const weeklySummary = { activities: 5, durationMinutes: 222, goalActivities: 6 };
 
@@ -90,8 +88,8 @@ function useActivityFormat() {
 function IconBadge({ Icon, square = false }: { Icon: LucideIcon; square?: boolean }) {
   return (
     <View
-      className={`h-11 w-11 items-center justify-center bg-[#183A70] ${square ? 'rounded-xl' : 'rounded-full'}`}>
-      <Icon color={authColors.primary} size={21} strokeWidth={1.8} />
+      className={`h-9 w-9 items-center justify-center bg-[#183A70] ${square ? 'rounded-xl' : 'rounded-full'}`}>
+      <Icon color={authColors.primary} size={17} strokeWidth={1.8} />
     </View>
   );
 }
@@ -104,16 +102,16 @@ function SportCard({ sport, onPress }: { sport: SportId; onPress: () => void }) 
     <Pressable
       accessibilityLabel={title}
       accessibilityRole="button"
-      className="min-h-[132px] w-[48%] grow rounded-[24px] border border-auth-border bg-auth-surface p-4 active:bg-auth-pressed"
+      className="min-h-[96px] flex-1 rounded-[18px] border border-auth-border bg-auth-surface p-3 active:bg-auth-pressed"
       onPress={onPress}>
       <View className="flex-row items-start justify-between">
         <IconBadge Icon={sportIcons[sport]} />
-        <ArrowUpRight color={authColors.muted} size={18} strokeWidth={1.8} />
+        <ArrowUpRight color={authColors.muted} size={15} strokeWidth={1.8} />
       </View>
-      <Text className="mt-4 text-[17px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.1}>
+      <Text className="mt-2 text-[14px] font-bold text-auth-text" maxFontSizeMultiplier={1.1}>
         {title}
       </Text>
-      <Text className="mt-2 text-[12px] text-auth-muted" maxFontSizeMultiplier={1.15}>
+      <Text className="mt-1 text-[11px] text-auth-muted" maxFontSizeMultiplier={1.15}>
         {t(`sports.items.${sport}.description`)}
       </Text>
     </Pressable>
@@ -142,47 +140,47 @@ export function SportsScreen() {
         showsVerticalScrollIndicator={false}>
         <View className="flex-row items-start justify-between">
           <View className="flex-1 pr-3">
-            <Text className="text-[32px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
+            <Text className="text-[26px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
               {t('sports.title')}
             </Text>
-            <Text className="mt-1 text-[14px] text-auth-muted">{t('sports.subtitle')}</Text>
+            <Text className="mt-0.5 text-[13px] text-auth-muted">{t('sports.subtitle')}</Text>
           </View>
           <Pressable
             accessibilityLabel={t('sports.activityLog')}
             accessibilityRole="button"
-            className="mt-1 h-12 w-12 items-center justify-center rounded-full border border-auth-border bg-auth-surface active:bg-auth-pressed"
+            className="h-10 w-10 items-center justify-center rounded-full border border-auth-border bg-auth-surface active:bg-auth-pressed"
             onPress={showComingSoon}>
-            <Activity color={authColors.primary} size={20} strokeWidth={1.8} />
+            <Activity color={authColors.primary} size={17} strokeWidth={1.8} />
           </Pressable>
         </View>
 
-        <View className="mt-6 rounded-[24px] border border-auth-border bg-auth-surface p-5">
+        <View className="mt-5 rounded-[20px] border border-auth-border bg-auth-surface p-4">
           <View className="flex-row items-center justify-between">
-            <Text className="text-[13px] text-auth-muted">{t('sports.week.title')}</Text>
-            <Target color={authColors.primary} size={18} strokeWidth={1.8} />
+            <Text className="text-[12px] text-auth-muted">{t('sports.week.title')}</Text>
+            <Target color={authColors.primary} size={16} strokeWidth={1.8} />
           </View>
 
-          <View className="mt-3 flex-row items-center">
+          <View className="mt-2 flex-row items-center">
             <View className="flex-1 flex-row items-baseline gap-2">
-              <Text className="text-[30px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
+              <Text className="text-[24px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
                 {weeklySummary.activities}
               </Text>
-              <Text className="text-[14px] text-auth-muted">
+              <Text className="text-[13px] text-auth-muted">
                 {t('sports.week.activities', { count: weeklySummary.activities })}
               </Text>
             </View>
-            <View className="mx-4 h-12 w-px bg-auth-border" />
+            <View className="mx-3 h-10 w-px bg-auth-border" />
             <View className="flex-1">
-              <Text className="text-[24px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
+              <Text className="text-[20px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.05}>
                 {t('sports.week.duration', { hours, minutes })}
               </Text>
-              <Text className="text-[12px] text-auth-muted">{t('sports.week.durationLabel')}</Text>
+              <Text className="text-[11px] text-auth-muted">{t('sports.week.durationLabel')}</Text>
             </View>
           </View>
 
-          <View className="mt-5 flex-row items-center justify-between">
-            <Text className="text-[13px] text-auth-muted">{t('sports.week.goal')}</Text>
-            <Text className="text-[13px] text-auth-muted">
+          <View className="mt-4 flex-row items-center justify-between">
+            <Text className="text-[12px] text-auth-muted">{t('sports.week.goal')}</Text>
+            <Text className="text-[12px] text-auth-muted">
               <Text className="font-bold text-auth-text">{weeklySummary.activities}</Text>
               {t('sports.week.goalProgress', { count: weeklySummary.goalActivities })}
             </Text>
@@ -190,40 +188,48 @@ export function SportsScreen() {
           <View
             accessibilityRole="progressbar"
             accessibilityValue={{ min: 0, max: weeklySummary.goalActivities, now: weeklySummary.activities }}
-            className="mt-3 h-1.5 overflow-hidden rounded-full bg-auth-border">
+            className="mt-2 h-1.5 overflow-hidden rounded-full bg-auth-border">
             <View className="h-full rounded-full bg-auth-primary" style={{ width: `${progress * 100}%` }} />
           </View>
         </View>
 
-        <Text className="mb-4 mt-8 text-[18px] font-extrabold text-auth-text">{t('sports.choose')}</Text>
-        <View className="flex-row flex-wrap justify-between gap-y-3">
-          {sports.map((sport) => (
-            <SportCard key={sport} sport={sport} onPress={() => openSport(sport)} />
-          ))}
-          <Pressable
-            accessibilityLabel={t('sports.items.more.title')}
-            accessibilityRole="button"
-            className="min-h-[132px] w-[48%] grow justify-between rounded-[24px] border border-dashed border-auth-border p-4 active:bg-auth-pressed"
-            onPress={showComingSoon}>
-            <IconBadge Icon={LayoutGrid} square />
-            <View>
-              <Text className="text-[17px] font-extrabold text-auth-text" maxFontSizeMultiplier={1.1}>
-                {t('sports.items.more.title')}
-              </Text>
-              <Text className="mt-2 text-[12px] text-auth-muted" maxFontSizeMultiplier={1.15}>
-                {t('sports.items.more.description')}
-              </Text>
-            </View>
-          </Pressable>
+        <Text className="mb-3 mt-6 text-[16px] font-bold text-auth-text">{t('sports.choose')}</Text>
+        <View className="gap-3">
+          <View className="flex-row gap-3">
+            <SportCard sport="running" onPress={() => openSport('running')} />
+            <SportCard sport="strength" onPress={() => openSport('strength')} />
+          </View>
+          <View className="flex-row gap-3">
+            <SportCard sport="walking" onPress={() => openSport('walking')} />
+            <SportCard sport="cycling" onPress={() => openSport('cycling')} />
+          </View>
+          <View className="flex-row gap-3">
+            <SportCard sport="swimming" onPress={() => openSport('swimming')} />
+            <Pressable
+              accessibilityLabel={t('sports.items.more.title')}
+              accessibilityRole="button"
+              className="min-h-[96px] flex-1 justify-between rounded-[18px] border border-dashed border-auth-border p-3 active:bg-auth-pressed"
+              onPress={showComingSoon}>
+              <IconBadge Icon={LayoutGrid} square />
+              <View>
+                <Text className="text-[14px] font-bold text-auth-text" maxFontSizeMultiplier={1.1}>
+                  {t('sports.items.more.title')}
+                </Text>
+                <Text className="mt-1 text-[11px] text-auth-muted" maxFontSizeMultiplier={1.15}>
+                  {t('sports.items.more.description')}
+                </Text>
+              </View>
+            </Pressable>
+          </View>
         </View>
 
-        <View className="mb-4 mt-8 flex-row items-center justify-between">
-          <Text className="text-[18px] font-extrabold text-auth-text">{t('sports.recent.title')}</Text>
+        <View className="mb-3 mt-6 flex-row items-center justify-between">
+          <Text className="text-[16px] font-bold text-auth-text">{t('sports.recent.title')}</Text>
           <Pressable accessibilityRole="button" hitSlop={10} onPress={showComingSoon}>
-            <Text className="text-[14px] font-semibold text-auth-primary">{t('sports.recent.seeAll')}</Text>
+            <Text className="text-[13px] font-semibold text-auth-primary">{t('sports.recent.seeAll')}</Text>
           </Pressable>
         </View>
-        <View className="gap-3">
+        <View className="gap-2.5">
           {recentActivities.map((activity) => {
             const details = [
               t(`sports.items.${activity.sport}.title`),
@@ -238,18 +244,18 @@ export function SportsScreen() {
             return (
               <Pressable
                 accessibilityRole="button"
-                className="min-h-[88px] flex-row items-center rounded-[22px] border border-auth-border bg-auth-surface px-4 py-4 active:bg-auth-pressed"
+                className="min-h-[72px] flex-row items-center rounded-[18px] border border-auth-border bg-auth-surface px-3.5 py-3 active:bg-auth-pressed"
                 key={activity.id}
                 onPress={() => openSport(activity.sport)}>
                 <IconBadge Icon={sportIcons[activity.sport]} />
-                <View className="ml-4 flex-1 pr-2">
-                  <Text className="text-[16px] font-bold text-auth-text" maxFontSizeMultiplier={1.1}>
+                <View className="ml-3 flex-1 pr-2">
+                  <Text className="text-[14px] font-bold text-auth-text" maxFontSizeMultiplier={1.1}>
                     {t(`sports.recent.names.${activity.name}`)}
                   </Text>
-                  <Text className="mt-1 text-[13px] text-auth-muted">{details.join(' · ')}</Text>
-                  <Text className="mt-1 text-[12px] text-auth-muted">{format.when(activity)}</Text>
+                  <Text className="mt-0.5 text-[12px] text-auth-muted">{details.join(' · ')}</Text>
+                  <Text className="mt-0.5 text-[11px] text-auth-muted">{format.when(activity)}</Text>
                 </View>
-                <ChevronRight color={authColors.muted} size={20} strokeWidth={1.8} />
+                <ChevronRight color={authColors.muted} size={17} strokeWidth={1.8} />
               </Pressable>
             );
           })}
