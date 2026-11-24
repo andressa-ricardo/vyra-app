@@ -94,6 +94,48 @@ const sportModalities = [
   ['mock-modality-other', 'other-sports', 'Outros esportes', 'OTHER'],
 ].map(([id, slug, name, category], sortOrder) => ({ id, slug, name, category, sortOrder }));
 
+const mockWorkouts = [
+  {
+    id: 'mock-workout-upper-a',
+    name: 'Superior A',
+    description: 'Peito, ombros e tríceps',
+    status: 'ACTIVE',
+    itemCount: 5,
+    createdAt: now,
+    updatedAt: now,
+  },
+];
+
+const mockStrengthSessions = [
+  ['mock-strength-1', 'Superior A', 1, 3_120, 18, 186, 6_240_000],
+  ['mock-strength-2', 'Inferior A', 3, 2_880, 16, 160, 8_910_000],
+].map(([id, workoutName, daysAgo, activeDurationSeconds, totalSets, totalRepetitions, totalVolumeGrams]) => {
+  const endedAt = new Date(Date.now() - Number(daysAgo) * 86_400_000);
+  return {
+    id: String(id),
+    workoutId: 'mock-workout-upper-a',
+    activityId: `mock-activity-${id}`,
+    workoutName: String(workoutName),
+    startedAt: new Date(endedAt.getTime() - Number(activeDurationSeconds) * 1_000).toISOString(),
+    endedAt: endedAt.toISOString(),
+    activeDurationSeconds: Number(activeDurationSeconds),
+    totalSets: Number(totalSets),
+    totalRepetitions: Number(totalRepetitions),
+    totalVolumeGrams: Number(totalVolumeGrams),
+  };
+});
+
+type MockActivity = {
+  id: string;
+  type: 'RUNNING' | 'STRENGTH_TRAINING';
+  name: string;
+  startedAt: string;
+  endedAt: string;
+  activeDurationSeconds: number;
+  distanceMeters: number | null;
+  averagePaceSecondsKm: number | null;
+};
+
 let weeklyGoal = 15_000;
 const runs = new Map<string, MockRun>();
 
@@ -197,6 +239,47 @@ export const mockApiAdapter: AxiosAdapter = async (config) => {
     return respond(config, profile);
   }
   if (method === 'GET' && path === '/sport-modalities') return respond(config, sportModalities);
+
+  if (method === 'GET' && path === '/progress/summary') {
+    const activities = activitiesInPeriod(config.params?.period);
+    const totals = (items: MockActivity[]) => ({
+      activityCount: items.length,
+      activeDurationSeconds: items.reduce((total, item) => total + item.activeDurationSeconds, 0),
+      distanceMeters: items.reduce((total, item) => total + (item.distanceMeters ?? 0), 0),
+      activeDays: new Set(items.map((item) => new Date(item.startedAt).toDateString())).size,
+    });
+    const types = [...new Set(activities.map((item) => item.type))];
+    return respond(config, {
+      period: config.params?.period ?? 'MONTHLY',
+      timeZone: config.params?.timeZone ?? 'UTC',
+      from: periodStart(config.params?.period).toISOString(),
+      to: new Date().toISOString(),
+      ...totals(activities),
+      byType: types.map((type) => ({ type, ...totals(activities.filter((item) => item.type === type)) })),
+    });
+  }
+
+  if (method === 'GET' && path === '/progress/history') {
+    const limit = Number(config.params?.limit ?? 20);
+    const page = Number(config.params?.page ?? 1);
+    const activities = activitiesInPeriod(config.params?.period);
+    return respond(config, {
+      items: activities.slice((page - 1) * limit, page * limit),
+      total: activities.length,
+      page,
+      limit,
+      totalPages: Math.ceil(activities.length / limit),
+    });
+  }
+
+  if (method === 'GET' && path === '/workouts') {
+    return respond(config, { items: mockWorkouts, total: mockWorkouts.length, page: 1, limit: 20 });
+  }
+
+  if (method === 'GET' && path === '/workout-sessions/history') {
+    const items = [...mockStrengthSessions].sort((left, right) => right.startedAt.localeCompare(left.startedAt));
+    return respond(config, { items, total: items.length, page: 1, limit: 20, totalPages: 1 });
+  }
 
   if (method === 'GET' && path === '/running/statistics') {
     const completed = completedRuns();
@@ -392,6 +475,43 @@ function requireRun(config: InternalAxiosRequestConfig, id: string) {
   const run = runs.get(id);
   if (!run) return reject(config, 404, 'Mock running session not found');
   return run;
+}
+
+/** Início do período corrente no fuso do aparelho; a semana começa na segunda, como no backend. */
+function periodStart(period?: string) {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  if (period === 'WEEKLY') start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+  else if (period === 'YEARLY') start.setMonth(0, 1);
+  else start.setDate(1);
+  return start;
+}
+
+function activitiesInPeriod(period?: string): MockActivity[] {
+  const from = periodStart(period).getTime();
+  const runningActivities: MockActivity[] = completedRuns().map((run) => ({
+    id: run.activityId ?? run.id,
+    type: 'RUNNING',
+    name: run.name ?? 'Corrida',
+    startedAt: run.startedAt,
+    endedAt: run.endedAt ?? run.startedAt,
+    activeDurationSeconds: run.activeDurationSeconds,
+    distanceMeters: run.distanceMeters,
+    averagePaceSecondsKm: run.averagePaceSecondsKm,
+  }));
+  const strengthActivities: MockActivity[] = mockStrengthSessions.map((session) => ({
+    id: session.activityId,
+    type: 'STRENGTH_TRAINING',
+    name: session.workoutName,
+    startedAt: session.startedAt,
+    endedAt: session.endedAt,
+    activeDurationSeconds: session.activeDurationSeconds,
+    distanceMeters: null,
+    averagePaceSecondsKm: null,
+  }));
+  return [...runningActivities, ...strengthActivities]
+    .filter((activity) => Date.parse(activity.startedAt) >= from)
+    .sort((left, right) => right.startedAt.localeCompare(left.startedAt));
 }
 
 function completedRuns() {

@@ -100,7 +100,43 @@
       "evening": "Good evening, {{name}}"
     },
     "notifications": "Notifications",
-    "notificationsUnavailable": "Notifications will be available soon."
+    "notificationsUnavailable": "Notifications will be available soon.",
+    "profile": "Open profile",
+    "loadError": "Couldn't load your history. Tap to try again.",
+    "logActivity": "Log activity",
+    "week": {
+      "title": "This week",
+      "activeDays_one": "{{count}} active day",
+      "activeDays_other": "{{count}} active days",
+      "activities": "Activities",
+      "time": "Time",
+      "distance": "Distance"
+    },
+    "workout": {
+      "eyebrow": "Next workout",
+      "exercises_one": "{{count}} exercise",
+      "exercises_other": "{{count}} exercises",
+      "start": "Open workout {{name}}"
+    },
+    "feed": {
+      "title": "Your activities",
+      "empty": "You haven't logged any activities yet. Why not start today?",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "types": {
+        "RUNNING": "Running",
+        "STRENGTH_TRAINING": "Strength training"
+      },
+      "metrics": {
+        "distance": "Distance",
+        "time": "Time",
+        "pace": "Pace",
+        "sets": "Sets",
+        "volume": "Volume"
+      },
+      "paceChart": "Pace per km",
+      "share": "Share activity"
+    }
   },
   "onboarding": {
     "skip": "Skip",

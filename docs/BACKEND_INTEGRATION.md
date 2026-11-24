@@ -64,6 +64,12 @@ Os tokens são salvos no Expo SecureStore e o usuário entra direto na home.
 | POST | `/auth/federated/apple/nonce` | Nonce Apple de uso único |
 | POST | `/auth/federated/apple` | Login com Apple (`identityToken` + nonce bruto) |
 | GET | `/users/me` | Restaurar o usuário no startup |
+| GET | `/sport-modalities` | Onboarding e catálogo "Mais esportes" |
+| GET | `/progress/summary` | Home: totais da semana (`period=WEEKLY`, `timeZone`) |
+| GET | `/progress/history` | Home: gráfico da semana (agrupado por dia no app) e feed "Suas atividades" (`period=YEARLY`, `limit=5`) |
+| GET | `/workouts` | Home: ficha ativa editada por último ("Próximo treino") |
+| GET | `/workout-sessions/history` | Home: séries e volume das atividades de musculação, ligadas por `activityId` |
+| GET | `/running/history`, `/running/sessions/:id` | Home: liga a Activity à corrida e desenha o ritmo por km a partir dos `splits` |
 
 ## Configurar Google e Apple
 

@@ -100,7 +100,43 @@
       "evening": "Boa noite, {{name}}"
     },
     "notifications": "Notificações",
-    "notificationsUnavailable": "As notificações estarão disponíveis em breve."
+    "notificationsUnavailable": "As notificações estarão disponíveis em breve.",
+    "profile": "Abrir perfil",
+    "loadError": "Não foi possível carregar seu histórico. Toque para tentar novamente.",
+    "logActivity": "Registrar atividade",
+    "week": {
+      "title": "Esta semana",
+      "activeDays_one": "{{count}} dia ativo",
+      "activeDays_other": "{{count}} dias ativos",
+      "activities": "Atividades",
+      "time": "Tempo",
+      "distance": "Distância"
+    },
+    "workout": {
+      "eyebrow": "Próximo treino",
+      "exercises_one": "{{count}} exercício",
+      "exercises_other": "{{count}} exercícios",
+      "start": "Abrir treino {{name}}"
+    },
+    "feed": {
+      "title": "Suas atividades",
+      "empty": "Você ainda não registrou atividades. Que tal começar hoje?",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "types": {
+        "RUNNING": "Corrida",
+        "STRENGTH_TRAINING": "Musculação"
+      },
+      "metrics": {
+        "distance": "Distância",
+        "time": "Tempo",
+        "pace": "Ritmo",
+        "sets": "Séries",
+        "volume": "Volume"
+      },
+      "paceChart": "Ritmo por km",
+      "share": "Compartilhar atividade"
+    }
   },
   "onboarding": {
     "skip": "Pular",
