@@ -5,9 +5,9 @@ import { Pressable, Text, TextInput, View } from 'react-native';
 
 import type { OnboardingFlow } from '@/features/onboarding/hooks/use-onboarding-flow';
 import type { SportModality } from '@/features/onboarding/types/onboarding.types';
+import { getModalityIcon } from '@/shared/utils/modality-icons';
 import { authColors } from '@/theme';
 
-import { getModalityIcon } from './onboarding-icons';
 import { OnboardingLayout } from './onboarding-layout';
 
 const COLUMNS = 3;
@@ -31,7 +31,7 @@ export function ModalitiesStep({
 
   // O nome vem do catálogo do backend; o i18n traduz os slugs conhecidos.
   const labelOf = (modality: SportModality) =>
-    t(`onboarding.modalities.items.${modality.slug}`, { defaultValue: modality.name });
+    t(`modalities.items.${modality.slug}`, { defaultValue: modality.name });
   const visible = modalities.filter((modality) =>
     normalize(labelOf(modality)).includes(normalize(query.trim())),
   );

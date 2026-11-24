@@ -150,24 +150,7 @@
       "search": "Search sports",
       "selected_one": "{{count}} selected",
       "selected_other": "{{count}} selected",
-      "empty": "No sports found.",
-      "items": {
-        "strength-training": "Strength training",
-        "running": "Running",
-        "walking": "Walking",
-        "calisthenics": "Calisthenics",
-        "cycling": "Cycling",
-        "swimming": "Swimming",
-        "pilates": "Pilates",
-        "yoga": "Yoga",
-        "crossfit": "CrossFit",
-        "jiu-jitsu": "Jiu-jitsu",
-        "other-martial-arts": "Other martial arts",
-        "dance": "Dance",
-        "football": "Soccer",
-        "basketball": "Basketball",
-        "other-sports": "Other sports"
-      }
+      "empty": "No sports found."
     },
     "goal": {
       "title": "What do you want to achieve?",
@@ -373,6 +356,35 @@
     "historyMetric": "{{minutes}} min · {{volume}} kg",
     "unavailable": "This feature will be available when the workouts module is connected."
   },
+  "modalities": {
+    "items": {
+      "strength-training": "Strength training",
+      "running": "Running",
+      "walking": "Walking",
+      "calisthenics": "Calisthenics",
+      "cycling": "Cycling",
+      "swimming": "Swimming",
+      "pilates": "Pilates",
+      "yoga": "Yoga",
+      "crossfit": "CrossFit",
+      "jiu-jitsu": "Jiu-jitsu",
+      "other-martial-arts": "Other martial arts",
+      "dance": "Dance",
+      "football": "Soccer",
+      "basketball": "Basketball",
+      "other-sports": "Other sports"
+    },
+    "categories": {
+      "ENDURANCE": "Endurance",
+      "FITNESS": "Fitness",
+      "AQUATIC": "Water sports",
+      "MIND_BODY": "Mind and body",
+      "COMBAT": "Combat sports",
+      "DANCE": "Dance",
+      "TEAM": "Team sports",
+      "OTHER": "Other"
+    }
+  },
   "sports": {
     "title": "Sports",
     "subtitle": "Your movement starts here.",
@@ -428,6 +440,15 @@
         "sundayRide": "Sunday ride",
         "eveningWalk": "Evening walk"
       }
+    },
+    "more": {
+      "title": "More sports",
+      "subtitle": "Pick a sport to get started.",
+      "search": "Search sports",
+      "available": "Available",
+      "soon": "Coming soon",
+      "empty": "No sports found.",
+      "loadError": "Couldn't load sports. Tap to try again."
     }
   },
   "tabs": {

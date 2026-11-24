@@ -32,7 +32,7 @@ export function SummaryStep({
     {
       title: t('onboarding.summary.modalities'),
       items: selectedModalities.map((modality) =>
-        t(`onboarding.modalities.items.${modality.slug}`, { defaultValue: modality.name }),
+        t(`modalities.items.${modality.slug}`, { defaultValue: modality.name }),
       ),
     },
     {

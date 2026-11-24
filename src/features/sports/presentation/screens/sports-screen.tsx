@@ -209,7 +209,7 @@ export function SportsScreen() {
               accessibilityLabel={t('sports.items.more.title')}
               accessibilityRole="button"
               className="min-h-[96px] flex-1 justify-between rounded-[18px] border border-dashed border-auth-border p-3 active:bg-auth-pressed"
-              onPress={showComingSoon}>
+              onPress={() => router.push('/sports/modalities')}>
               <IconBadge Icon={LayoutGrid} square />
               <View>
                 <Text className="text-[14px] font-bold text-auth-text" maxFontSizeMultiplier={1.1}>

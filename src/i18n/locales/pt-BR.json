@@ -150,24 +150,7 @@
       "search": "Buscar modalidade",
       "selected_one": "{{count}} selecionada",
       "selected_other": "{{count}} selecionadas",
-      "empty": "Nenhuma modalidade encontrada.",
-      "items": {
-        "strength-training": "Musculação",
-        "running": "Corrida",
-        "walking": "Caminhada",
-        "calisthenics": "Calistenia",
-        "cycling": "Ciclismo",
-        "swimming": "Natação",
-        "pilates": "Pilates",
-        "yoga": "Yoga",
-        "crossfit": "CrossFit",
-        "jiu-jitsu": "Jiu-jítsu",
-        "other-martial-arts": "Outras artes marciais",
-        "dance": "Dança",
-        "football": "Futebol",
-        "basketball": "Basquete",
-        "other-sports": "Outros esportes"
-      }
+      "empty": "Nenhuma modalidade encontrada."
     },
     "goal": {
       "title": "O que você quer conquistar?",
@@ -373,6 +356,35 @@
     "historyMetric": "{{minutes}} min · {{volume}} kg",
     "unavailable": "Esta funcionalidade estará disponível quando o módulo de treinos for conectado."
   },
+  "modalities": {
+    "items": {
+      "strength-training": "Musculação",
+      "running": "Corrida",
+      "walking": "Caminhada",
+      "calisthenics": "Calistenia",
+      "cycling": "Ciclismo",
+      "swimming": "Natação",
+      "pilates": "Pilates",
+      "yoga": "Yoga",
+      "crossfit": "CrossFit",
+      "jiu-jitsu": "Jiu-jítsu",
+      "other-martial-arts": "Outras artes marciais",
+      "dance": "Dança",
+      "football": "Futebol",
+      "basketball": "Basquete",
+      "other-sports": "Outros esportes"
+    },
+    "categories": {
+      "ENDURANCE": "Resistência",
+      "FITNESS": "Fitness",
+      "AQUATIC": "Aquáticos",
+      "MIND_BODY": "Corpo e mente",
+      "COMBAT": "Lutas",
+      "DANCE": "Dança",
+      "TEAM": "Coletivos",
+      "OTHER": "Outros"
+    }
+  },
   "sports": {
     "title": "Esportes",
     "subtitle": "Seu movimento começa aqui.",
@@ -428,6 +440,15 @@
         "sundayRide": "Pedalada de domingo",
         "eveningWalk": "Caminhada noturna"
       }
+    },
+    "more": {
+      "title": "Mais esportes",
+      "subtitle": "Escolha uma modalidade para começar.",
+      "search": "Buscar modalidade",
+      "available": "Disponível",
+      "soon": "Em breve",
+      "empty": "Nenhuma modalidade encontrada.",
+      "loadError": "Não foi possível carregar as modalidades. Toque para tentar novamente."
     }
   },
   "tabs": {
