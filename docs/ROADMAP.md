@@ -6,6 +6,18 @@ O primeiro fluxo vertical foi implementado: backend Activities/Running, GPS real
 
 O roadmap é incremental. Cada task entrega um recorte validável sem antecipar abstrações das etapas seguintes.
 
+## RUN-M01 — Robustez do tracking mobile
+
+Status: implementada; validação física pendente.
+
+- Filtro de GPS endurecido em foreground, background e recuperação local.
+- Fila offline limitada e compactada, preservando os extremos do percurso.
+- Descarte recuperável após perda da resposta de criação da sessão.
+- Fluxo de permissões com explicação para Android 11+ e acesso às configurações.
+- Totais de sincronização e pontos rejeitados visíveis durante a corrida.
+- Ícone monocromático dedicado ao Foreground Service Android.
+- Pendente: roteiro físico com tela bloqueada, pausa, modo avião e conferência no backend.
+
 ## TASK 01 — Arquitetura inicial
 
 Status: concluída.

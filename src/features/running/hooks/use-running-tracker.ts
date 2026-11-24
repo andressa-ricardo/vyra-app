@@ -2,7 +2,7 @@ import * as Crypto from 'expo-crypto';
 import * as Location from 'expo-location';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Linking } from 'react-native';
 
 import {
   getActiveRunningSession,
@@ -32,8 +32,9 @@ import type {
 } from '@/features/running/types/running.types';
 import {
   activeSeconds,
-  currentPace,
   acceptsPoint,
+  currentPace,
+  filterRunningPoints,
   mergePoints,
   routeDistance,
   toRunningPoint,
@@ -41,6 +42,7 @@ import {
 import { i18n } from '@/i18n';
 
 type TrackerState = 'loading' | 'ready' | 'permission-denied' | 'error';
+export type BackgroundPermissionResult = 'enabled' | 'denied' | 'blocked' | 'unavailable';
 
 const SYNC_INTERVAL_MS = 15_000;
 
@@ -79,7 +81,10 @@ async function loadOrCreateRun(): Promise<{ run: LocalRunningState; serverPoints
     readPendingDiscards(),
   ]);
   const run =
-    active && !discarded.includes(active.id)
+    active &&
+    !discarded.some(
+      (item) => item.serverId === active.id || item.clientRequestId === active.clientRequestId,
+    )
       ? fromServer(active)
       : {
           clientRequestId: Crypto.randomUUID(),
@@ -121,6 +126,8 @@ export function useRunningTracker() {
   const [now, setNow] = useState(() => Date.now());
   const [syncing, setSyncing] = useState(false);
   const [offline, setOffline] = useState(false);
+  const [permissionBlocked, setPermissionBlocked] = useState(false);
+  const [initializationAttempt, setInitializationAttempt] = useState(0);
   const runRef = useRef<LocalRunningState | null>(null);
   const pointsRef = useRef<RunningPoint[]>([]);
 
@@ -175,7 +182,7 @@ export function useRunningTracker() {
     const current = runRef.current;
     if (!current) return;
     const queued = await readRunningPointQueue(current.clientRequestId);
-    applyPoints(mergePoints(pointsRef.current, queued));
+    applyPoints(filterRunningPoints(mergePoints(pointsRef.current, queued)).points);
     saveLiveDistance();
   }, [applyPoints, saveLiveDistance]);
 
@@ -187,15 +194,17 @@ export function useRunningTracker() {
       try {
         const permission = await Location.requestForegroundPermissionsAsync();
         if (permission.status !== 'granted') {
+          setPermissionBlocked(permission.canAskAgain === false);
           if (active) setState('permission-denied');
           return;
         }
+        setPermissionBlocked(false);
 
         const { run: loaded, serverPoints } = await loadOrCreateRun();
         const queued = await readRunningPointQueue(loaded.clientRequestId);
         if (!active) return;
         applyRun(loaded);
-        applyPoints(mergePoints(serverPoints, queued));
+        applyPoints(filterRunningPoints(mergePoints(serverPoints, queued)).points);
         setState('ready');
         void sync();
         if (loaded.finish) return;
@@ -203,12 +212,13 @@ export function useRunningTracker() {
         void requestActivityStatusPermission();
 
         const background = await Location.getBackgroundPermissionsAsync();
-        if (background.status === 'granted') await startBackgroundUpdates();
+        if (background.status === 'granted') await startBackgroundUpdates().catch(() => undefined);
 
         subscription = await Location.watchPositionAsync(locationOptions, (location) => {
           const current = runRef.current;
           if (!current || current.status !== 'ACTIVE' || current.finish) return;
           const point = toRunningPoint(location);
+          if (!point) return;
           if (!acceptsPoint(pointsRef.current.at(-1), point)) return;
           void appendRunningPoints(current.clientRequestId, [point]);
           applyPoints([...pointsRef.current, point]);
@@ -225,7 +235,7 @@ export function useRunningTracker() {
       active = false;
       subscription?.remove();
     };
-  }, [applyPoints, applyRun, saveLiveDistance, sync]);
+  }, [applyPoints, applyRun, initializationAttempt, saveLiveDistance, sync]);
 
   useEffect(() => {
     if (run?.status !== 'ACTIVE' || run.finish) return;
@@ -281,11 +291,24 @@ export function useRunningTracker() {
     void sync();
   };
 
-  const enableBackground = async () => {
-    const permission = await Location.requestBackgroundPermissionsAsync();
-    if (permission.status !== 'granted') return false;
-    await startBackgroundUpdates();
-    return true;
+  const enableBackground = async (): Promise<BackgroundPermissionResult> => {
+    try {
+      const permission = await Location.requestBackgroundPermissionsAsync();
+      if (permission.status !== 'granted') {
+        return permission.canAskAgain === false ? 'blocked' : 'denied';
+      }
+      await startBackgroundUpdates();
+      return 'enabled';
+    } catch {
+      return 'unavailable';
+    }
+  };
+
+  const openLocationSettings = () => Linking.openSettings();
+
+  const retryLocationPermission = () => {
+    setState('loading');
+    setInitializationAttempt((attempt) => attempt + 1);
   };
 
   /**
@@ -315,7 +338,11 @@ export function useRunningTracker() {
   const discard = async () => {
     const current = runRef.current;
     if (!current) return;
-    if (current.serverId) await addPendingDiscard(current.serverId);
+    await addPendingDiscard({
+      clientRequestId: current.clientRequestId,
+      serverId: current.serverId,
+      startedAt: current.startedAt,
+    });
     await clearLocalRun(current.clientRequestId);
     applyRun(null);
     await stopBackgroundUpdates();
@@ -349,11 +376,14 @@ export function useRunningTracker() {
     finishPending: Boolean(run?.finish),
     syncing,
     offline,
+    permissionBlocked,
     pause,
     resume,
     finish,
     retryFinish: sync,
     discard,
     enableBackground,
+    openLocationSettings,
+    retryLocationPermission,
   };
 }

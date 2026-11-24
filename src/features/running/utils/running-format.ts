@@ -10,19 +10,53 @@ export function createLocationPointId(timestamp: number, latitude: number, longi
   return `gps-${Math.round(timestamp)}-${latitude.toFixed(5)}-${longitude.toFixed(5)}`;
 }
 
-export function toRunningPoint(location: LocationObject): RunningPoint {
+export function toRunningPoint(location: LocationObject): RunningPoint | null {
+  const { latitude, longitude } = location.coords;
+  if (
+    !Number.isFinite(location.timestamp) ||
+    !Number.isFinite(latitude) ||
+    latitude < -90 ||
+    latitude > 90 ||
+    !Number.isFinite(longitude) ||
+    longitude < -180 ||
+    longitude > 180
+  ) {
+    return null;
+  }
+
   return {
-    clientPointId: createLocationPointId(
-      location.timestamp,
-      location.coords.latitude,
-      location.coords.longitude,
-    ),
+    clientPointId: createLocationPointId(location.timestamp, latitude, longitude),
     recordedAt: new Date(location.timestamp).toISOString(),
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
+    latitude,
+    longitude,
     accuracyM: location.coords.accuracy,
     altitudeM: location.coords.altitude,
   };
+}
+
+export function isValidRunningPoint(value: unknown): value is RunningPoint {
+  if (!value || typeof value !== 'object') return false;
+  const point = value as Partial<RunningPoint>;
+  const recordedAt = typeof point.recordedAt === 'string' ? Date.parse(point.recordedAt) : NaN;
+  return (
+    typeof point.clientPointId === 'string' &&
+    point.clientPointId.length > 0 &&
+    Number.isFinite(recordedAt) &&
+    typeof point.latitude === 'number' &&
+    Number.isFinite(point.latitude) &&
+    point.latitude >= -90 &&
+    point.latitude <= 90 &&
+    typeof point.longitude === 'number' &&
+    Number.isFinite(point.longitude) &&
+    point.longitude >= -180 &&
+    point.longitude <= 180 &&
+    (point.accuracyM === null ||
+      (typeof point.accuracyM === 'number' &&
+        Number.isFinite(point.accuracyM) &&
+        point.accuracyM >= 0)) &&
+    (point.altitudeM === null ||
+      (typeof point.altitudeM === 'number' && Number.isFinite(point.altitudeM)))
+  );
 }
 
 /** Merges route points by id, ordered by time (server points + points still queued on the device). */
@@ -57,11 +91,51 @@ export function distanceBetween(a: RunningPoint, b: RunningPoint) {
 
 /** Rejects imprecise fixes and GPS jumps faster than a runner could move. */
 export function acceptsPoint(previous: RunningPoint | undefined, point: RunningPoint) {
+  if (!isValidRunningPoint(point)) return false;
   if (point.accuracyM !== null && point.accuracyM > MAX_ACCURACY_M) return false;
-  if (!previous) return true;
+  if (!previous || !isValidRunningPoint(previous)) return true;
   const seconds =
     (new Date(point.recordedAt).getTime() - new Date(previous.recordedAt).getTime()) / 1_000;
   return seconds > 0 && distanceBetween(previous, point) / seconds <= MAX_SPEED_M_S;
+}
+
+/** Removes malformed fixes and sequential GPS jumps, keeping the route ordered and deduplicated. */
+export function filterRunningPoints(values: readonly unknown[], previous?: RunningPoint) {
+  const unique = new Map<string, RunningPoint>();
+  let rejected = 0;
+  for (const value of values) {
+    if (!isValidRunningPoint(value)) {
+      rejected += 1;
+      continue;
+    }
+    unique.set(value.clientPointId, value);
+  }
+
+  const ordered = [...unique.values()].sort(
+    (a, b) => new Date(a.recordedAt).getTime() - new Date(b.recordedAt).getTime(),
+  );
+  const points: RunningPoint[] = [];
+  let last = previous;
+  for (const point of ordered) {
+    if (!acceptsPoint(last, point)) {
+      rejected += 1;
+      continue;
+    }
+    points.push(point);
+    last = point;
+  }
+  return { points, rejected };
+}
+
+/** Evenly samples a large offline route while preserving its first and last fixes. */
+export function compactRunningPoints(points: RunningPoint[], targetSize: number) {
+  if (points.length <= targetSize || targetSize < 2) return points;
+  const lastIndex = points.length - 1;
+  const compacted: RunningPoint[] = [];
+  for (let index = 0; index < targetSize; index += 1) {
+    compacted.push(points[Math.round((index * lastIndex) / (targetSize - 1))]);
+  }
+  return compacted;
 }
 
 /** Adds to the stored distance the accepted points newer than the last one counted. */

@@ -13,7 +13,7 @@ import X from 'lucide-react-native/icons/x';
 import type { LucideIcon } from 'lucide-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Alert, Platform, Pressable, Text, View } from 'react-native';
 import type MapView from 'react-native-maps';
 import type { MapType } from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -58,15 +58,32 @@ export function RunningTrackerScreen() {
   }, [following, latitude, longitude]);
 
   if (tracker.state !== 'ready' || !tracker.session) {
+    const permissionDenied = tracker.state === 'permission-denied';
     return (
       <SafeAreaView className="flex-1 items-center justify-center gap-4 bg-auth-bg px-8">
         <Text className="text-center text-base text-auth-text">
-          {tracker.state === 'permission-denied'
+          {permissionDenied
             ? t('running.permissionDenied')
             : tracker.state === 'error'
               ? t('running.startError')
               : t('running.preparingGps')}
         </Text>
+        {permissionDenied ? (
+          <Pressable
+            accessibilityRole="button"
+            className="rounded-full bg-auth-primary px-6 py-3 active:opacity-75"
+            onPress={() =>
+              void (tracker.permissionBlocked
+                ? tracker.openLocationSettings()
+                : tracker.retryLocationPermission())
+            }>
+            <Text className="font-bold text-white">
+              {tracker.permissionBlocked
+                ? t('running.openSettings')
+                : t('running.tryPermissionAgain')}
+            </Text>
+          </Pressable>
+        ) : null}
         {tracker.state !== 'loading' ? (
           <Pressable
             className="rounded-full bg-auth-surface px-6 py-3"
@@ -81,6 +98,9 @@ export function RunningTrackerScreen() {
   const locale = i18n.resolvedLanguage;
   const paused = tracker.session.status === 'PAUSED';
   const signal = gpsSignal(tracker.points.at(-1));
+  const syncStats = tracker.session.syncStats;
+  const synchronizedPoints =
+    (syncStats?.acceptedPoints ?? 0) + (syncStats?.duplicatePoints ?? 0);
 
   const confirmFinish = () =>
     Alert.alert(t('running.finishTitle'), t('running.finishMessage'), [
@@ -106,15 +126,51 @@ export function RunningTrackerScreen() {
       },
     ]);
 
-  const enableBackground = () =>
-    void tracker
-      .enableBackground()
-      .then((enabled) =>
-        Alert.alert(
-          enabled ? t('running.backgroundEnabledTitle') : t('running.backgroundDeniedTitle'),
-          enabled ? t('running.backgroundEnabledMessage') : t('running.backgroundDeniedMessage'),
-        ),
-      );
+  const requestBackgroundPermission = () => {
+    const androidSettingsFlow = Platform.OS === 'android' && Number(Platform.Version) >= 30;
+    Alert.alert(
+      t('running.backgroundPermissionTitle'),
+      androidSettingsFlow
+        ? t('running.backgroundPermissionAndroidMessage')
+        : t('running.backgroundPermissionMessage'),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('running.backgroundContinue'),
+          onPress: () =>
+            void tracker.enableBackground().then((result) => {
+              if (result === 'enabled') {
+                Alert.alert(
+                  t('running.backgroundEnabledTitle'),
+                  t('running.backgroundEnabledMessage'),
+                );
+                return;
+              }
+              if (result === 'unavailable') {
+                Alert.alert(
+                  t('running.backgroundUnavailableTitle'),
+                  t('running.backgroundUnavailableMessage'),
+                );
+                return;
+              }
+              Alert.alert(
+                t('running.backgroundDeniedTitle'),
+                t('running.backgroundDeniedMessage'),
+                result === 'blocked'
+                  ? [
+                      { text: t('common.cancel'), style: 'cancel' },
+                      {
+                        text: t('running.openSettings'),
+                        onPress: () => void tracker.openLocationSettings(),
+                      },
+                    ]
+                  : undefined,
+              );
+            }),
+        },
+      ],
+    );
+  };
 
   return (
     <View className="flex-1 bg-auth-bg">
@@ -152,6 +208,23 @@ export function RunningTrackerScreen() {
                   ].join(' ')}
                   maxFontSizeMultiplier={1.1}>
                   {tracker.offline ? t('running.offline') : t('running.syncing')}
+                </Text>
+              </View>
+            ) : null}
+            {!tracker.offline && !tracker.syncing && synchronizedPoints > 0 ? (
+              <View className="rounded-full bg-auth-bg/85 px-3 py-1.5">
+                <Text className="text-[11px] font-semibold text-auth-muted" maxFontSizeMultiplier={1.1}>
+                  {t('running.syncResult', { count: synchronizedPoints })}
+                </Text>
+              </View>
+            ) : null}
+            {(syncStats?.rejectedPoints ?? 0) > 0 ? (
+              <View className="rounded-full bg-auth-bg/85 px-3 py-1.5">
+                <Text
+                  className="text-[11px] font-semibold"
+                  maxFontSizeMultiplier={1.1}
+                  style={{ color: metricColors.warning }}>
+                  {t('running.rejectedPoints', { count: syncStats?.rejectedPoints ?? 0 })}
                 </Text>
               </View>
             ) : null}
@@ -287,7 +360,9 @@ export function RunningTrackerScreen() {
                 )}
 
                 {tracker.finishPending || locked ? null : (
-                  <Pressable className="self-center px-4 py-1" onPress={enableBackground}>
+                  <Pressable
+                    className="self-center px-4 py-1"
+                    onPress={requestBackgroundPermission}>
                     <Text className="text-[11px] text-auth-placeholder">
                       {t('running.enableBackground')}
                     </Text>

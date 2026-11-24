@@ -1,6 +1,12 @@
 import type { RunningPoint } from '@/features/running/types/running.types';
 
-import { acceptsPoint, advanceLiveDistance, distanceBetween } from './running-format';
+import {
+  acceptsPoint,
+  advanceLiveDistance,
+  compactRunningPoints,
+  distanceBetween,
+  filterRunningPoints,
+} from './running-format';
 
 function point(seconds: number, latitude: number, accuracyM: number | null = 5): RunningPoint {
   return {
@@ -20,6 +26,35 @@ describe('acceptsPoint', () => {
     // ~11 m em 3 s é corrida; ~1,1 km em 3 s é salto do GPS.
     expect(acceptsPoint(point(0, 0), point(3, 0.0001))).toBe(true);
     expect(acceptsPoint(point(0, 0), point(3, 0.01))).toBe(false);
+    expect(acceptsPoint(undefined, { ...point(0, 0), latitude: Number.NaN })).toBe(false);
+  });
+});
+
+describe('filterRunningPoints', () => {
+  it('removes malformed fixes and jumps before they reach the local route', () => {
+    const filtered = filterRunningPoints([
+      point(0, 0),
+      point(3, 0.01),
+      point(4, 0.0001, 150),
+      point(6, 0.0002),
+    ]);
+
+    expect(filtered.points.map((item) => item.clientPointId)).toEqual([
+      point(0, 0).clientPointId,
+      point(6, 0.0002).clientPointId,
+    ]);
+    expect(filtered.rejected).toBe(2);
+  });
+});
+
+describe('compactRunningPoints', () => {
+  it('limits a long offline route while preserving its endpoints', () => {
+    const points = Array.from({ length: 10 }, (_, index) => point(index * 3, index * 0.0001));
+    const compacted = compactRunningPoints(points, 4);
+
+    expect(compacted).toHaveLength(4);
+    expect(compacted[0]).toBe(points[0]);
+    expect(compacted.at(-1)).toBe(points.at(-1));
   });
 });
 

@@ -37,9 +37,27 @@ async function ignorePermanentFailure(operation: () => Promise<unknown>) {
 }
 
 async function flushPendingDiscards() {
-  for (const sessionId of await readPendingDiscards()) {
-    await ignorePermanentFailure(() => discardRunningSession(sessionId));
-    await removePendingDiscard(sessionId);
+  for (const discard of await readPendingDiscards()) {
+    try {
+      let serverId = discard.serverId;
+      if (!serverId) {
+        if (!discard.clientRequestId || !discard.startedAt) {
+          await removePendingDiscard(discard);
+          continue;
+        }
+        // Creating with the same clientRequestId is idempotent. If the original response was lost,
+        // this recovers the session id before honoring the durable discard intent.
+        serverId = (await startRunningSession(discard.clientRequestId, discard.startedAt)).id;
+      }
+      await discardRunningSession(serverId);
+      await removePendingDiscard(discard);
+    } catch (error) {
+      if (isPermanentFailure(error)) {
+        await removePendingDiscard(discard);
+        continue;
+      }
+      throw error;
+    }
   }
 }
 
@@ -61,7 +79,23 @@ async function synchronize(): Promise<RunningSession | null> {
   for (;;) {
     const batch = (await readRunningPointQueue(localId)).slice(0, BATCH_SIZE);
     if (!batch.length) break;
-    await ignorePermanentFailure(() => uploadRunningPoints(serverId, batch));
+    let result: { accepted: number; duplicates: number; rejected: number };
+    try {
+      result = await uploadRunningPoints(serverId, batch);
+    } catch (error) {
+      if (!isPermanentFailure(error)) throw error;
+      result = { accepted: 0, duplicates: 0, rejected: batch.length };
+    }
+    run = await updateLocalRun(localId, (state) => ({
+      ...state,
+      syncStats: {
+        acceptedPoints: (state.syncStats?.acceptedPoints ?? 0) + result.accepted,
+        duplicatePoints: (state.syncStats?.duplicatePoints ?? 0) + result.duplicates,
+        rejectedPoints: (state.syncStats?.rejectedPoints ?? 0) + result.rejected,
+        lastSyncedAt: new Date().toISOString(),
+      },
+    }));
+    if (!run) return null;
     await removeRunningPoints(
       localId,
       batch.map((point) => point.clientPointId),

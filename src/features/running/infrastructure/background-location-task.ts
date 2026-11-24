@@ -7,7 +7,11 @@ import {
   readLocalRun,
   updateLocalRun,
 } from '@/features/running/infrastructure/running-storage';
-import { advanceLiveDistance, toRunningPoint } from '@/features/running/utils/running-format';
+import {
+  advanceLiveDistance,
+  filterRunningPoints,
+  toRunningPoint,
+} from '@/features/running/utils/running-format';
 
 export const RUNNING_LOCATION_TASK = 'vyra-running-location';
 
@@ -19,7 +23,9 @@ if (!TaskManager.isTaskDefined(RUNNING_LOCATION_TASK)) {
       const run = await readLocalRun();
       // Locations received while paused or after finishing are not part of the run.
       if (!run || run.status !== 'ACTIVE' || run.finish) return;
-      const points = data.locations.map(toRunningPoint);
+      const candidates = data.locations.map(toRunningPoint).filter((point) => point !== null);
+      const points = filterRunningPoints(candidates, run.live?.lastPoint).points;
+      if (!points.length) return;
       await appendRunningPoints(run.clientRequestId, points);
 
       // Mantém o aviso da tela de bloqueio atualizado enquanto o app não está visível.

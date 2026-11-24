@@ -21,6 +21,13 @@ export interface RunningPause {
   resumedAt: string | null;
 }
 
+export interface RunningSyncStats {
+  acceptedPoints: number;
+  duplicatePoints: number;
+  rejectedPoints: number;
+  lastSyncedAt: string | null;
+}
+
 export interface RunningSession {
   id: string;
   clientRequestId: string;
@@ -50,11 +57,20 @@ export interface LocalRunningState {
   pendingActions: { type: 'pause' | 'resume'; at: string }[];
   /** Set when the user finished the run; cleared after the backend confirms. */
   finish: { endedAt: string; name: string } | null;
+  /** Totals reported by the backend while uploading this local run. */
+  syncStats?: RunningSyncStats;
   /**
    * Distance known so far and the last point counted, so the background task can keep the
    * lock screen status up to date without loading the whole route.
    */
   live?: { distanceMeters: number; lastPoint: RunningPoint };
+}
+
+/** Durable intent used when a discard races with creation of the server session. */
+export interface PendingRunningDiscard {
+  clientRequestId: string | null;
+  serverId: string | null;
+  startedAt: string | null;
 }
 
 export interface RunningHistoryItem {

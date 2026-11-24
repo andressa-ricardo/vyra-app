@@ -7,6 +7,12 @@
 - Pausa, retomada, finalização e descarte funcionam offline e são sincronizados depois, com o horário do aparelho.
 - Cronômetro derivado de timestamps (correto após segundo plano) e pontos capturados em segundo plano exibidos ao voltar ao app.
 - Fila local idempotente, sincronização em lotes e recuperação da sessão ativa.
+- Filtro GPS compartilhado entre foreground, background e fila restaurada; correções inválidas não entram no mapa nem na sincronização.
+- Fila limitada a 10.000 pontos e compactada para 7.500 quando necessário, preservando início e fim do percurso.
+- Intenção de descarte durável por `clientRequestId`, inclusive quando a criação remota ocorreu mas sua resposta foi perdida.
+- Permissões bloqueadas oferecem acesso às configurações; Android 11+ explica o fluxo antes de abrir a tela do sistema.
+- Tracker exibe pontos sincronizados e quantidade acumulada rejeitada pelo backend.
+- Foreground Service Android possui ícone monocromático próprio configurado no plugin do Expo Location.
 - Resumo real com nome editável, mapa, métricas, splits e recordes.
 - Telas de corrida e resumo no visual escuro do app: mapa escuro com início/posição, sinal de GPS, bloqueio de controles e gráficos de ritmo por km e elevação.
 - Aviso de corrida em andamento na tela de bloqueio: notificação fixa no Android e Live Activity/Dynamic Island no iOS, com distância, tempo e pace médio. Exige development build; o iOS exige conta Apple Developer (App Group `group.com.vyra.app`) e ainda não foi compilado.
@@ -14,7 +20,7 @@
 
 O segundo plano está configurado, mas exige Development Build e validação física. Permanecem pendentes testes com tela bloqueada/fabricantes Android, bateria, chave Google Maps Android (`GOOGLE_MAPS_ANDROID_API_KEY`, lida em `app.config.js`) e armazenamento local cifrado de GPS.
 
-Atualizado em 16 de novembro de 2026.
+Atualizado em 24 de novembro de 2026.
 
 ## Base técnica
 
