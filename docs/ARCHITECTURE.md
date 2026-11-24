@@ -2,7 +2,7 @@
 
 ## Running
 
-`src/features/running` concentra contratos HTTP, fila local temporária, captura GPS e telas. A aba compõe o dashboard; `/run` registra a sessão e `/running-summary/[id]` apresenta o resultado persistido. Pontos possuem identificadores idempotentes e são enviados em lotes de até 200. O backend é a autoridade para distância, duração, pace, splits e recordes.
+`src/features/running` concentra contratos HTTP, fila local temporária, captura GPS e telas. A aba Esportes (`/sports`, de `src/features/sports`) é o hub das modalidades e abre o dashboard de corrida em `/sports/running`; `/run` registra a sessão e `/running-summary/[id]` apresenta o resultado persistido. Pontos possuem identificadores idempotentes e são enviados em lotes de até 200. O backend é a autoridade para distância, duração, pace, splits e recordes.
 
 A corrida é *offline-first*: o estado local (`LocalRunningState` no AsyncStorage, chaveado pelo `clientRequestId`) é a fonte da verdade durante a corrida. Iniciar, pausar, retomar e finalizar alteram primeiro o estado local com o horário do aparelho; `running-sync.ts` envia depois, em ordem, criação idempotente, pontos, pausas/retomadas e finalização (com `at`/`endedAt`), descartando apenas falhas permanentes (400/403/404/409/422). Descartes feitos offline persistem `clientRequestId`, `serverId` conhecido e `startedAt`: se a resposta da criação se perdeu, o sincronizador recupera o identificador pela criação idempotente antes de apagar a sessão. O cronômetro é derivado de `startedAt` e das pausas, e não de um contador.
 
@@ -36,7 +36,7 @@ src/
 
 ### `src/app`
 
-É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a landing, `/register` e `/login` abrem o cadastro e o login integrados, e o grupo `(tabs)` reúne as abas autenticadas (`/home`, `/workouts`, `/running`, `/nutrition`, `/more`). O layout raiz compõe providers e o `Stack`, usando `Stack.Protected` para liberar `/`, `/login` e `/register` somente sem sessão e o grupo `(tabs)` somente com sessão e onboarding resolvido. A troca de estado da sessão redireciona sozinha, sem `router.replace` após login ou logout.
+É exclusivamente a camada de navegação. Cada arquivo é uma rota do Expo Router e deve delegar apresentação para uma feature. A rota `/` exporta a landing, `/register` e `/login` abrem o cadastro e o login integrados, e o grupo `(tabs)` reúne as abas autenticadas (`/home`, `/workouts`, `/sports`, `/nutrition`, `/more`). O layout raiz compõe providers e o `Stack`, usando `Stack.Protected` para liberar `/`, `/login` e `/register` somente sem sessão e o grupo `(tabs)` somente com sessão e onboarding resolvido. A troca de estado da sessão redireciona sozinha, sem `router.replace` após login ou logout.
 
 ### `src/features`
 

@@ -25,6 +25,7 @@ import type {
   RunningStatistics,
 } from '@/features/running/types/running.types';
 import { formatDuration, formatPace } from '@/features/running/utils/running-format';
+import { BackButton } from '@/shared/components/back-button';
 import { authColors } from '@/theme';
 
 export function RunningDashboardScreen() {
@@ -66,9 +67,12 @@ export function RunningDashboardScreen() {
         refreshControl={
           <RefreshControl refreshing={loading} tintColor={authColors.primary} onRefresh={load} />
         }>
-        <View>
-          <Text className="text-[13px] text-auth-muted">{t('running.eyebrow')}</Text>
-          <Text className="text-[28px] font-extrabold text-auth-text">{t('running.title')}</Text>
+        <View className="flex-row items-center gap-2">
+          <BackButton onPress={() => router.back()} />
+          <View className="flex-1">
+            <Text className="text-[13px] text-auth-muted">{t('running.eyebrow')}</Text>
+            <Text className="text-[28px] font-extrabold text-auth-text">{t('running.title')}</Text>
+          </View>
         </View>
 
         <Pressable

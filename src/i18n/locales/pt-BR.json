@@ -373,10 +373,67 @@
     "historyMetric": "{{minutes}} min · {{volume}} kg",
     "unavailable": "Esta funcionalidade estará disponível quando o módulo de treinos for conectado."
   },
+  "sports": {
+    "title": "Esportes",
+    "subtitle": "Seu movimento começa aqui.",
+    "activityLog": "Registro de atividades",
+    "unavailable": "Esta modalidade estará disponível em breve.",
+    "choose": "Escolha seu esporte",
+    "week": {
+      "title": "Esta semana",
+      "activities_one": "atividade",
+      "activities_other": "atividades",
+      "duration": "{{hours}}h {{minutes}}min",
+      "durationLabel": "de atividade",
+      "goal": "Meta semanal",
+      "goalProgress_one": " / {{count}} atividade",
+      "goalProgress_other": " / {{count}} atividades"
+    },
+    "items": {
+      "running": {
+        "title": "Corrida",
+        "description": "GPS, ritmo e distância"
+      },
+      "strength": {
+        "title": "Musculação",
+        "description": "Séries, cargas e evolução"
+      },
+      "walking": {
+        "title": "Caminhada",
+        "description": "Passos e distância"
+      },
+      "cycling": {
+        "title": "Ciclismo",
+        "description": "Rotas e velocidade"
+      },
+      "swimming": {
+        "title": "Natação",
+        "description": "Distância e voltas"
+      },
+      "more": {
+        "title": "Mais esportes",
+        "description": "Explore modalidades"
+      }
+    },
+    "recent": {
+      "title": "Atividades recentes",
+      "seeAll": "Ver todas",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "names": {
+        "morningRun": "Corrida matinal",
+        "upperBody": "Treino de superiores",
+        "sundayRide": "Pedalada de domingo",
+        "eveningWalk": "Caminhada noturna"
+      }
+    }
+  },
   "tabs": {
     "home": "Início",
     "workouts": "Treinos",
-    "running": "Esportes",
+    "sports": "Esportes",
     "nutrition": "Nutrição",
     "more": "Mais"
   },

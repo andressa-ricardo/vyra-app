@@ -373,10 +373,67 @@
     "historyMetric": "{{minutes}} min · {{volume}} kg",
     "unavailable": "This feature will be available when the workouts module is connected."
   },
+  "sports": {
+    "title": "Sports",
+    "subtitle": "Your movement starts here.",
+    "activityLog": "Activity log",
+    "unavailable": "This sport will be available soon.",
+    "choose": "Choose your sport",
+    "week": {
+      "title": "This week",
+      "activities_one": "activity",
+      "activities_other": "activities",
+      "duration": "{{hours}}h {{minutes}}min",
+      "durationLabel": "of activity",
+      "goal": "Weekly goal",
+      "goalProgress_one": " / {{count}} activity",
+      "goalProgress_other": " / {{count}} activities"
+    },
+    "items": {
+      "running": {
+        "title": "Running",
+        "description": "GPS, pace and distance"
+      },
+      "strength": {
+        "title": "Strength",
+        "description": "Sets, loads and progress"
+      },
+      "walking": {
+        "title": "Walking",
+        "description": "Steps and distance"
+      },
+      "cycling": {
+        "title": "Cycling",
+        "description": "Routes and speed"
+      },
+      "swimming": {
+        "title": "Swimming",
+        "description": "Distance and laps"
+      },
+      "more": {
+        "title": "More sports",
+        "description": "Explore activities"
+      }
+    },
+    "recent": {
+      "title": "Recent activities",
+      "seeAll": "See all",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "names": {
+        "morningRun": "Morning run",
+        "upperBody": "Upper body workout",
+        "sundayRide": "Sunday ride",
+        "eveningWalk": "Evening walk"
+      }
+    }
+  },
   "tabs": {
     "home": "Home",
     "workouts": "Workouts",
-    "running": "Sports",
+    "sports": "Sports",
     "nutrition": "Nutrition",
     "more": "More"
   },

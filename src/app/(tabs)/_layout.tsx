@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router/js-tabs';
 import Apple from 'lucide-react-native/icons/apple';
 import Dumbbell from 'lucide-react-native/icons/dumbbell';
-import Footprints from 'lucide-react-native/icons/footprints';
+import Activity from 'lucide-react-native/icons/activity';
 import House from 'lucide-react-native/icons/house';
 import Menu from 'lucide-react-native/icons/menu';
 import type { LucideIcon } from 'lucide-react-native';
@@ -69,8 +69,8 @@ export default function TabsLayout() {
         options={{ title: t('tabs.workouts'), tabBarIcon: tabIcon(Dumbbell) }}
       />
       <Tabs.Screen
-        name="running"
-        options={{ title: t('tabs.running'), tabBarIcon: tabIcon(Footprints) }}
+        name="sports"
+        options={{ title: t('tabs.sports'), tabBarIcon: tabIcon(Activity) }}
       />
       <Tabs.Screen
         name="nutrition"
